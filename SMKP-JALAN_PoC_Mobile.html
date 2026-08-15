@@ -1,0 +1,1526 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="utf-8">
+<title>SMKP-JALAN -- Prototipe Interaktif (Mobile)</title>
+<meta name="color-scheme" content="light only">
+<style>
+html { color-scheme: light only; }
+
+:root{
+  --primary:#374774; --on-primary:#FFFFFF;
+  --primary-container:#D9E2FF; --on-primary-container:#131C33;
+  --surface:#FAF9FF; --on-surface:#1A1B21;
+  --surface-variant:#E1E2EC; --on-surface-variant:#44464F;
+  --outline:#74777F; --outline-variant:#C4C6D0;
+  --success-container:#EAF3DE; --on-success:#3B6D11;
+  --warning-container:#FAEEDA; --on-warning:#854F0B;
+  --error-container:#FCEBEB; --on-error:#A32D2D;
+  --bg-page:#F0F0F7;
+  --map-bg:#EDE9E1; --map-vegetation:#C8D7BC;
+  --map-building:#DAD5E2; --map-building-stroke:#C7C0D3;
+  --map-road:#A69FB5; --map-road-dash:#FCFAFF; --map-sidestreet:#D6D0DC;
+  --map-attribution:#8A8493;
+  --surface-container:#E2E6F3; --browser-chrome-bg:#F1F1F8; --browser-tabs-bg:#DFE0E8;
+}
+*{box-sizing:border-box}
+.icn{width:1em;height:1em;display:inline-block;vertical-align:-0.15em;stroke:currentColor;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,'Helvetica Neue',Arial,sans-serif;background:var(--bg-page);color:var(--on-surface);margin:0;padding:32px 24px 80px}
+.doc-header{max-width:1100px;margin:0 auto 8px}
+.doc-header h1{font-size:26px;font-weight:600;margin:0 0 6px}
+.doc-header p{color:var(--on-surface-variant);font-size:14px;margin:0 0 4px;line-height:1.5}
+.legend{display:flex;margin:16px 0 32px;font-size:12px;color:var(--on-surface-variant);flex-wrap:wrap}
+.legend > * + *{margin-left:16px}
+.legend span{display:flex;align-items:center}
+.legend span>*+*{margin-left:5px}
+.dot{width:9px;height:9px;border-radius:50%;display:inline-block}
+
+.group{max-width:1100px;margin:0 auto 48px}
+.group-title{font-size:12px;font-weight:700;letter-spacing:1px;color:var(--primary);text-transform:uppercase;margin:0 0 4px;padding-bottom:8px;border-bottom:2px solid var(--primary-container)}
+.gallery{display:flex;flex-wrap:wrap;margin-top:20px;align-items:flex-start}
+.gallery > * + *{margin-left:24px}
+
+.item{display:flex;flex-direction:column;}
+.item > * + *{margin-top:10px}
+.item-label{font-size:13px;font-weight:600}
+.item-ref{font-size:11px;color:var(--on-surface-variant);font-weight:400}
+
+/* Mobile device frame */
+.frame{width:280px;height:580px;background:var(--surface);border:1px solid var(--outline-variant);border-radius:28px;display:flex;flex-direction:column;padding:10px;box-shadow:0 4px 14px rgba(0,0,0,0.08);overflow:hidden;position:relative}
+.statusbar{display:flex;justify-content:space-between;font-size:10px;color:var(--on-surface);padding:0 4px 6px}
+.appbar{display:flex;align-items:center;margin-bottom:2px}
+.appbar > * + *{margin-left:8px}
+.appbar i{font-size:16px;color:var(--on-surface)}
+.appbar .title{font-size:14px;font-weight:600}
+.appbar .sub{font-size:10px;color:var(--on-surface-variant);margin:0 0 0 24px}
+.content{flex:1;overflow:hidden;display:flex;flex-direction:column;margin-top:8px}
+.content > * + *{margin-top:12px}
+.spacer{flex:1}
+.footer-btn{border-top:1px solid var(--outline-variant);padding-top:8px}
+
+/* Web panel frame */
+.webpanel{width:640px;background:var(--surface);border-radius:16px;padding:20px}
+.browser{width:960px;background:#fff;border-radius:10px;overflow:hidden;box-shadow:0 10px 34px rgba(0,0,0,.16);border:1px solid var(--outline-variant)}
+.browser-tabs{background:var(--browser-tabs-bg);display:flex;align-items:flex-end;padding:8px 10px 0;}
+.browser-tabs > * + *{margin-left:4px}
+.browser-tab{background:#fff;border-radius:8px 8px 0 0;padding:7px 14px;font-size:11px;color:var(--on-surface-variant);display:flex;align-items:center;max-width:200px}
+.browser-tab > * + *{margin-left:6px}
+.browser-tab .dotstat{width:6px;height:6px;border-radius:50%;background:var(--primary);flex-shrink:0}
+.browser-bar{background:#fff;padding:9px 14px;display:flex;align-items:center;border-bottom:1px solid var(--outline-variant)}
+.browser-bar > * + *{margin-left:12px}
+.wdot{width:11px;height:11px;border-radius:50%;flex-shrink:0}
+.browser-nav{display:flex;color:var(--outline)}
+.browser-nav > * + *{margin-left:8px}
+.browser-url{flex:1;background:var(--surface-variant);border-radius:7px;padding:6px 12px;font-size:11px;color:var(--on-surface-variant);display:flex;align-items:center;}
+.browser-url > * + *{margin-left:6px}
+.browser-body{background:var(--browser-chrome-bg);min-height:200px;display:flex;align-items:stretch}
+.sidebar-fill{flex:1;display:flex;flex-direction:column;justify-content:flex-end}
+.sidebar-account{display:flex;align-items:center;padding:10px 9px;border-top:1px solid var(--outline-variant);margin-top:12px}
+.sidebar-account > * + *{margin-left:9px}
+.browser-body>.pagewrap{flex:1;padding:28px}
+.sidebar{width:200px;background:var(--surface-container);border-right:1px solid var(--outline-variant);padding:18px 12px;flex-shrink:0}
+.sidebar-parent{display:flex;align-items:center;justify-content:space-between;padding:8px 9px;border-radius:9px;font-size:11.5px;color:var(--on-surface-variant);margin-bottom:2px;font-weight:600}
+.sidebar-subitem{display:flex;align-items:center;gap:9px;padding:7px 9px 7px 30px;border-radius:9px;font-size:11px;color:var(--on-surface-variant);margin-bottom:2px}
+.sidebar-subitem.active{background:var(--primary-container);color:var(--on-primary-container);font-weight:600}
+.sidebar-brand{font-size:12px;font-weight:700;color:var(--primary);margin:0 0 18px;display:flex;align-items:center;padding:0 6px}
+.sidebar-brand > * + *{margin-left:7px}
+.sidebar-item{display:flex;align-items:center;padding:8px 9px;border-radius:9px;font-size:11.5px;color:var(--on-surface-variant);margin-bottom:3px}
+.sidebar-item > * + *{margin-left:9px}
+.sidebar-item.active{background:var(--primary-container);color:var(--on-primary-container);font-weight:600}
+.sidebar-item svg{width:15px;height:15px;flex-shrink:0}
+
+
+
+/* shared components */
+.card{background:var(--surface-variant);border-radius:12px;padding:12px}
+.card-lg{background:var(--surface-container);border-radius:16px;padding:16px}
+.qtitle{font-size:14px;font-weight:600;margin:0 0 3px}
+.qsub{font-size:10px;color:var(--on-surface-variant);margin:0}
+
+.label{font-size:10px;color:var(--on-surface-variant);margin:0 0 6px}
+.radio-row{display:flex;align-items:center;padding:8px 4px}
+.radio-row > * + *{margin-left:8px}
+.radio-row.card-sel{background:var(--success-container);border-radius:10px}
+.radio{width:16px;height:16px;border-radius:50%;border:2px solid var(--outline);display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.radio.on{border-color:var(--primary)}
+.radio.on::after{content:"";width:8px;height:8px;border-radius:50%;background:var(--primary)}
+.checkbox{width:18px;height:18px;border-radius:4px;border:2px solid var(--outline);display:flex;align-items:center;justify-content:center;flex-shrink:0;background:#fff}
+.checkbox.on{border-color:var(--primary);background:var(--primary)}
+.checkbox.on::after{content:"";width:9px;height:6px;border-left:2px solid #fff;border-bottom:2px solid #fff;transform:rotate(-45deg) translate(0.5px,-1px)}
+.radio-label{font-size:12px}
+
+.field{background:var(--surface);border:none;border-bottom:1px solid var(--outline);border-radius:4px 4px 0 0;padding:7px 9px;font-size:11px;width:100%}
+textarea.field{resize:none;min-height:38px;font-family:inherit}
+
+.btn{border:none;border-radius:100px;padding:9px 14px;font-size:11px;font-weight:600;text-align:center;cursor:pointer;display:block}
+.btn > * + *{margin-left:5px}
+.btn-primary{background:var(--primary);color:var(--on-primary)}
+.btn-primary.disabled{background:var(--surface-variant);color:var(--outline);cursor:not-allowed}
+.btn-tonal{background:var(--success-container);color:var(--on-success)}
+.btn-outline{background:transparent;border:1px solid var(--primary);color:var(--primary)}
+.btn-outline-err{background:transparent;border:1px solid var(--on-error);color:var(--on-error)}
+.btn-sm{padding:6px 12px;font-size:10px}
+.hint{font-size:9px;color:var(--outline);text-align:center;display:flex;align-items:center;justify-content:center;margin-top:6px}
+.hint > * + *{margin-left:4px}
+
+.badge{display:inline-flex;align-items:center;border-radius:100px;padding:3px 9px;font-size:10px;font-weight:600;width:fit-content}
+.chip{display:inline-flex;align-items:center;gap:4px;border-radius:8px;padding:6px 12px;font-size:11px;font-weight:600;border:1px solid var(--outline);background:transparent;color:var(--on-surface-variant)}
+.chip-selected{background:var(--primary-container);color:var(--on-primary-container);border-color:transparent}
+.badge>*+*{margin-left:4px}
+.badge-success{background:var(--success-container);color:var(--on-success)}
+.badge-warning{background:var(--warning-container);color:var(--on-warning)}
+.badge-error{background:var(--error-container);color:var(--on-error)}
+.badge-primary{background:var(--primary-container);color:var(--on-primary-container)}
+.badge-neutral{background:var(--surface-variant);color:var(--on-surface-variant)}
+
+.list-row{display:flex;align-items:center;padding:9px 2px;border-bottom:1px solid var(--surface-variant)}
+.list-row > * + *{margin-left:10px}
+.list-row:last-child{border-bottom:none}
+.leading{width:30px;height:30px;border-radius:10px;display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:14px}
+.list-title{font-size:12px;font-weight:600;margin:0}
+.list-sub{font-size:10px;color:var(--on-surface-variant);margin:0}
+.list-main{flex:1;min-width:0}
+
+.avatar{width:28px;height:28px;border-radius:50%;background:var(--primary-container);color:var(--on-primary-container);display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;flex-shrink:0}
+
+.fab{position:absolute;right:16px;bottom:16px;width:44px;height:44px;border-radius:14px;background:var(--primary-container);color:var(--on-primary-container);display:flex;align-items:center;justify-content:center;font-size:18px;box-shadow:0 3px 8px rgba(0,0,0,0.15)}
+
+.thumb-row{display:flex;}
+.thumb-row > * + *{margin-left:6px}
+.thumb{width:46px;height:46px;border-radius:10px;position:relative;flex-shrink:0}
+.thumb .x{position:absolute;top:2px;right:2px;width:13px;height:13px;background:rgba(0,0,0,0.5);border-radius:50%;color:#fff;font-size:8px;display:flex;align-items:center;justify-content:center}
+.thumb-add{width:46px;height:46px;border-radius:10px;border:1.5px dashed var(--outline);display:flex;align-items:center;justify-content:center;color:var(--on-surface-variant);font-size:14px;flex-shrink:0}
+
+.metric-row{display:flex;margin-bottom:20px}
+.metric-row > * + *{margin-left:16px}
+.metric{border-radius:12px;padding:12px;flex:1;min-width:0}
+.metric .n{font-size:22px;font-weight:700;margin:2px 0 0}
+.metric .t{font-size:10px;color:var(--on-surface-variant)}
+.map-box{background:var(--surface-variant);border-radius:10px;height:160px;position:relative;margin-top:6px}
+.pin{position:absolute;width:10px;height:10px;border-radius:50%}
+.section-title{font-size:16px;font-weight:600;margin:0 0 3px}
+.section-sub{font-size:11px;color:var(--on-surface-variant);margin:0 0 12px}
+
+.caption-box{margin-top:2px}
+.caption-box .lbl{font-size:8px;color:var(--primary);margin:4px 0 1px;background:var(--surface-variant);padding:4px 6px 1px;border-radius:8px 8px 0 0}
+.caption-box .val{font-size:9px;background:var(--surface-variant);padding:0 6px 4px;border-radius:0 0 4px 4px;color:var(--on-surface)}
+
+.fgr16>*+*{margin-left:16px}
+.fgr24>*+*{margin-left:24px}
+.fgc10>*+*{margin-top:10px}
+.fgr8>*+*{margin-left:8px}
+.fgc12>*+*{margin-top:12px}
+.fgr4>*+*{margin-left:4px}
+.fgr6>*+*{margin-left:6px}
+.fgr12>*+*{margin-left:12px}
+.fgr10>*+*{margin-left:10px}
+.fgr9>*+*{margin-left:9px}
+.fgr7>*+*{margin-left:7px}
+.fgr5>*+*{margin-left:5px}
+.fgr10>*+*{margin-left:10px}
+.bottomnav{display:flex;border-top:1px solid var(--outline-variant);padding-top:8px;margin-top:2px}
+.bottomnav-item{flex:1;display:flex;flex-direction:column;align-items:center;gap:4px;padding:2px 0}
+.bottomnav-icon-wrap{width:32px;height:20px;border-radius:100px;display:flex;align-items:center;justify-content:center}
+.bottomnav-item .icn{width:18px;height:18px}
+.bottomnav-item.active .bottomnav-icon-wrap{background:var(--primary-container)}
+.bottomnav-item.active .icn{color:var(--on-primary-container)}
+.bottomnav-item.active .bottomnav-label{color:var(--on-surface);font-weight:700}
+.bottomnav-item:not(.active) .icn,.bottomnav-item:not(.active) .bottomnav-label{color:var(--on-surface-variant)}
+.bottomnav-label{font-size:9px}
+.bottomnav-badge{position:relative}
+.bottomnav-badge::after{content:attr(data-count);position:absolute;top:-4px;right:2px;background:var(--error);color:var(--on-error);font-size:8px;font-weight:700;border-radius:100px;min-width:13px;height:13px;display:flex;align-items:center;justify-content:center;padding:0 2px}
+.theme-dark{
+  --primary:#AEC6FF; --on-primary:#0B2F60;
+  --primary-container:#253E71; --on-primary-container:#D9E2FF;
+  --surface:#121318; --on-surface:#E3E2E9;
+  --surface-variant:#45464F; --on-surface-variant:#C6C6D1;
+  --surface-container:#1E2025;
+  --outline:#8F9099; --outline-variant:#45464F;
+  --success-container:#33430F; --on-success:#B7DA8C;
+  --warning-container:#4A3200; --on-warning:#FFCB80;
+  --error-container:#5D1717; --on-error:#FFB3AE;
+  --bg-page:#0A0A0D;
+  background:var(--surface); color:var(--on-surface);
+}
+
+
+* { box-sizing: border-box; }
+body {
+  margin: 0; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+  background: #E9E9F0; min-height: 100vh;
+  display: flex; align-items: center; justify-content: center;
+  padding: 40px 20px;
+}
+.role-switcher {
+  position: fixed; top: 20px; right: 20px; z-index: 100;
+  background: #fff; border-radius: 100px; padding: 6px; display: flex; gap: 4px;
+  box-shadow: 0 2px 12px rgba(0,0,0,0.15);
+}
+.role-btn {
+  border: none; background: transparent; padding: 8px 14px; border-radius: 100px;
+  font-size: 11px; font-weight: 600; cursor: pointer; color: var(--on-surface-variant);
+  transition: all .15s;
+}
+.role-btn.active { background: var(--primary); color: var(--on-primary); }
+.menu-fab {
+  position: fixed; top: 20px; left: 20px; z-index: 100;
+  width: 46px; height: 46px; border-radius: 50%; background: #fff;
+  box-shadow: 0 2px 12px rgba(0,0,0,0.15); border: none; cursor: pointer;
+  display: flex; align-items: center; justify-content: center;
+}
+.jump-menu {
+  position: fixed; top: 0; left: 0; bottom: 0; width: 300px;
+  background: #fff; z-index: 200; box-shadow: 4px 0 24px rgba(0,0,0,0.2);
+  transform: translateX(-100%); transition: transform .25s ease;
+  overflow-y: auto; padding: 20px 0 40px;
+}
+.jump-menu.open { transform: translateX(0); }
+.jump-overlay {
+  position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.35); z-index: 190;
+  display: none;
+}
+.jump-overlay.open { display: block; }
+.jump-menu h3 {
+  font-size: 14px; margin: 0; padding: 0 20px 16px; border-bottom: 1px solid var(--outline-variant);
+}
+.jump-group-title {
+  font-size: 10px; font-weight: 700; color: var(--outline);
+  text-transform: uppercase; letter-spacing: .04em;
+  padding: 16px 20px 6px;
+}
+.jump-item {
+  padding: 9px 20px; font-size: 12.5px; cursor: pointer; color: var(--on-surface);
+}
+.jump-item:hover { background: var(--surface-variant); }
+.jump-close {
+  position: absolute; top: 16px; right: 16px; cursor: pointer;
+  width: 28px; height: 28px; display: flex; align-items: center; justify-content: center;
+}
+.phone-bezel {
+  width: 320px; height: 660px; background: #111; border-radius: 44px;
+  padding: 14px; box-shadow: 0 20px 60px rgba(0,0,0,0.35);
+  position: relative; flex-shrink: 0;
+  box-sizing: border-box;
+}
+.phone-notch {
+  position: absolute; top: 14px; left: 50%; transform: translateX(-50%);
+  width: 120px; height: 24px; background: #111; border-radius: 0 0 16px 16px; z-index: 20;
+}
+.phone-screen {
+  width: 100%; height: 100%; background: var(--surface); border-radius: 30px;
+  overflow: hidden; position: relative;
+}
+.screen {
+  display: none; flex-direction: column; height: 100%; padding: 10px;
+  overflow-y: auto; overflow-x: hidden; position: absolute; top: 0; left: 0; right: 0; bottom: 0;
+  max-width: 100%;
+}
+.screen.active { display: flex; }
+@keyframes popIn {
+  from { transform: scale(0.3); opacity: 0; }
+  to { transform: scale(1); opacity: 1; }
+}
+.role-note {
+  position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%);
+  background: rgba(0,0,0,0.75); color: #fff; padding: 8px 16px; border-radius: 100px;
+  font-size: 11px; z-index: 100;
+}
+
+</style>
+</head>
+<body>
+
+<div class="menu-fab" onclick="openMenu()">
+  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#333" stroke-width="2"><line x1="3" y1="6" x2="21" y2="6"></line><line x1="3" y1="12" x2="21" y2="12"></line><line x1="3" y1="18" x2="21" y2="18"></line></svg>
+</div>
+
+<div class="jump-overlay" id="jumpOverlay" onclick="closeMenu()"></div>
+<div class="jump-menu" id="jumpMenu">
+<div class="jump-close" onclick="closeMenu()">&times;</div>
+<h3>Semua Layar</h3>
+<div class="jump-group-title">Autentikasi</div>
+<div class="jump-item" onclick="showScreen('login')">Login Google</div>
+<div class="jump-item" onclick="showScreen('welcome')">Selamat Datang</div>
+<div class="jump-item" onclick="showScreen('akun_belum_terdaftar')">Akun Belum Terdaftar</div>
+<div class="jump-group-title">Navigasi Utama</div>
+<div class="jump-item" onclick="showScreen('daftar_proyek')">Daftar Proyek</div>
+<div class="jump-item" onclick="showScreen('detail_proyek')">Detail Proyek</div>
+<div class="jump-item" onclick="showScreen('pra_pelaksanaan')">Pra Pelaksanaan</div>
+<div class="jump-item" onclick="showScreen('pelaksanaan')">Pelaksanaan</div>
+<div class="jump-item" onclick="showScreen('sinkronisasi')">Sinkronisasi</div>
+<div class="jump-item" onclick="showScreen('profil')">Profil Saya</div>
+<div class="jump-item" onclick="showScreen('dark_mode_demo')">Contoh Dark Mode</div>
+<div class="jump-group-title">Isi Checklist</div>
+<div class="jump-item" onclick="showScreen('form_item')">Form Item Checklist</div>
+<div class="jump-item" onclick="showScreen('daftar_item_mobile')">Daftar Item + Ajukan Diperiksa</div>
+<div class="jump-item" onclick="showScreen('gps_mencari')">GPS Mencari Lokasi</div>
+<div class="jump-item" onclick="showScreen('gps_gagal')">GPS Gagal / Timeout</div>
+<div class="jump-item" onclick="showScreen('item_dropdown')">Item Tipe Dropdown</div>
+<div class="jump-item" onclick="showScreen('item_teks_bebas')">Item Tipe Teks Bebas</div>
+<div class="jump-item" onclick="showScreen('peringatan_rentang')">Peringatan Nilai Di Luar Rentang</div>
+<div class="jump-item" onclick="showScreen('item_nesting')">Item Pengelompok & Nesting</div>
+<div class="jump-item" onclick="showScreen('uji_ulang')">Form Uji Ulang Item</div>
+<div class="jump-item" onclick="showScreen('riwayat_item')">Riwayat Item Rutin</div>
+<div class="jump-item" onclick="showScreen('riwayat_produksi')">Riwayat Kontrol Mutu Produksi</div>
+<div class="jump-group-title">Sampel Laboratorium</div>
+<div class="jump-item" onclick="showScreen('sampel_core_drill')">Sampel Core Drill</div>
+<div class="jump-item" onclick="showScreen('foto_bda')">Foto Before/During/After</div>
+<div class="jump-item" onclick="showScreen('sampel_ekstraksi')">Sampel Uji Ekstraksi</div>
+<div class="jump-group-title">Persetujuan</div>
+<div class="jump-item" onclick="showScreen('daftar_pengajuan')">Daftar Pengajuan</div>
+<div class="jump-item" onclick="showScreen('persetujuan_akhir')">Persetujuan Akhir</div>
+<div class="jump-item" onclick="showScreen('ajukan_koreksi')">Ajukan Koreksi</div>
+<div class="jump-group-title">Request of Work</div>
+<div class="jump-item" onclick="showScreen('daftar_row')">Daftar Request of Work</div>
+<div class="jump-item" onclick="showScreen('form_ajukan_row')">Form Ajukan RoW Baru</div>
+<div class="jump-item" onclick="showScreen('inspeksi_row')">Inspeksi Lapangan RoW</div>
+<div class="jump-item" onclick="showScreen('detail_row_mobile')">Detail RoW (Kontraktor)</div>
+</div>
+
+<div class="role-switcher">
+  <button class="role-btn active" data-role="qc" onclick="switchRole('qc')">QC</button>
+  <button class="role-btn" data-role="pengawas" onclick="switchRole('pengawas')">Konsultan Pengawas</button>
+  <button class="role-btn" data-role="kontraktor" onclick="switchRole('kontraktor')">Kontraktor</button>
+</div>
+
+<div class="phone-bezel">
+  <div class="phone-notch"></div>
+  <div class="phone-screen">
+<div class="screen active" id="screen-login">
+<div class="statusbar"><span>09:41</span><span><svg class="icn" viewbox="0 0 24 24"><path d="M2 8.5a15 15 0 0120 0M5 12a10 10 0 0114 0M8.5 15.5a5 5 0 017 0"></path><circle cx="12" cy="19" fill="currentColor" r="1" stroke="none"></circle></svg> <svg class="icn" viewbox="0 0 24 24"><rect height="10" rx="2" width="17" x="2" y="7"></rect><line x1="21" x2="21" y1="10" y2="14"></line><rect fill="currentColor" height="5" stroke="none" width="9" x="4.5" y="9.5"></rect></svg></span></div>
+<div class="content" style="align-items:center;justify-content:center;text-align:center;margin-top:60px">
+<img src="data:image/png;base64,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" style="width:64px;height:64px;border-radius:16px;margin:0 auto 16px;display:block"/>
+<p style="font-size:16px;font-weight:700;margin:0">SMKP-JALAN</p>
+<p style="font-size:11px;color:var(--on-surface-variant);margin:4px 0 40px">Sistem Monitoring Kualitas Pekerjaan Jalan</p>
+<button class="btn btn-primary" onclick="showScreen('welcome')" style="display:flex;align-items:center;justify-content:center;gap:8px;padding:11px 24px;margin:0 auto">
+<svg width="16" height="16" viewBox="0 0 24 24"><path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" fill="#4285F4"></path><path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" fill="#34A853"></path><path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z" fill="#FBBC05"></path><path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" fill="#EA4335"></path></svg>
+Masuk dengan Google
+</button>
+<p style="font-size:9px;color:var(--outline);margin-top:32px">Untuk QC, Konsultan Pengawas, dan Kontraktor.<br/>P2JN masuk lewat aplikasi web.</p>
+</div>
+</div>
+<div class="screen" id="screen-welcome">
+<div class="statusbar"><span>09:41</span><span><svg class="icn" viewbox="0 0 24 24"><path d="M2 8.5a15 15 0 0120 0M5 12a10 10 0 0114 0M8.5 15.5a5 5 0 017 0"></path><circle cx="12" cy="19" fill="currentColor" r="1" stroke="none"></circle></svg> <svg class="icn" viewbox="0 0 24 24"><rect height="10" rx="2" width="17" x="2" y="7"></rect><line x1="21" x2="21" y1="10" y2="14"></line><rect fill="currentColor" height="5" stroke="none" width="9" x="4.5" y="9.5"></rect></svg></span></div>
+<div class="content" style="align-items:center;justify-content:center;text-align:center;margin-top:40px">
+<div class="avatar" style="width:56px;height:56px;font-size:20px;margin:0 auto 14px">AS</div>
+<p style="font-size:16px;font-weight:700;margin:0">Selamat datang, Ahmad</p>
+<p style="font-size:11px;color:var(--on-surface-variant);margin:4px 0 20px">ahmad@gmail.com</p>
+<div class="card-lg" style="text-align:left;width:100%">
+<div class="list-row" style="padding:6px 0"><span class="badge badge-primary" style="width:fit-content;padding:4px 12px">QC</span><span style="font-size:11px;margin-left:9px;color:var(--on-surface-variant)">Konsultan Pengawas</span></div>
+<div class="list-row" style="padding:6px 0"><p style="font-size:11px;margin:0"><span style="color:var(--on-surface-variant)">Perusahaan:</span> CV Cipta Konsultan</p></div>
+<div class="list-row" style="padding:6px 0"><p style="font-size:11px;margin:0"><span style="color:var(--on-surface-variant)">Jabatan:</span> Site Engineer</p></div>
+</div>
+<p style="font-size:10px;color:var(--outline);margin-top:16px">Akun Anda sudah didaftarkan oleh admin P2JN dan siap dipakai.</p>
+<div class="spacer"></div>
+</div>
+<div class="footer-btn"><button class="btn btn-primary" style="width:100%" onclick="showScreen('daftar_proyek')">Mulai</button></div>
+</div>
+<div class="screen" id="screen-akun_belum_terdaftar">
+<div class="statusbar"><span>09:41</span><span><svg class="icn" viewbox="0 0 24 24"><path d="M2 8.5a15 15 0 0120 0M5 12a10 10 0 0114 0M8.5 15.5a5 5 0 017 0"></path><circle cx="12" cy="19" fill="currentColor" r="1" stroke="none"></circle></svg> <svg class="icn" viewbox="0 0 24 24"><rect height="10" rx="2" width="17" x="2" y="7"></rect><line x1="21" x2="21" y1="10" y2="14"></line><rect fill="currentColor" height="5" stroke="none" width="9" x="4.5" y="9.5"></rect></svg></span></div>
+<div class="content" style="align-items:center;justify-content:center;text-align:center;margin-top:50px">
+<div class="leading" style="width:64px;height:64px;background:var(--surface-variant);margin:0 auto 16px"><svg class="icn" style="width:32px;height:32px;color:var(--on-surface-variant)" viewbox="0 0 24 24"><path d="M12 9v4"></path><circle cx="12" cy="16.5" fill="currentColor" r="0.6" stroke="none"></circle><circle cx="12" cy="12" r="9"></circle></svg></div>
+<p style="font-size:15px;font-weight:700;margin:0">Akun belum terdaftar</p>
+<p style="font-size:11px;color:var(--on-surface-variant);margin:8px 0 0;padding:0 16px">Email <b>ahmad@gmail.com</b> belum terdaftar di sistem SMKP-JALAN. Hubungi admin P2JN untuk didaftarkan terlebih dahulu.</p>
+<button class="btn btn-outline btn-sm" style="margin-top:24px" onclick="showScreen('login')">Keluar</button>
+</div>
+</div>
+<div class="screen" id="screen-daftar_proyek">
+<div class="statusbar"><span>09:41</span><span><svg class="icn" viewbox="0 0 24 24"><path d="M2 8.5a15 15 0 0120 0M5 12a10 10 0 0114 0M8.5 15.5a5 5 0 017 0"></path><circle cx="12" cy="19" fill="currentColor" r="1" stroke="none"></circle></svg> <svg class="icn" viewbox="0 0 24 24"><rect height="10" rx="2" width="17" x="2" y="7"></rect><line x1="21" x2="21" y1="10" y2="14"></line><rect fill="currentColor" height="5" stroke="none" width="9" x="4.5" y="9.5"></rect></svg></span></div>
+<div style="font-size:16px;font-weight:600;margin-bottom:8px">Proyek saya</div>
+<div class="field fgr6" style="display:flex;align-items:center;border-radius:100px;border:none;background:var(--surface-variant)"><svg class="icn" style="font-size:12px;color:var(--outline)" viewbox="0 0 24 24"><circle cx="10" cy="10" r="7"></circle><line x1="21" x2="15" y1="21" y2="15"></line></svg><span style="color:var(--outline);font-size:10px">Cari proyek atau kontraktor</span></div>
+<div class="content" style="margin-top:4px">
+<div class="list-row" onclick="bukaDetailProyekMobile('Jl. Lintas Timur Km 12', 'PT Karya Beton', 'AC-WC', 'Persiapan')" style="cursor:pointer"><div class="leading" style="background:var(--warning-container)"><svg class="icn" style="color:var(--on-warning)" viewbox="0 0 24 24"><path d="M8 21l2-16h4l2 16"></path><line x1="12" x2="12" y1="6" y2="9"></line><line x1="12" x2="12" y1="12" y2="15"></line></svg></div><div class="list-main"><p class="list-title">Jl. Lintas Timur Km 12</p><p class="list-sub">PT Karya Beton - AC-WC</p></div><span class="badge badge-warning">Persiapan</span></div>
+<div class="list-row" onclick="bukaDetailProyekMobile('Jl. Sudirman - Sgm 3', 'CV Mitra Jaya', 'AC-BC', 'Berjalan')" style="cursor:pointer"><div class="leading" style="background:var(--primary-container)"><svg class="icn" style="color:var(--on-primary-container)" viewbox="0 0 24 24"><path d="M8 21l2-16h4l2 16"></path><line x1="12" x2="12" y1="6" y2="9"></line><line x1="12" x2="12" y1="12" y2="15"></line></svg></div><div class="list-main"><p class="list-title">Jl. Sudirman - Sgm 3</p><p class="list-sub">CV Mitra Jaya - AC-BC</p></div><span class="badge badge-primary">Berjalan</span></div>
+<div class="list-row" onclick="bukaDetailProyekMobile('Jl. Veteran Lama', 'UD Beton Jaya', 'AC-WC', 'Selesai')" style="opacity:.55;cursor:pointer"><div class="leading" style="background:var(--success-container)"><svg class="icn" style="color:var(--on-success)" viewbox="0 0 24 24"><path d="M8 21l2-16h4l2 16"></path><line x1="12" x2="12" y1="6" y2="9"></line><line x1="12" x2="12" y1="12" y2="15"></line></svg></div><div class="list-main"><p class="list-title">Jl. Veteran Lama</p><p class="list-sub">UD Beton Jaya - AC-WC</p></div><span class="badge badge-success">Selesai</span></div>
+<div class="spacer"></div>
+</div>
+<div class="bottomnav">
+<div class="bottomnav-item active" onclick="showScreen('daftar_proyek')" style="cursor:pointer"><div class="bottomnav-icon-wrap"><svg class="icn" viewbox="0 0 24 24"><path d="M3 11l9-8 9 8"></path><path d="M5 10v10h14V10"></path></svg></div><span class="bottomnav-label">Proyek</span></div>
+<div class="bottomnav-item" onclick="showScreen('sinkronisasi')" style="cursor:pointer"><div class="bottomnav-icon-wrap"><svg class="icn bottomnav-badge" data-count="3" viewbox="0 0 24 24"><path d="M21 12a9 9 0 11-3-6.7"></path><polyline points="21,3 21,9 15,9"></polyline></svg></div><span class="bottomnav-label">Sinkronisasi</span></div>
+<div class="bottomnav-item" onclick="showScreen('profil')" style="cursor:pointer"><div class="bottomnav-icon-wrap"><svg class="icn" viewbox="0 0 24 24"><circle cx="12" cy="8" r="4"></circle><path d="M4 21c0-4 3.5-7 8-7s8 3 8 7"></path></svg></div><span class="bottomnav-label">Profil</span></div>
+</div>
+</div>
+<div class="screen" id="screen-detail_proyek">
+<div class="statusbar"><span>09:41</span><span><svg class="icn" viewbox="0 0 24 24"><path d="M2 8.5a15 15 0 0120 0M5 12a10 10 0 0114 0M8.5 15.5a5 5 0 017 0"></path><circle cx="12" cy="19" fill="currentColor" r="1" stroke="none"></circle></svg> <svg class="icn" viewbox="0 0 24 24"><rect height="10" rx="2" width="17" x="2" y="7"></rect><line x1="21" x2="21" y1="10" y2="14"></line><rect fill="currentColor" height="5" stroke="none" width="9" x="4.5" y="9.5"></rect></svg></span></div>
+<div class="appbar" onclick="showScreen('daftar_proyek')" style="cursor:pointer"><svg class="icn" viewbox="0 0 24 24"><line x1="19" x2="5" y1="12" y2="12"></line><polyline points="12,19 5,12 12,5"></polyline></svg><span class="title">Detail proyek</span></div>
+<div class="content">
+<div class="card-lg">
+<p style="font-size:14px;font-weight:600;margin:0 0 3px" id="dpMobileNama">Jl. Lintas Timur Km 12</p>
+<p style="font-size:11px;color:var(--on-surface-variant);margin:0 0 10px" id="dpMobileKontraktor">PT Karya Beton</p>
+<div class="fgr6" style="display:flex;"><span class="badge badge-primary" id="dpMobileJenis">AC-WC</span><span class="badge badge-warning" id="dpMobileStatus">Persiapan</span></div>
+</div>
+<div class="list-row" onclick="showScreen('pra_pelaksanaan')" style="cursor:pointer;background:var(--surface-variant);border-radius:12px;padding:12px;border:none">
+<div class="leading" style="background:var(--primary-container)"><span class="icn" style="color:var(--on-primary-container)">•</span></div>
+<div class="list-main"><p class="list-title">Pra pelaksanaan</p><p class="list-sub">Uji material, mix design, dst</p></div>
+<svg class="icn" style="color:var(--outline)" viewbox="0 0 24 24"><polyline points="9,6 15,12 9,18"></polyline></svg>
+</div>
+<div class="list-row" onclick="showScreen('pelaksanaan')" style="cursor:pointer;background:var(--surface-variant);border-radius:12px;padding:12px;border:none;opacity:.5">
+<div class="leading" style="background:var(--surface)"><svg class="icn" style="color:var(--outline)" viewbox="0 0 24 24"><rect height="9" rx="2" width="14" x="5" y="11"></rect><path d="M8 11V7.5a4 4 0 018 0V11"></path></svg></div>
+<div class="list-main"><p class="list-title">Pelaksanaan</p><p class="list-sub">Terbuka setelah JMF disahkan</p></div>
+</div>
+<div class="spacer"></div>
+</div>
+</div>
+<div class="screen" id="screen-pra_pelaksanaan">
+<div class="statusbar"><span>09:41</span><span><svg class="icn" viewbox="0 0 24 24"><path d="M2 8.5a15 15 0 0120 0M5 12a10 10 0 0114 0M8.5 15.5a5 5 0 017 0"></path><circle cx="12" cy="19" fill="currentColor" r="1" stroke="none"></circle></svg> <svg class="icn" viewbox="0 0 24 24"><rect height="10" rx="2" width="17" x="2" y="7"></rect><line x1="21" x2="21" y1="10" y2="14"></line><rect fill="currentColor" height="5" stroke="none" width="9" x="4.5" y="9.5"></rect></svg></span></div>
+<div class="appbar" onclick="showScreen('detail_proyek')" style="cursor:pointer"><svg class="icn" viewbox="0 0 24 24"><line x1="19" x2="5" y1="12" y2="12"></line><polyline points="12,19 5,12 12,5"></polyline></svg><span class="title">Pra pelaksanaan</span></div>
+<p class="appbar sub" style="margin-left:24px">Jl. Lintas Timur Km 12</p>
+<div class="content">
+<div class="list-row" onclick="bukaDaftarItemMobile('Uji kualifikasi material (laboratorium)')" style="cursor:pointer"><div class="leading" style="background:var(--success-container)"><svg class="icn" fill="none" style="color:var(--on-success)" viewbox="0 0 24 24"><polyline points="4,12 9,17 20,6"></polyline></svg></div><div class="list-main"><p class="list-title">Uji kualifikasi material (laboratorium)</p><p class="list-sub">Selesai - 9/9 item</p></div><span class="badge badge-success">Disetujui</span></div>
+<div class="list-row" onclick="bukaDaftarItemMobile('Perancangan formula campuran (Mix Design)')" style="cursor:pointer"><div class="leading" style="background:var(--success-container)"><svg class="icn" fill="none" style="color:var(--on-success)" viewbox="0 0 24 24"><polyline points="4,12 9,17 20,6"></polyline></svg></div><div class="list-main"><p class="list-title">Perancangan formula campuran (Mix Design)</p><p class="list-sub">Selesai - 10/10 item</p></div><span class="badge badge-warning">Menunggu persetujuan</span></div>
+<div class="list-row" onclick="showScreen('riwayat_item')" style="cursor:pointer"><div class="leading" style="background:var(--primary-container)"><svg class="icn" style="color:var(--on-primary-container)" viewbox="0 0 24 24"><path d="M4 12a8 8 0 0114-5.3"></path><polyline points="18,3.5 18,7 14.5,7"></polyline><path d="M20 12a8 8 0 01-14 5.3"></path><polyline points="6,20.5 6,17 9.5,17"></polyline></svg></div><div class="list-main"><p class="list-title">Kontrol material masuk stockpile AMP</p><p class="list-sub" style="color:var(--primary)">Berjalan rutin - dicek hari ini</p></div></div>
+<div class="list-row" onclick="bukaDaftarItemMobile('Kalibrasi alat &amp; uji coba pencampuran (JMF)')" style="cursor:pointer"><div class="leading" style="background:var(--primary-container);font-size:9px;font-weight:700;color:var(--on-primary-container)">3/6</div><div class="list-main"><p class="list-title">Kalibrasi alat &amp; uji coba pencampuran (JMF)</p><p class="list-sub" style="color:var(--primary)">Sedang berjalan</p></div></div>
+<div class="list-row" onclick="bukaRiwayatProduksi('pra_pelaksanaan')" style="cursor:pointer"><div class="leading" style="background:var(--primary-container)"><svg class="icn" style="color:var(--on-primary-container)" viewbox="0 0 24 24"><path d="M4 12a8 8 0 0114-5.3"></path><polyline points="18,3.5 18,7 14.5,7"></polyline><path d="M20 12a8 8 0 01-14 5.3"></path><polyline points="6,20.5 6,17 9.5,17"></polyline></svg></div><div class="list-main"><p class="list-title">Kontrol mutu saat produksi berjalan</p><p class="list-sub" style="color:var(--primary)">Berjalan rutin - 2 pemeriksaan hari ini</p></div></div>
+<div class="list-row" onclick="showScreen('daftar_row')" style="cursor:pointer"><div class="leading" style="background:var(--warning-container)"><svg class="icn" style="color:var(--on-warning)" viewbox="0 0 24 24"><path d="M9 11l3 3L22 4"></path><path d="M21 12v7a2 2 0 01-2 2H5a2 2 0 01-2-2V5a2 2 0 012-2h11"></path></svg></div><div class="list-main"><p class="list-title">Request of Work</p><p class="list-sub" style="color:var(--on-warning)">1 RoW perlu ditinjau</p></div></div>
+<div class="list-row" onclick="bukaDaftarItemMobile('Pekerjaan penghamparan aspal hotmix')" style="cursor:pointer"><div class="leading" style="background:var(--surface-variant)"><svg class="icn" style="color:var(--on-surface-variant)" viewbox="0 0 24 24"><circle cx="12" cy="12" r="9"></circle></svg></div><div class="list-main"><p class="list-title">Pekerjaan penghamparan aspal hotmix</p><p class="list-sub">Belum dimulai</p></div></div>
+<div class="spacer"></div>
+</div>
+</div>
+<div class="screen" id="screen-pelaksanaan">
+<div class="statusbar"><span>09:41</span><span><svg class="icn" viewbox="0 0 24 24"><path d="M2 8.5a15 15 0 0120 0M5 12a10 10 0 0114 0M8.5 15.5a5 5 0 017 0"></path><circle cx="12" cy="19" fill="currentColor" r="1" stroke="none"></circle></svg> <svg class="icn" viewbox="0 0 24 24"><rect height="10" rx="2" width="17" x="2" y="7"></rect><line x1="21" x2="21" y1="10" y2="14"></line><rect fill="currentColor" height="5" stroke="none" width="9" x="4.5" y="9.5"></rect></svg></span></div>
+<div class="appbar" onclick="showScreen('detail_proyek')" style="cursor:pointer"><svg class="icn" viewbox="0 0 24 24"><line x1="19" x2="5" y1="12" y2="12"></line><polyline points="12,19 5,12 12,5"></polyline></svg><span class="title">Pelaksanaan</span></div>
+<p class="appbar sub" style="margin-left:24px">Jl. Lintas Timur Km 12</p>
+<div class="content">
+<div class="list-row" onclick="bukaRiwayatProduksi('pelaksanaan')" style="cursor:pointer"><div class="leading" style="background:var(--primary-container)"><svg class="icn" style="color:var(--on-primary-container)" viewbox="0 0 24 24"><path d="M4 12a8 8 0 0114-5.3"></path><polyline points="18,3.5 18,7 14.5,7"></polyline><path d="M20 12a8 8 0 01-14 5.3"></path><polyline points="6,20.5 6,17 9.5,17"></polyline></svg></div><div class="list-main"><p class="list-title">Kontrol mutu saat produksi berjalan</p><p class="list-sub" style="color:var(--primary)">Berjalan rutin</p></div></div>
+<div class="list-row" onclick="showScreen('daftar_row')" style="cursor:pointer"><div class="leading" style="background:var(--primary-container)"><svg class="icn" style="color:var(--on-primary-container)" viewbox="0 0 24 24"><path d="M7 3h7l5 5v13H7V3z"></path><polyline points="14,3 14,8 19,8"></polyline><polyline points="9.5,14 11,15.5 15,11.5"></polyline></svg></div><div class="list-main"><p class="list-title">Request of work</p><p class="list-sub">2 diajukan bulan ini</p></div></div>
+<div class="list-row" onclick="bukaDaftarItemMobile('Pekerjaan penghamparan aspal hotmix', 'pelaksanaan')" style="cursor:pointer"><div class="leading" style="background:var(--primary-container)"><svg class="icn" style="color:var(--on-primary-container)" viewbox="0 0 24 24"><path d="M8 21l2-16h4l2 16"></path><line x1="12" x2="12" y1="6" y2="9"></line><line x1="12" x2="12" y1="12" y2="15"></line></svg></div><div class="list-main"><p class="list-title">Pekerjaan penghamparan aspal hotmix</p><p class="list-sub">3 segmen hari ini</p></div></div>
+<div class="spacer"></div>
+</div>
+</div>
+<div class="screen" id="screen-sinkronisasi">
+<div class="statusbar"><span>09:41</span><span><svg class="icn" viewbox="0 0 24 24"><path d="M2 8.5a15 15 0 0120 0M5 12a10 10 0 0114 0M8.5 15.5a5 5 0 017 0"></path><circle cx="12" cy="19" fill="currentColor" r="1" stroke="none"></circle><line x1="2" x2="22" y1="21" y2="3"></line></svg> <svg class="icn" viewbox="0 0 24 24"><rect height="10" rx="2" width="17" x="2" y="7"></rect><line x1="21" x2="21" y1="10" y2="14"></line><rect fill="currentColor" height="5" stroke="none" width="9" x="4.5" y="9.5"></rect></svg></span></div>
+<div class="appbar"><span class="title">Sinkronisasi</span></div>
+<div class="content">
+<div class="card fgr6" style="background:var(--warning-container);display:flex;align-items:center">
+<svg class="icn" style="color:var(--on-warning)" viewbox="0 0 24 24"><circle cx="12" cy="12" r="9"></circle><polyline points="12,7 12,12 15.5,14"></polyline></svg>
+<p style="font-size:11px;color:var(--on-warning);margin:0;font-weight:600" id="sinkronRingkasan">3 item belum tersinkron</p>
+</div>
+<div class="list-row"><div class="leading" style="background:var(--warning-container)"><svg class="icn" style="color:var(--on-warning);font-size:13px" viewbox="0 0 24 24"><circle cx="12" cy="12" r="9"></circle><polyline points="12,7 12,12 15.5,14"></polyline></svg></div><div class="list-main"><p class="list-title">Item 5.1.a</p><p class="list-sub">Menunggu sinyal</p></div></div>
+<div class="list-row" id="baris51b"><div class="leading" id="ikon51b" style="background:var(--error-container)"><svg class="icn" style="color:var(--on-error);font-size:13px" viewbox="0 0 24 24"><path d="M12 3l10 17H2L12 3z"></path><line x1="12" x2="12" y1="10" y2="14"></line><circle cx="12" cy="17" fill="currentColor" r="0.6" stroke="none"></circle></svg></div><div class="list-main"><p class="list-title">Item 5.1.b</p><p class="list-sub" id="statusTeks51b" style="color:var(--on-error)">Gagal sync</p></div><button class="btn btn-outline btn-sm" id="tombolUlang51b" onclick="ulangSinkron()">Ulang</button></div>
+<div class="list-row"><div class="leading" style="background:var(--warning-container)"><svg class="icn" style="color:var(--on-warning);font-size:13px" viewbox="0 0 24 24"><circle cx="12" cy="12" r="9"></circle><polyline points="12,7 12,12 15.5,14"></polyline></svg></div><div class="list-main"><p class="list-title">RoW-003</p><p class="list-sub">Menunggu sinyal</p></div></div>
+<div class="spacer"></div>
+</div>
+<div class="bottomnav">
+<div class="bottomnav-item" onclick="showScreen('daftar_proyek')" style="cursor:pointer"><div class="bottomnav-icon-wrap"><svg class="icn" viewbox="0 0 24 24"><path d="M3 11l9-8 9 8"></path><path d="M5 10v10h14V10"></path></svg></div><span class="bottomnav-label">Proyek</span></div>
+<div class="bottomnav-item active" onclick="showScreen('sinkronisasi')" style="cursor:pointer"><div class="bottomnav-icon-wrap"><svg class="icn bottomnav-badge" data-count="3" viewbox="0 0 24 24"><path d="M21 12a9 9 0 11-3-6.7"></path><polyline points="21,3 21,9 15,9"></polyline></svg></div><span class="bottomnav-label">Sinkronisasi</span></div>
+<div class="bottomnav-item" onclick="showScreen('profil')" style="cursor:pointer"><div class="bottomnav-icon-wrap"><svg class="icn" viewbox="0 0 24 24"><circle cx="12" cy="8" r="4"></circle><path d="M4 21c0-4 3.5-7 8-7s8 3 8 7"></path></svg></div><span class="bottomnav-label">Profil</span></div>
+</div>
+</div>
+<div class="screen" id="screen-profil">
+<div class="statusbar"><span>09:41</span><span><svg class="icn" viewbox="0 0 24 24"><path d="M2 8.5a15 15 0 0120 0M5 12a10 10 0 0114 0M8.5 15.5a5 5 0 017 0"></path><circle cx="12" cy="19" fill="currentColor" r="1" stroke="none"></circle></svg> <svg class="icn" viewbox="0 0 24 24"><rect height="10" rx="2" width="17" x="2" y="7"></rect><line x1="21" x2="21" y1="10" y2="14"></line><rect fill="currentColor" height="5" stroke="none" width="9" x="4.5" y="9.5"></rect></svg></span></div>
+<div class="appbar"><span class="title">Profil</span></div>
+<div class="content">
+<div class="card" style="display:flex;align-items:center;gap:12px;background:var(--primary-container)">
+<div class="avatar" style="width:48px;height:48px;font-size:16px;flex-shrink:0;background:var(--primary);color:var(--on-primary)">AS</div>
+<div style="min-width:0">
+<p style="font-size:13px;font-weight:700;color:var(--on-primary-container);margin:0">Ahmad Setiawan</p>
+<p style="font-size:10px;color:var(--on-primary-container);margin:1px 0 0;opacity:.85">ahmad@gmail.com</p>
+<span class="badge badge-primary" style="margin-top:4px;display:inline-block">QC</span>
+</div>
+</div>
+<p class="label" style="margin-top:14px">Informasi akun</p>
+<div class="card fgr2" style="padding:4px 12px">
+<div class="list-row"><div class="leading" style="background:var(--surface-variant);width:26px;height:26px;border-radius:8px"><svg class="icn" style="width:14px;height:14px;color:var(--on-surface-variant)" viewbox="0 0 24 24"><rect height="16" rx="2" width="18" x="3" y="4"></rect><path d="M3 10h18"></path><path d="M8 2v4M16 2v4"></path></svg></div><div class="list-main"><p class="list-title">Organisasi</p><p class="list-sub">Konsultan Pengawas</p></div></div>
+<div class="list-row"><div class="leading" style="background:var(--surface-variant);width:26px;height:26px;border-radius:8px"><svg class="icn" style="width:14px;height:14px;color:var(--on-surface-variant)" viewbox="0 0 24 24"><path d="M3 21V8l9-5 9 5v13"></path><path d="M9 21v-6h6v6"></path></svg></div><div class="list-main"><p class="list-title">Perusahaan</p><p class="list-sub">CV Cipta Konsultan</p></div></div>
+<div class="list-row"><div class="leading" style="background:var(--surface-variant);width:26px;height:26px;border-radius:8px"><svg class="icn" style="width:14px;height:14px;color:var(--on-surface-variant)" viewbox="0 0 24 24"><rect height="15" rx="2" width="16" x="4" y="5"></rect><path d="M9 5V3h6v2"></path><line x1="8" x2="16" y1="11" y2="11"></line><line x1="8" x2="13" y1="15" y2="15"></line></svg></div><div class="list-main"><p class="list-title">Jabatan</p><p class="list-sub">Site Engineer</p></div></div>
+<div class="list-row" style="justify-content:space-between"><div style="display:flex;align-items:center;gap:10px"><div class="leading" style="background:var(--surface-variant);width:26px;height:26px;border-radius:8px"><svg class="icn" style="width:14px;height:14px;color:var(--on-surface-variant)" viewbox="0 0 24 24"><circle cx="12" cy="12" r="9"></circle><line x1="12" x2="12" y1="8" y2="8.01"></line><line x1="12" x2="12" y1="11" y2="16"></line></svg></div><p class="list-title">Versi aplikasi</p></div><span style="font-size:10px;color:var(--outline)">v1.0.0</span></div>
+</div>
+<div class="spacer"></div>
+<div id="tombolKeluarMobileWrapper">
+<button class="btn btn-outline-err" onclick="mintaKonfirmasiKeluarMobile()" style="width:100%;margin-top:10px">Keluar</button>
+</div>
+</div>
+<div class="bottomnav">
+<div class="bottomnav-item" onclick="showScreen('daftar_proyek')" style="cursor:pointer"><div class="bottomnav-icon-wrap"><svg class="icn" viewbox="0 0 24 24"><path d="M3 11l9-8 9 8"></path><path d="M5 10v10h14V10"></path></svg></div><span class="bottomnav-label">Proyek</span></div>
+<div class="bottomnav-item" onclick="showScreen('sinkronisasi')" style="cursor:pointer"><div class="bottomnav-icon-wrap"><svg class="icn bottomnav-badge" data-count="3" viewbox="0 0 24 24"><path d="M21 12a9 9 0 11-3-6.7"></path><polyline points="21,3 21,9 15,9"></polyline></svg></div><span class="bottomnav-label">Sinkronisasi</span></div>
+<div class="bottomnav-item active" onclick="showScreen('profil')" style="cursor:pointer"><div class="bottomnav-icon-wrap"><svg class="icn" viewbox="0 0 24 24"><circle cx="12" cy="8" r="4"></circle><path d="M4 21c0-4 3.5-7 8-7s8 3 8 7"></path></svg></div><span class="bottomnav-label">Profil</span></div>
+</div>
+</div>
+<div class="screen theme-dark" id="screen-dark_mode_demo">
+<div class="statusbar"><span>09:41</span><span><svg class="icn" viewbox="0 0 24 24"><path d="M2 8.5a15 15 0 0120 0M5 12a10 10 0 0114 0M8.5 15.5a5 5 0 017 0"></path><circle cx="12" cy="19" fill="currentColor" r="1" stroke="none"></circle></svg> <svg class="icn" viewbox="0 0 24 24"><rect height="10" rx="2" width="17" x="2" y="7"></rect><line x1="21" x2="21" y1="10" y2="14"></line><rect fill="currentColor" height="5" stroke="none" width="9" x="4.5" y="9.5"></rect></svg></span></div>
+<div style="font-size:16px;font-weight:600;margin-bottom:8px">Proyek saya</div>
+<div class="field fgr6" style="display:flex;align-items:center;border-radius:100px;border:none;background:var(--surface-variant)"><svg class="icn" style="font-size:12px;color:var(--outline)" viewbox="0 0 24 24"><circle cx="10" cy="10" r="7"></circle><line x1="21" x2="15" y1="21" y2="15"></line></svg><span style="color:var(--outline);font-size:10px">Cari proyek atau kontraktor</span></div>
+<div class="content" style="margin-top:4px">
+<div class="list-row"><div class="leading" style="background:var(--warning-container)"><svg class="icn" style="color:var(--on-warning)" viewbox="0 0 24 24"><path d="M8 21l2-16h4l2 16"></path><line x1="12" x2="12" y1="6" y2="9"></line><line x1="12" x2="12" y1="12" y2="15"></line></svg></div><div class="list-main"><p class="list-title">Jl. Lintas Timur Km 12</p><p class="list-sub">PT Karya Beton - AC-WC</p></div><span class="badge badge-warning">Persiapan</span></div>
+<div class="list-row"><div class="leading" style="background:var(--primary-container)"><svg class="icn" style="color:var(--on-primary-container)" viewbox="0 0 24 24"><path d="M8 21l2-16h4l2 16"></path><line x1="12" x2="12" y1="6" y2="9"></line><line x1="12" x2="12" y1="12" y2="15"></line></svg></div><div class="list-main"><p class="list-title">Jl. Sudirman - Sgm 3</p><p class="list-sub">CV Mitra Jaya - AC-BC</p></div><span class="badge badge-primary">Berjalan</span></div>
+<div class="list-row" style="opacity:.55"><div class="leading" style="background:var(--success-container)"><svg class="icn" style="color:var(--on-success)" viewbox="0 0 24 24"><path d="M8 21l2-16h4l2 16"></path><line x1="12" x2="12" y1="6" y2="9"></line><line x1="12" x2="12" y1="12" y2="15"></line></svg></div><div class="list-main"><p class="list-title">Jl. Veteran Lama</p><p class="list-sub">UD Beton Jaya - AC-WC</p></div><span class="badge badge-success">Selesai</span></div>
+<div class="spacer"></div>
+</div>
+<div class="bottomnav">
+<div class="bottomnav-item active" onclick="showScreen('daftar_proyek')" style="cursor:pointer"><div class="bottomnav-icon-wrap"><svg class="icn" viewbox="0 0 24 24"><path d="M3 11l9-8 9 8"></path><path d="M5 10v10h14V10"></path></svg></div><span class="bottomnav-label">Proyek</span></div>
+<div class="bottomnav-item"><div class="bottomnav-icon-wrap"><svg class="icn bottomnav-badge" data-count="3" viewbox="0 0 24 24"><path d="M21 12a9 9 0 11-3-6.7"></path><polyline points="21,3 21,9 15,9"></polyline></svg></div><span class="bottomnav-label">Sinkronisasi</span></div>
+<div class="bottomnav-item"><div class="bottomnav-icon-wrap"><svg class="icn" viewbox="0 0 24 24"><circle cx="12" cy="8" r="4"></circle><path d="M4 21c0-4 3.5-7 8-7s8 3 8 7"></path></svg></div><span class="bottomnav-label">Profil</span></div>
+</div>
+</div>
+<div class="screen" id="screen-form_item">
+<div class="statusbar"><span>09:41</span><span><svg class="icn" viewbox="0 0 24 24"><path d="M2 8.5a15 15 0 0120 0M5 12a10 10 0 0114 0M8.5 15.5a5 5 0 017 0"></path><circle cx="12" cy="19" fill="currentColor" r="1" stroke="none"></circle></svg> <svg class="icn" viewbox="0 0 24 24"><rect height="10" rx="2" width="17" x="2" y="7"></rect><line x1="21" x2="21" y1="10" y2="14"></line><rect fill="currentColor" height="5" stroke="none" width="9" x="4.5" y="9.5"></rect></svg></span></div>
+<div style="display:flex;justify-content:space-between;align-items:center">
+<div style="display:flex;align-items:center;gap:8px"><svg class="icn" onclick="kembaliDariFormItem()" style="cursor:pointer" viewbox="0 0 24 24"><line x1="19" x2="5" y1="12" y2="12"></line><polyline points="12,19 5,12 12,5"></polyline></svg><div><div style="font-size:13px;font-weight:600" id="fiNomorItem">Item 5.1.a</div><div style="font-size:10px;color:var(--on-surface-variant)" id="fiNamaSection">Kontrol mutu saat produksi berjalan</div></div></div>
+<span class="badge badge-success" style="font-size:8.5px;white-space:nowrap;padding:3px 8px;flex-shrink:0"><svg class="icn" style="font-size:9px;flex-shrink:0" viewbox="0 0 24 24"><path d="M12 21s7-6.5 7-12a7 7 0 10-14 0c0 5.5 7 12 7 12z"></path><circle cx="12" cy="9" r="2.3"></circle></svg>GPS terkunci</span>
+</div>
+<div class="content">
+<div class="readonly-badge-qc" style="display:none;background:var(--surface-variant);border-radius:8px;padding:6px 10px;margin-bottom:8px;font-size:9.5px;color:var(--on-surface-variant);text-align:center">Mode baca-saja — peran ini tidak mengisi checklist</div>
+<div class="card-lg"><p class="qtitle" id="fiJudulItem">Suhu aspal cair di tangki</p><p class="qsub" id="fiStandarItem">Standar: 140°C–160°C</p></div>
+<div><p class="label">Status persetujuan</p>
+<div class="radio-row card-sel edit-only" id="radioYa" onclick="pilihStatus('ya')" style="cursor:pointer"><span class="radio on" id="radioYaCircle"></span><span class="radio-label">Ya</span></div>
+<div class="radio-row edit-only" id="radioTidak" onclick="pilihStatus('tidak')" style="cursor:pointer"><span class="radio" id="radioTidakCircle"></span><span class="radio-label">Tidak</span></div>
+</div>
+<div id="fiCatatanWrapper"><p class="label">Catatan tambahan (opsional)</p><input class="field" id="fiCatatanInput" placeholder="mis. hasil pengukuran, kondisi lapangan"/></div>
+<div><p class="label">Foto lapangan</p>
+<div class="thumb-row" id="thumbRow"><div class="thumb-add edit-only" id="addFotoBtn" onclick="showScreen('camera_view')" style="cursor:pointer;width:70px;flex-direction:column;font-size:9px;text-align:center"><svg class="icn" style="font-size:14px;margin-bottom:2px" viewbox="0 0 24 24"><path d="M4 8h4l1.5-2.2h5L16 8h4v11H4V8z"></path><circle cx="12" cy="13.3" r="3.2"></circle></svg>Tambah foto</div></div>
+</div>
+<div class="spacer"></div>
+</div>
+<div class="footer-btn">
+<button class="btn btn-primary edit-only" style="width:100%" onclick="simpanItemMobile()">Simpan dan lanjut</button>
+<p class="hint"><svg class="icn" viewbox="0 0 24 24"><circle cx="12" cy="12" r="9"></circle><polyline points="12,7 12,12 15.5,14"></polyline></svg> Tersimpan lokal</p>
+</div>
+</div>
+<div class="screen" id="screen-daftar_item_mobile">
+<div class="statusbar"><span>09:41</span><span><svg class="icn" viewbox="0 0 24 24"><path d="M2 8.5a15 15 0 0120 0M5 12a10 10 0 0114 0M8.5 15.5a5 5 0 017 0"></path><circle cx="12" cy="19" fill="currentColor" r="1" stroke="none"></circle></svg> <svg class="icn" viewbox="0 0 24 24"><rect height="10" rx="2" width="17" x="2" y="7"></rect><line x1="21" x2="21" y1="10" y2="14"></line><rect fill="currentColor" height="5" stroke="none" width="9" x="4.5" y="9.5"></rect></svg></span></div>
+<div class="appbar" onclick="kembaliDariDaftarItem()" style="cursor:pointer"><svg class="icn" viewbox="0 0 24 24"><line x1="19" x2="5" y1="12" y2="12"></line><polyline points="12,19 5,12 12,5"></polyline></svg><span class="title" id="dimTitleMobile">Kalibrasi alat &amp; uji coba pencampuran</span></div>
+<div class="content">
+<div id="dimItemListMobile">
+<div class="list-row"><div class="leading" style="background:var(--success-container)"><svg class="icn" style="color:var(--on-success)" viewbox="0 0 24 24"><polyline points="20,6 9,17 4,12"></polyline></svg></div><div><p class="list-title">1.a Kalibrasi Cold Bin</p><p class="list-sub">Ya · Diperiksa Ahmad Setiawan</p></div></div>
+<div class="list-row"><div class="leading" style="background:var(--success-container)"><svg class="icn" style="color:var(--on-success)" viewbox="0 0 24 24"><polyline points="20,6 9,17 4,12"></polyline></svg></div><div><p class="list-title">1.b Kalibrasi Timbangan</p><p class="list-sub">Ya · Diperiksa Ahmad Setiawan</p></div></div>
+<div class="list-row"><div class="leading" style="background:var(--success-container)"><svg class="icn" style="color:var(--on-success)" viewbox="0 0 24 24"><polyline points="20,6 9,17 4,12"></polyline></svg></div><div><p class="list-title">2. Pengujian Agregat Panas</p><p class="list-sub">Ya · Diperiksa Ahmad Setiawan</p></div></div>
+<div class="list-row"><div class="leading" style="background:var(--success-container)"><svg class="icn" style="color:var(--on-success)" viewbox="0 0 24 24"><polyline points="20,6 9,17 4,12"></polyline></svg></div><div><p class="list-title">3.a Produksi Batch Uji Coba</p><p class="list-sub">Ya · Diperiksa Ahmad Setiawan</p></div></div>
+<div class="list-row"><div class="leading" style="background:var(--success-container)"><svg class="icn" style="color:var(--on-success)" viewbox="0 0 24 24"><polyline points="20,6 9,17 4,12"></polyline></svg></div><div><p class="list-title">3.b Pengujian Marshall Ulang</p><p class="list-sub">Ya · Diperiksa Ahmad Setiawan</p></div></div>
+<div class="list-row"><div class="leading" style="background:var(--success-container)"><svg class="icn" style="color:var(--on-success)" viewbox="0 0 24 24"><polyline points="20,6 9,17 4,12"></polyline></svg></div><div><p class="list-title">3.c Pengesahan Dokumen JMF</p><p class="list-sub">Ya · Diperiksa Ahmad Setiawan</p></div></div>
+</div>
+<div id="dimStatusMobile" style="background:var(--success-container);border-radius:10px;padding:8px 10px;margin-top:10px">
+<p style="font-size:10px;color:var(--on-success);margin:0;line-height:1.4" id="dimStatusTeksMobile">Semua 6 item sudah terisi — siap diajukan untuk diperiksa Konsultan Pengawas.</p>
+</div>
+<div class="spacer"></div>
+</div>
+<div class="footer-btn">
+<button class="btn btn-primary edit-only" style="width:100%" onclick="ajukanUntukDiperiksa()">Ajukan untuk diperiksa</button>
+<p class="readonly-badge-qc" style="display:none;font-size:9.5px;color:var(--on-surface-variant);text-align:center;margin:0">Mode baca-saja — cuma QC yang bisa mengajukan</p>
+</div>
+</div>
+<div class="screen" id="screen-gps_mencari">
+<div class="statusbar"><span>09:41</span><span><svg class="icn" viewbox="0 0 24 24"><path d="M2 8.5a15 15 0 0120 0M5 12a10 10 0 0114 0M8.5 15.5a5 5 0 017 0"></path><circle cx="12" cy="19" fill="currentColor" r="1" stroke="none"></circle></svg> <svg class="icn" viewbox="0 0 24 24"><rect height="10" rx="2" width="17" x="2" y="7"></rect><line x1="21" x2="21" y1="10" y2="14"></line><rect fill="currentColor" height="5" stroke="none" width="9" x="4.5" y="9.5"></rect></svg></span></div>
+<div style="font-size:13px;font-weight:600;cursor:pointer" onclick="showScreen('form_item')">← Item 5.1.a</div>
+<div class="content">
+<div class="card fgr8" style="background:var(--warning-container);display:flex;align-items:center">
+<div style="width:14px;height:14px;border:2px solid var(--on-warning);border-top-color:transparent;border-radius:50%"></div>
+<div><p style="font-size:11px;font-weight:600;color:var(--on-warning);margin:0">Mencari lokasi GPS...</p><p style="font-size:9px;color:var(--on-warning);margin:0">Belum bisa disimpan</p></div>
+</div>
+<div class="card-lg"><p class="qtitle">Suhu aspal cair di tangki</p><p class="qsub">Standar: 140°C–160°C</p></div>
+<div><p class="label">Status persetujuan</p>
+<div class="radio-row"><span class="radio"></span><span class="radio-label">Ya</span></div>
+<div class="radio-row"><span class="radio"></span><span class="radio-label">Tidak</span></div>
+</div>
+<div class="spacer"></div>
+</div>
+<div class="footer-btn">
+<button class="btn btn-primary disabled edit-only" style="width:100%"><svg class="icn" style="font-size:11px" viewbox="0 0 24 24"><rect height="9" rx="2" width="14" x="5" y="11"></rect><path d="M8 11V7.5a4 4 0 018 0V11"></path></svg> Simpan dan lanjut</button>
+<p class="hint">Menunggu GPS sebelum bisa disimpan</p>
+</div>
+</div>
+<div class="screen" id="screen-gps_gagal">
+<div class="statusbar"><span>09:41</span><span><svg class="icn" viewbox="0 0 24 24"><path d="M2 8.5a15 15 0 0120 0M5 12a10 10 0 0114 0M8.5 15.5a5 5 0 017 0"></path><circle cx="12" cy="19" fill="currentColor" r="1" stroke="none"></circle></svg> <svg class="icn" viewbox="0 0 24 24"><rect height="10" rx="2" width="17" x="2" y="7"></rect><line x1="21" x2="21" y1="10" y2="14"></line><rect fill="currentColor" height="5" stroke="none" width="9" x="4.5" y="9.5"></rect></svg></span></div>
+<div style="font-size:13px;font-weight:600">Item 5.1.a</div>
+<div class="content">
+<div class="card fgr8" style="background:var(--error-container);display:flex;align-items:flex-start">
+<svg class="icn" style="color:var(--on-error);font-size:15px;margin-top:1px" viewbox="0 0 24 24"><path d="M12 3l10 17H2L12 3z"></path><line x1="12" x2="12" y1="10" y2="14"></line><circle cx="12" cy="17" fill="currentColor" r="0.6" stroke="none"></circle></svg>
+<div><p style="font-size:11px;font-weight:600;color:var(--on-error);margin:0">GPS tidak tersedia</p><p style="font-size:9px;color:var(--on-error);margin:0 0 6px">Coba pindah ke area terbuka</p>
+<button class="btn btn-outline-err btn-sm" onclick="showScreen('form_item')">Coba lagi</button>
+</div>
+</div>
+<div class="card-lg"><p class="qtitle">Suhu aspal cair di tangki</p><p class="qsub">Standar: 140°C–160°C</p></div>
+<div class="spacer"></div>
+</div>
+<div class="footer-btn">
+<button class="btn btn-primary disabled edit-only" style="width:100%"><svg class="icn" style="font-size:11px" viewbox="0 0 24 24"><rect height="9" rx="2" width="14" x="5" y="11"></rect><path d="M8 11V7.5a4 4 0 018 0V11"></path></svg> Simpan dan lanjut</button>
+</div>
+</div>
+<div class="screen" id="screen-item_dropdown">
+<div class="statusbar"><span>09:41</span><span><svg class="icn" viewbox="0 0 24 24"><path d="M2 8.5a15 15 0 0120 0M5 12a10 10 0 0114 0M8.5 15.5a5 5 0 017 0"></path><circle cx="12" cy="19" fill="currentColor" r="1" stroke="none"></circle></svg> <svg class="icn" viewbox="0 0 24 24"><rect height="10" rx="2" width="17" x="2" y="7"></rect><line x1="21" x2="21" y1="10" y2="14"></line><rect fill="currentColor" height="5" stroke="none" width="9" x="4.5" y="9.5"></rect></svg></span></div>
+<div style="display:flex;justify-content:space-between;align-items:center">
+<div onclick="showScreen('pra_pelaksanaan')" style="cursor:pointer"><div style="font-size:13px;font-weight:600">Item 7.3.b</div><div style="font-size:10px;color:var(--on-surface-variant)">Persiapan lapangan &amp; perekat</div></div>
+<span class="badge badge-success">📍 GPS terkunci</span>
+</div>
+<div class="content">
+<div class="card-lg"><p class="qtitle">Jenis perekat</p><p class="qsub">Sesuai jenis campuran pada JMF</p></div>
+<div><p class="label">Status persetujuan</p>
+<div class="radio-row card-sel"><span class="radio on"></span><span class="radio-label">Ya</span></div>
+<div class="radio-row"><span class="radio"></span><span class="radio-label">Tidak</span></div>
+</div>
+<div><p class="label">Jenis perekat</p>
+<div style="display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid var(--outline);padding:8px 4px;font-size:12px">
+<span>Prime Coat</span>
+<svg class="icn" style="color:var(--on-surface-variant)" viewbox="0 0 24 24"><polyline points="6,9 12,15 18,9"></polyline></svg>
+</div>
+</div>
+<div><p class="label">Foto lapangan</p>
+<div class="thumb-row"><div class="thumb" style="background:#85B7EB"></div><div class="thumb-add" style="width:70px;flex-direction:column;font-size:9px;text-align:center"><svg class="icn" style="font-size:14px;margin-bottom:2px" viewbox="0 0 24 24"><path d="M4 8h4l1.5-2.2h5L16 8h4v11H4V8z"></path><circle cx="12" cy="13.3" r="3.2"></circle></svg>Tambah foto</div></div>
+</div>
+<div class="spacer"></div>
+</div>
+<div class="footer-btn"><div class="readonly-badge-qc" style="display:none;background:var(--surface-variant);border-radius:8px;padding:6px 10px;margin-bottom:8px;font-size:9.5px;color:var(--on-surface-variant);text-align:center">Mode baca-saja &mdash; cuma QC yang mengisi checklist</div>
+<button class="btn btn-primary edit-only" style="width:100%" onclick="showScreen('form_item')">Simpan dan lanjut</button></div>
+</div>
+<div class="screen" id="screen-item_teks_bebas">
+<div class="statusbar"><span>09:41</span><span><svg class="icn" viewbox="0 0 24 24"><path d="M2 8.5a15 15 0 0120 0M5 12a10 10 0 0114 0M8.5 15.5a5 5 0 017 0"></path><circle cx="12" cy="19" fill="currentColor" r="1" stroke="none"></circle></svg> <svg class="icn" viewbox="0 0 24 24"><rect height="10" rx="2" width="17" x="2" y="7"></rect><line x1="21" x2="21" y1="10" y2="14"></line><rect fill="currentColor" height="5" stroke="none" width="9" x="4.5" y="9.5"></rect></svg></span></div>
+<div style="display:flex;justify-content:space-between;align-items:center">
+<div onclick="showScreen('pra_pelaksanaan')" style="cursor:pointer"><div style="font-size:13px;font-weight:600">Item 2.2</div><div style="font-size:10px;color:var(--on-surface-variant)">Perancangan formula campuran (Mix Design)</div></div>
+<span class="badge badge-success">📍 GPS terkunci</span>
+</div>
+<div class="content">
+<div class="card-lg"><p class="qtitle">Nomor batch/lot campuran</p><p class="qsub">Sesuai label pada dokumen produksi</p></div>
+<div><p class="label">Status persetujuan</p>
+<div class="radio-row card-sel"><span class="radio on"></span><span class="radio-label">Ya</span></div>
+<div class="radio-row"><span class="radio"></span><span class="radio-label">Tidak</span></div>
+</div>
+<div><p class="label">Nomor batch/lot</p><input class="field" placeholder="contoh: DMF-2026-014"/></div>
+<div><p class="label">Foto lapangan</p>
+<div class="thumb-row"><div class="thumb" style="background:#F0997B"></div><div class="thumb-add" style="width:70px;flex-direction:column;font-size:9px;text-align:center"><svg class="icn" style="font-size:14px;margin-bottom:2px" viewbox="0 0 24 24"><path d="M4 8h4l1.5-2.2h5L16 8h4v11H4V8z"></path><circle cx="12" cy="13.3" r="3.2"></circle></svg>Tambah foto</div></div>
+</div>
+<div class="spacer"></div>
+</div>
+<div class="footer-btn"><div class="readonly-badge-qc" style="display:none;background:var(--surface-variant);border-radius:8px;padding:6px 10px;margin-bottom:8px;font-size:9.5px;color:var(--on-surface-variant);text-align:center">Mode baca-saja &mdash; cuma QC yang mengisi checklist</div>
+<button class="btn btn-primary edit-only" style="width:100%" onclick="showScreen('form_item')">Simpan dan lanjut</button></div>
+</div>
+<div class="screen" id="screen-peringatan_rentang">
+<div class="statusbar"><span>09:41</span><span><svg class="icn" viewbox="0 0 24 24"><path d="M2 8.5a15 15 0 0120 0M5 12a10 10 0 0114 0M8.5 15.5a5 5 0 017 0"></path><circle cx="12" cy="19" fill="currentColor" r="1" stroke="none"></circle></svg> <svg class="icn" viewbox="0 0 24 24"><rect height="10" rx="2" width="17" x="2" y="7"></rect><line x1="21" x2="21" y1="10" y2="14"></line><rect fill="currentColor" height="5" stroke="none" width="9" x="4.5" y="9.5"></rect></svg></span></div>
+<div style="display:flex;justify-content:space-between;align-items:center">
+<div onclick="showScreen('form_item')" style="cursor:pointer"><div style="font-size:13px;font-weight:600">Item 5.1.a</div><div style="font-size:10px;color:var(--on-surface-variant)">Kontrol mutu saat produksi berjalan</div></div>
+<span class="badge badge-success">📍 GPS terkunci</span>
+</div>
+<div class="content">
+<div class="card-lg"><p class="qtitle">Suhu aspal cair di tangki</p><p class="qsub">Standar: 140°C–160°C</p></div>
+<div><p class="label">Status persetujuan</p>
+<div class="radio-row card-sel"><span class="radio on"></span><span class="radio-label">Ya</span></div>
+<div class="radio-row"><span class="radio"></span><span class="radio-label">Tidak</span></div>
+</div>
+<div><p class="label">Suhu aktual (°C)</p><input class="field" value="168"/></div>
+<div class="card" style="background:var(--warning-container);display:flex;gap:8px;align-items:flex-start">
+<svg class="icn" style="color:var(--on-warning);flex-shrink:0;margin-top:1px" viewbox="0 0 24 24"><path d="M12 3l10 17H2L12 3z"></path><line x1="12" x2="12" y1="10" y2="14"></line><circle cx="12" cy="17" fill="currentColor" r="0.6" stroke="none"></circle></svg>
+<div><p style="font-size:11px;font-weight:600;color:var(--on-warning);margin:0">Nilai di luar rentang standar</p><p style="font-size:9px;color:var(--on-warning);margin:2px 0 0">168°C melebihi batas atas 160°C — tetap tercatat meski status Ya</p></div>
+</div>
+<div class="spacer"></div>
+</div>
+<div class="footer-btn"><div class="readonly-badge-qc" style="display:none;background:var(--surface-variant);border-radius:8px;padding:6px 10px;margin-bottom:8px;font-size:9.5px;color:var(--on-surface-variant);text-align:center">Mode baca-saja &mdash; cuma QC yang mengisi checklist</div>
+<button class="btn btn-primary edit-only" style="width:100%" onclick="showScreen('form_item')">Simpan dan lanjut</button></div>
+</div>
+<div class="screen" id="screen-item_nesting">
+<div class="statusbar"><span>09:41</span><span><svg class="icn" viewbox="0 0 24 24"><path d="M2 8.5a15 15 0 0120 0M5 12a10 10 0 0114 0M8.5 15.5a5 5 0 017 0"></path><circle cx="12" cy="19" fill="currentColor" r="1" stroke="none"></circle></svg> <svg class="icn" viewbox="0 0 24 24"><rect height="10" rx="2" width="17" x="2" y="7"></rect><line x1="21" x2="21" y1="10" y2="14"></line><rect fill="currentColor" height="5" stroke="none" width="9" x="4.5" y="9.5"></rect></svg></span></div>
+<div class="appbar" onclick="showScreen('pra_pelaksanaan')" style="cursor:pointer"><svg class="icn" viewbox="0 0 24 24"><line x1="19" x2="5" y1="12" y2="12"></line><polyline points="12,19 5,12 12,5"></polyline></svg><span class="title">Uji kualifikasi material (laboratorium)</span></div>
+<div class="content">
+<div class="list-row"><div class="leading" style="background:var(--success-container)"><svg class="icn" style="color:var(--on-success)" viewbox="0 0 24 24"><polyline points="4,12 9,17 20,6"></polyline></svg></div><div class="list-main"><p class="list-title">1. Analisa saringan</p><p class="list-sub">Selesai</p></div></div>
+<div class="list-row"><div class="leading" style="background:var(--success-container)"><svg class="icn" style="color:var(--on-success)" viewbox="0 0 24 24"><polyline points="4,12 9,17 20,6"></polyline></svg></div><div class="list-main"><p class="list-title">2. Kebersihan agregat</p><p class="list-sub">Selesai</p></div></div>
+<div class="list-row" style="padding-top:14px"><p style="font-size:11px;font-weight:700;color:var(--on-surface-variant);margin:0">3. Kekuatan &amp; ketahanan agregat</p></div>
+<p style="font-size:9px;color:var(--outline);margin:0 0 6px">Judul pengelompok — tidak punya status sendiri</p>
+<div class="list-row" style="padding-left:20px;border-left:2px solid var(--outline-variant);margin-left:6px">
+<div class="leading" style="background:var(--success-container);width:26px;height:26px"><svg class="icn" style="color:var(--on-success);width:14px;height:14px" viewbox="0 0 24 24"><polyline points="4,12 9,17 20,6"></polyline></svg></div>
+<div class="list-main"><p class="list-title" style="font-size:11px">3.1 Uji abrasi Los Angeles</p><p class="list-sub">Selesai</p></div>
+</div>
+<div class="list-row" style="padding-left:20px;border-left:2px solid var(--outline-variant);margin-left:6px">
+<div class="leading" style="background:var(--warning-container);width:26px;height:26px"><svg class="icn" style="color:var(--on-warning);width:14px;height:14px" viewbox="0 0 24 24"><circle cx="12" cy="12" r="9"></circle><polyline points="12,7 12,12 15.5,14"></polyline></svg></div>
+<div class="list-main"><p class="list-title" style="font-size:11px">3.2 Uji kepipihan &amp; kelonjongan</p><p class="list-sub">Belum diperiksa</p></div>
+</div>
+<div class="spacer"></div>
+</div>
+</div>
+<div class="screen" id="screen-uji_ulang">
+<div class="statusbar"><span>09:41</span><span><svg class="icn" viewbox="0 0 24 24"><path d="M2 8.5a15 15 0 0120 0M5 12a10 10 0 0114 0M8.5 15.5a5 5 0 017 0"></path><circle cx="12" cy="19" fill="currentColor" r="1" stroke="none"></circle></svg> <svg class="icn" viewbox="0 0 24 24"><rect height="10" rx="2" width="17" x="2" y="7"></rect><line x1="21" x2="21" y1="10" y2="14"></line><rect fill="currentColor" height="5" stroke="none" width="9" x="4.5" y="9.5"></rect></svg></span></div>
+<div style="display:flex;justify-content:space-between;align-items:center">
+<div onclick="showScreen('form_item')" style="cursor:pointer"><div style="font-size:13px;font-weight:600">Uji Ulang — Item 5.1.a</div><div style="font-size:10px;color:var(--on-surface-variant)">Kontrol mutu saat produksi berjalan</div></div>
+<span class="badge badge-success"><svg class="icn" style="font-size:10px" viewbox="0 0 24 24"><path d="M12 21s7-6.5 7-12a7 7 0 10-14 0c0 5.5 7 12 7 12z"></path><circle cx="12" cy="9" r="2.3"></circle></svg> GPS terkunci</span>
+</div>
+<div class="content">
+<div style="background:var(--surface-variant);border-radius:12px;padding:8px 12px;margin-bottom:2px">
+<p style="font-size:9.5px;font-weight:600;color:var(--on-surface-variant);margin:0 0 5px">RINGKASAN KEGAGALAN AWAL (baca saja)</p>
+<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:3px">
+<span style="font-size:10.5px;color:var(--on-surface-variant)">Status awal: <b style="color:var(--on-error)">Tidak</b> · 132°C</span>
+</div>
+<p style="font-size:10px;color:var(--on-surface-variant);margin:0;line-height:1.3">"Suhu di bawah standar, hotmix mulai mengeras."</p>
+</div>
+<div><p class="label" style="margin:2px 0 4px">Status baru</p>
+<div class="radio-row card-sel"><span class="radio on"></span><span class="radio-label">Ya</span></div>
+<div class="radio-row"><span class="radio"></span><span class="radio-label">Tidak</span></div>
+</div>
+<div><p class="label">Suhu aktual baru (°C)</p><input class="field" placeholder="contoh: 148"/></div>
+<div><p class="label">Foto perbaikan baru</p>
+<div class="thumb-row"><div class="thumb" style="background:#5DCAA5"><span class="x">×</span></div><div class="thumb-add" style="width:70px;flex-direction:column;font-size:9px;text-align:center"><svg class="icn" style="font-size:14px;margin-bottom:2px" viewbox="0 0 24 24"><path d="M4 8h4l1.5-2.2h5L16 8h4v11H4V8z"></path><circle cx="12" cy="13.3" r="3.2"></circle></svg>Tambah foto</div></div>
+</div>
+<div><p class="label">Catatan tindakan perbaikan (wajib)</p>
+<div class="field" style="min-height:32px;text-align:left;padding-top:6px;color:var(--on-surface-variant);font-size:10.5px;line-height:1.3">Sudah dipadatkan ulang, PTR 12 lintasan, suhu 145°C</div>
+</div>
+<div class="spacer"></div>
+</div>
+<div class="footer-btn">
+<div class="readonly-badge-qc" style="display:none;background:var(--surface-variant);border-radius:8px;padding:6px 10px;margin-bottom:8px;font-size:9.5px;color:var(--on-surface-variant);text-align:center">Mode baca-saja &mdash; cuma QC yang mengisi checklist</div>
+<button class="btn btn-primary edit-only" style="width:100%" onclick="showScreen('form_item')">Simpan Uji Ulang</button>
+<p class="hint"><svg class="icn" viewbox="0 0 24 24"><circle cx="12" cy="12" r="9"></circle><polyline points="12,7 12,12 15.5,14"></polyline></svg> Tersimpan lokal</p>
+</div>
+</div>
+<div class="screen" id="screen-riwayat_item">
+<div class="statusbar"><span>09:41</span><span><svg class="icn" viewbox="0 0 24 24"><path d="M2 8.5a15 15 0 0120 0M5 12a10 10 0 0114 0M8.5 15.5a5 5 0 017 0"></path><circle cx="12" cy="19" fill="currentColor" r="1" stroke="none"></circle></svg> <svg class="icn" viewbox="0 0 24 24"><rect height="10" rx="2" width="17" x="2" y="7"></rect><line x1="21" x2="21" y1="10" y2="14"></line><rect fill="currentColor" height="5" stroke="none" width="9" x="4.5" y="9.5"></rect></svg></span></div>
+<div class="appbar" onclick="showScreen('pra_pelaksanaan')" style="cursor:pointer"><svg class="icn" viewbox="0 0 24 24"><line x1="19" x2="5" y1="12" y2="12"></line><polyline points="12,19 5,12 12,5"></polyline></svg><span class="title">Kontrol Material Masuk Stockpile AMP</span></div>
+<p class="appbar sub" style="margin-left:24px">Item rutin (3 kriteria) — riwayat tidak pernah tertimpa</p>
+<div class="content">
+<div id="daftarRiwayatItem">
+<div class="list-row"><div class="leading" style="background:var(--success-container)"><svg class="icn" style="color:var(--on-success)" viewbox="0 0 24 24"><polyline points="4,12 9,17 20,6"></polyline></svg></div><div class="list-main"><p class="list-title">28 Jul 2026, 07:15</p><p class="list-sub">Visual OK, stockpile bersekat OK, kadar air 3,1% · Ahmad Setiawan</p></div></div>
+<div class="list-row"><div class="leading" style="background:var(--error-container)"><svg class="icn" style="color:var(--on-error)" viewbox="0 0 24 24"><line x1="18" x2="6" y1="6" y2="18"></line><line x1="6" x2="18" y1="6" y2="18"></line></svg></div><div class="list-main"><p class="list-title">27 Jul 2026, 07:20</p><p class="list-sub">Visual OK, stockpile bersekat OK, kadar air 6,8% (di luar toleransi) · Ahmad Setiawan</p></div></div>
+<div class="list-row"><div class="leading" style="background:var(--success-container)"><svg class="icn" style="color:var(--on-success)" viewbox="0 0 24 24"><polyline points="4,12 9,17 20,6"></polyline></svg></div><div class="list-main"><p class="list-title">26 Jul 2026, 07:05</p><p class="list-sub">Visual OK, stockpile bersekat OK, kadar air 2,9% · Ahmad Setiawan</p></div></div>
+</div>
+<p style="font-size:9px;color:var(--outline);text-align:center;margin-top:4px">Setiap pemeriksaan tersimpan sebagai entri baru — bukan menimpa data hari sebelumnya</p>
+<div class="spacer"></div>
+</div>
+<div class="fab edit-only" onclick="bukaFormItemDariRiwayat('riwayat_item')" style="cursor:pointer"><svg class="icn" viewbox="0 0 24 24"><line x1="12" x2="12" y1="5" y2="19"></line><line x1="5" x2="19" y1="12" y2="12"></line></svg></div>
+</div>
+<div class="screen" id="screen-riwayat_produksi">
+<div class="statusbar"><span>09:41</span><span><svg class="icn" viewbox="0 0 24 24"><path d="M2 8.5a15 15 0 0120 0M5 12a10 10 0 0114 0M8.5 15.5a5 5 0 017 0"></path><circle cx="12" cy="19" fill="currentColor" r="1" stroke="none"></circle></svg> <svg class="icn" viewbox="0 0 24 24"><rect height="10" rx="2" width="17" x="2" y="7"></rect><line x1="21" x2="21" y1="10" y2="14"></line><rect fill="currentColor" height="5" stroke="none" width="9" x="4.5" y="9.5"></rect></svg></span></div>
+<div class="appbar" onclick="kembaliDariRiwayatProduksi()" style="cursor:pointer"><svg class="icn" viewbox="0 0 24 24"><line x1="19" x2="5" y1="12" y2="12"></line><polyline points="12,19 5,12 12,5"></polyline></svg><span class="title">Pengecekan Termal Harian</span></div>
+<p class="appbar sub" style="margin-left:24px">Kontrol Mutu Saat Produksi Berjalan &middot; item rutin (3 suhu per entri) &mdash; riwayat tidak pernah tertimpa</p>
+<div class="content">
+<div id="daftarRiwayatProduksi">
+<div class="list-row"><div class="leading" style="background:var(--success-container)"><svg class="icn" style="color:var(--on-success)" viewbox="0 0 24 24"><polyline points="4,12 9,17 20,6"></polyline></svg></div><div class="list-main"><p class="list-title">29 Jul 2026, 08:10</p><p class="list-sub">Cair 152&deg;C, Dryer 162&deg;C, Hotmix 158&deg;C &middot; Ahmad Setiawan</p></div></div>
+<div class="list-row"><div class="leading" style="background:var(--error-container)"><svg class="icn" style="color:var(--on-error)" viewbox="0 0 24 24"><line x1="18" x2="6" y1="6" y2="18"></line><line x1="6" x2="18" y1="6" y2="18"></line></svg></div><div class="list-main"><p class="list-title">29 Jul 2026, 11:40</p><p class="list-sub">Cair 149&deg;C, Dryer 168&deg;C (di luar toleransi), Hotmix 160&deg;C &middot; Ahmad Setiawan</p></div></div>
+<div class="list-row"><div class="leading" style="background:var(--success-container)"><svg class="icn" style="color:var(--on-success)" viewbox="0 0 24 24"><polyline points="4,12 9,17 20,6"></polyline></svg></div><div class="list-main"><p class="list-title">28 Jul 2026, 08:05</p><p class="list-sub">Cair 151&deg;C, Dryer 159&deg;C, Hotmix 156&deg;C &middot; Ahmad Setiawan</p></div></div>
+</div>
+<p style="font-size:9px;color:var(--outline);text-align:center;margin-top:4px">Setiap pemeriksaan tersimpan sebagai entri baru &mdash; bukan menimpa data hari sebelumnya</p>
+<div class="spacer"></div>
+</div>
+<div class="fab edit-only" onclick="bukaFormItemDariRiwayat('riwayat_produksi')" style="cursor:pointer"><svg class="icn" viewbox="0 0 24 24"><line x1="12" x2="12" y1="5" y2="19"></line><line x1="5" x2="19" y1="12" y2="12"></line></svg></div>
+</div>
+<div class="screen" id="screen-sampel_core_drill">
+<div class="statusbar"><span>09:41</span><span><svg class="icn" viewbox="0 0 24 24"><path d="M2 8.5a15 15 0 0120 0M5 12a10 10 0 0114 0M8.5 15.5a5 5 0 017 0"></path><circle cx="12" cy="19" fill="currentColor" r="1" stroke="none"></circle></svg> <svg class="icn" viewbox="0 0 24 24"><rect height="10" rx="2" width="17" x="2" y="7"></rect><line x1="21" x2="21" y1="10" y2="14"></line><rect fill="currentColor" height="5" stroke="none" width="9" x="4.5" y="9.5"></rect></svg></span></div>
+<div class="appbar" onclick="showScreen('daftar_row')" style="cursor:pointer"><svg class="icn" viewbox="0 0 24 24"><line x1="19" x2="5" y1="12" y2="12"></line><polyline points="12,19 5,12 12,5"></polyline></svg><span class="title">Core drill</span></div>
+<p class="appbar sub" style="margin-left:24px">RoW-002 - Segmen 3</p>
+<div class="content">
+<div class="list-row"><div class="leading" style="background:var(--success-container)"><svg class="icn" fill="none" style="color:var(--on-success)" viewbox="0 0 24 24"><polyline points="4,12 9,17 20,6"></polyline></svg></div><div class="list-main"><p class="list-title">Sampel 1</p><p class="list-sub">Km 12+050</p></div></div>
+<div class="list-row"><div class="leading" style="background:var(--success-container)"><svg class="icn" fill="none" style="color:var(--on-success)" viewbox="0 0 24 24"><polyline points="4,12 9,17 20,6"></polyline></svg></div><div class="list-main"><p class="list-title">Sampel 2</p><p class="list-sub">Km 12+100</p></div></div>
+<div class="list-row"><div class="leading" style="background:var(--primary-container)"><svg class="icn" style="color:var(--on-primary-container);font-size:12px" viewbox="0 0 24 24"><path d="M6 3h12M6 21h12M7 3c0 6 5 5.5 5 9s-5 3-5 9M17 3c0 6-5 5.5-5 9s5 3 5 9"></path></svg></div><div class="list-main"><p class="list-title">Sampel 3</p><p class="list-sub" style="color:var(--primary)">Sedang diisi - langkah 3/6</p></div></div>
+<div class="spacer"></div>
+</div>
+<div class="fab edit-only" onclick="showScreen('foto_bda')" style="cursor:pointer"><svg class="icn" viewbox="0 0 24 24"><line x1="12" x2="12" y1="5" y2="19"></line><line x1="5" x2="19" y1="12" y2="12"></line></svg></div>
+</div>
+<div class="screen" id="screen-foto_bda">
+<div class="statusbar"><span>09:41</span><span><svg class="icn" viewbox="0 0 24 24"><path d="M2 8.5a15 15 0 0120 0M5 12a10 10 0 0114 0M8.5 15.5a5 5 0 017 0"></path><circle cx="12" cy="19" fill="currentColor" r="1" stroke="none"></circle></svg> <svg class="icn" viewbox="0 0 24 24"><rect height="10" rx="2" width="17" x="2" y="7"></rect><line x1="21" x2="21" y1="10" y2="14"></line><rect fill="currentColor" height="5" stroke="none" width="9" x="4.5" y="9.5"></rect></svg></span></div>
+<div class="appbar" onclick="showScreen('detail_row_mobile')" style="cursor:pointer"><svg class="icn" viewbox="0 0 24 24"><line x1="19" x2="5" y1="12" y2="12"></line><polyline points="12,19 5,12 12,5"></polyline></svg><span class="title">Dokumentasi Penutupan RoW</span></div>
+<p class="appbar sub" style="margin-left:24px">RoW-001 — Segmen 2</p>
+<div class="content">
+<div class="card-lg"><p class="qtitle">Foto penutupan pekerjaan</p><p class="qsub">Wajib 3 foto sebagai lampiran backup tagihan — sebelum, saat, dan sesudah pekerjaan</p></div>
+<div>
+<p class="label">Before</p>
+<div class="thumb-row"><div class="thumb" style="background:#5DCAA5"><span class="x">×</span></div></div>
+</div>
+<div>
+<p class="label">During</p>
+<div class="thumb-row" id="thumbRowDuring"><div class="thumb-add" onclick="tambahFotoBda('during')" style="cursor:pointer;width:70px;flex-direction:column;font-size:9px;text-align:center"><svg class="icn" style="font-size:14px;margin-bottom:2px" viewbox="0 0 24 24"><path d="M4 8h4l1.5-2.2h5L16 8h4v11H4V8z"></path><circle cx="12" cy="13.3" r="3.2"></circle></svg>Tambah foto</div></div>
+</div>
+<div>
+<p class="label">After</p>
+<div class="thumb-row" id="thumbRowAfter"><div class="thumb-add" id="tombolTambahAfter" style="width:70px;flex-direction:column;font-size:9px;text-align:center;opacity:.4"><svg class="icn" style="font-size:14px;margin-bottom:2px" viewbox="0 0 24 24"><path d="M4 8h4l1.5-2.2h5L16 8h4v11H4V8z"></path><circle cx="12" cy="13.3" r="3.2"></circle></svg>Tambah foto</div></div>
+<p style="font-size:9px;color:var(--outline);margin:4px 0 0" id="pesanAfterBda">Isi setelah "During" tersimpan</p>
+</div>
+<div class="spacer"></div>
+</div>
+<div class="footer-btn"><div class="readonly-badge-kontraktor" style="display:none;background:var(--surface-variant);border-radius:8px;padding:6px 10px;margin-bottom:8px;font-size:9.5px;color:var(--on-surface-variant);text-align:center">Mode baca-saja &mdash; cuma Kontraktor yang menyelesaikan dokumentasi RoW</div>
+<button class="btn btn-primary disabled kontraktor-only" id="tombolSelesaikanRow" onclick="selesaikanRowBda()" style="width:100%">Selesaikan RoW</button></div>
+</div>
+<div class="screen" id="screen-sampel_ekstraksi">
+<div class="statusbar"><span>09:41</span><span><svg class="icn" viewbox="0 0 24 24"><path d="M2 8.5a15 15 0 0120 0M5 12a10 10 0 0114 0M8.5 15.5a5 5 0 017 0"></path><circle cx="12" cy="19" fill="currentColor" r="1" stroke="none"></circle></svg> <svg class="icn" viewbox="0 0 24 24"><rect height="10" rx="2" width="17" x="2" y="7"></rect><line x1="21" x2="21" y1="10" y2="14"></line><rect fill="currentColor" height="5" stroke="none" width="9" x="4.5" y="9.5"></rect></svg></span></div>
+<div class="appbar" onclick="showScreen('pelaksanaan')" style="cursor:pointer"><svg class="icn" viewbox="0 0 24 24"><line x1="19" x2="5" y1="12" y2="12"></line><polyline points="12,19 5,12 12,5"></polyline></svg><span class="title">Sampel truk B 9021 XY</span></div>
+<div class="content">
+<div class="card-lg">
+<p class="qtitle">Kadar aspal</p>
+<div class="radio-row card-sel" id="seKadarYa" onclick="pilihRadioSampel(this, 'seKadarYa', 'seKadarTidak')" style="cursor:pointer;padding:6px 4px"><span class="radio on"></span><span class="radio-label">Ya</span></div>
+<div class="radio-row" id="seKadarTidak" onclick="pilihRadioSampel(this, 'seKadarTidak', 'seKadarYa')" style="cursor:pointer;padding:6px 4px"><span class="radio"></span><span class="radio-label">Tidak</span></div>
+<input class="field" id="seKadarInput" placeholder="Nilai % kadar aspal" style="margin-top:4px"/>
+</div>
+<div class="card-lg">
+<p class="qtitle">Gradasi pasca-ekstraksi</p>
+<div class="radio-row card-sel" id="seGradasiYa" onclick="pilihRadioSampel(this, 'seGradasiYa', 'seGradasiTidak')" style="cursor:pointer;padding:6px 4px"><span class="radio on"></span><span class="radio-label">Ya</span></div>
+<div class="radio-row" id="seGradasiTidak" onclick="pilihRadioSampel(this, 'seGradasiTidak', 'seGradasiYa')" style="cursor:pointer;padding:6px 4px"><span class="radio"></span><span class="radio-label">Tidak</span></div>
+</div>
+<div><p class="label">Foto lapangan</p><div class="thumb-row"><div class="thumb" style="background:#F0997B"></div><div class="thumb-add" style="width:70px;flex-direction:column;font-size:9px;text-align:center"><svg class="icn" style="font-size:14px;margin-bottom:2px" viewbox="0 0 24 24"><path d="M4 8h4l1.5-2.2h5L16 8h4v11H4V8z"></path><circle cx="12" cy="13.3" r="3.2"></circle></svg>Tambah foto</div></div></div>
+<div class="spacer"></div>
+</div>
+<div class="footer-btn"><div class="readonly-badge-qc" style="display:none;background:var(--surface-variant);border-radius:8px;padding:6px 10px;margin-bottom:8px;font-size:9.5px;color:var(--on-surface-variant);text-align:center">Mode baca-saja &mdash; cuma QC yang mengisi sampel</div>
+<button class="btn btn-primary edit-only" style="width:100%" onclick="simpanSampelEkstraksi()">Simpan sampel</button></div>
+</div>
+<div class="screen" id="screen-daftar_pengajuan">
+<div class="statusbar"><span>09:41</span><span><svg class="icn" viewbox="0 0 24 24"><path d="M2 8.5a15 15 0 0120 0M5 12a10 10 0 0114 0M8.5 15.5a5 5 0 017 0"></path><circle cx="12" cy="19" fill="currentColor" r="1" stroke="none"></circle></svg> <svg class="icn" viewbox="0 0 24 24"><rect height="10" rx="2" width="17" x="2" y="7"></rect><line x1="21" x2="21" y1="10" y2="14"></line><rect fill="currentColor" height="5" stroke="none" width="9" x="4.5" y="9.5"></rect></svg></span></div>
+<div class="appbar" onclick="showScreen('pelaksanaan')" style="cursor:pointer"><svg class="icn" viewbox="0 0 24 24"><line x1="19" x2="5" y1="12" y2="12"></line><polyline points="12,19 5,12 12,5"></polyline></svg><span class="title">Daftar pengajuan</span></div>
+<div class="content">
+<p id="pengajuanRoleHint" style="font-size:9.5px;color:var(--on-surface-variant);margin:0 0 10px">QC: lihat status pengajuanmu. Konsultan Pengawas: tap untuk memutuskan.</p>
+<div class="list-row" onclick="showScreen('persetujuan_akhir')" style="cursor:pointer">
+<div class="leading" id="pengajuanIcon" style="background:var(--warning-container)"><svg class="icn" style="color:var(--on-warning)" viewbox="0 0 24 24"><circle cx="12" cy="12" r="9"></circle><polyline points="12,7 12,12 15.5,14"></polyline></svg></div>
+<div class="list-main"><p class="list-title">Uji kualifikasi material (laboratorium)</p><p class="list-sub" id="pengajuanSub">Diajukan Ahmad Setiawan (QC) &middot; hari ini, 09:45</p></div>
+<span class="badge badge-warning" id="pengajuanBadge">Menunggu</span>
+</div>
+<div class="spacer"></div>
+</div>
+</div>
+<div class="screen" id="screen-persetujuan_akhir">
+<div class="statusbar"><span>09:41</span><span><svg class="icn" viewbox="0 0 24 24"><path d="M2 8.5a15 15 0 0120 0M5 12a10 10 0 0114 0M8.5 15.5a5 5 0 017 0"></path><circle cx="12" cy="19" fill="currentColor" r="1" stroke="none"></circle></svg> <svg class="icn" viewbox="0 0 24 24"><rect height="10" rx="2" width="17" x="2" y="7"></rect><line x1="21" x2="21" y1="10" y2="14"></line><rect fill="currentColor" height="5" stroke="none" width="9" x="4.5" y="9.5"></rect></svg></span></div>
+<div class="appbar" onclick="showScreen('daftar_pengajuan')" style="cursor:pointer"><svg class="icn" viewbox="0 0 24 24"><line x1="19" x2="5" y1="12" y2="12"></line><polyline points="12,19 5,12 12,5"></polyline></svg><span class="title">Persetujuan akhir</span></div>
+<p class="appbar sub" style="margin-left:24px">Uji kualifikasi material (laboratorium)</p>
+<div class="content">
+<div class="card-lg" style="display:flex;justify-content:space-between;font-size:11px">
+<div>Item Ya<br/><b>9 dari 9</b></div><div>Item Tidak<br/><b>0 dari 9</b></div>
+</div>
+<p class="label">Status persetujuan</p>
+<div class="readonly-badge-pengawas" style="display:none;background:var(--surface-variant);border-radius:8px;padding:6px 10px;margin-bottom:8px;font-size:9.5px;color:var(--on-surface-variant);text-align:center">Mode baca-saja — cuma Konsultan Pengawas yang bisa memutuskan</div>
+<div class="radio-row pengawas-only" id="kepDisetujui" onclick="pilihKeputusan('disetujui')" style="cursor:pointer"><span class="radio" id="kepDisetujuiCircle"></span><div><p style="font-size:11px;font-weight:600;margin:0;color:var(--on-success)">Disetujui</p></div></div>
+<div class="radio-row pengawas-only" id="kepCatatan" onclick="pilihKeputusan('catatan')" style="cursor:pointer"><span class="radio" id="kepCatatanCircle"></span><p style="font-size:11px;margin:0">Disetujui dengan catatan</p></div>
+<div class="radio-row pengawas-only" id="kepDitolak" onclick="pilihKeputusan('ditolak')" style="cursor:pointer"><span class="radio" id="kepDitolakCircle"></span><p style="font-size:11px;margin:0">Ditolak</p></div>
+<div class="spacer"></div>
+</div>
+<div class="footer-btn">
+<button class="btn btn-primary pengawas-only" style="width:100%" onclick="simpanKeputusan()">Simpan keputusan</button>
+<p class="hint"><svg class="icn" viewbox="0 0 24 24"><path d="M7 3h7l5 5v13H7V3z"></path><polyline points="14,3 14,8 19,8"></polyline><line x1="9.5" x2="14.5" y1="13" y2="13"></line><line x1="9.5" x2="14.5" y1="16" y2="16"></line></svg> PDF dibuat otomatis</p>
+</div>
+</div>
+<div class="screen" id="screen-ajukan_koreksi">
+<div class="statusbar"><span>09:41</span><span><svg class="icn" viewbox="0 0 24 24"><path d="M2 8.5a15 15 0 0120 0M5 12a10 10 0 0114 0M8.5 15.5a5 5 0 017 0"></path><circle cx="12" cy="19" fill="currentColor" r="1" stroke="none"></circle></svg> <svg class="icn" viewbox="0 0 24 24"><rect height="10" rx="2" width="17" x="2" y="7"></rect><line x1="21" x2="21" y1="10" y2="14"></line><rect fill="currentColor" height="5" stroke="none" width="9" x="4.5" y="9.5"></rect></svg></span></div>
+<div class="appbar" onclick="showScreen('daftar_item_mobile')" style="cursor:pointer"><svg class="icn" viewbox="0 0 24 24"><line x1="19" x2="5" y1="12" y2="12"></line><polyline points="12,19 5,12 12,5"></polyline></svg><span class="title">Ajukan koreksi</span></div>
+<p class="appbar sub" style="margin-left:24px">Uji kualifikasi material (laboratorium)</p>
+<div class="content">
+<div style="background:var(--surface-variant);border-radius:12px;padding:8px 12px;margin-bottom:2px">
+<p style="font-size:9.5px;font-weight:600;color:var(--on-surface-variant);margin:0 0 5px">KEPUTUSAN SAAT INI (tidak bisa diedit langsung)</p>
+<p style="font-size:11px;margin:0"><b style="color:var(--on-success)">Disetujui</b> · 15 Jul 2026, 14:20</p>
+</div>
+<p class="label">Status yang diusulkan</p>
+<div class="radio-row"><span class="radio"></span><p style="font-size:11px;margin:0">Disetujui</p></div>
+<div class="radio-row"><span class="radio"></span><p style="font-size:11px;margin:0">Disetujui dengan catatan</p></div>
+<div class="radio-row card-sel"><span class="radio on"></span><div><p style="font-size:11px;font-weight:600;margin:0;color:var(--on-error)">Ditolak</p></div></div>
+<div><p class="label">Catatan yang diusulkan</p>
+<div class="field" style="min-height:32px;text-align:left;padding-top:6px;color:var(--on-surface-variant);font-size:10.5px;line-height:1.3">Setelah ditinjau ulang, agregat masih terlalu kotor</div>
+</div>
+<div><p class="label">Alasan koreksi (wajib)</p>
+<div class="field" style="min-height:40px;text-align:left;padding-top:6px;color:var(--on-surface-variant);font-size:10.5px;line-height:1.3">Salah pencet saat menyetujui, seharusnya ditolak menunggu pencucian ulang</div>
+</div>
+<div style="background:var(--warning-container);border-radius:10px;padding:8px 10px;margin-top:2px">
+<p style="font-size:10px;color:var(--on-warning);margin:0;line-height:1.4">Permintaan ini akan ditinjau admin P2JN sebelum keputusan benar-benar berubah — tidak langsung menimpa status saat ini.</p>
+</div>
+<div class="spacer"></div>
+</div>
+<div class="footer-btn">
+<div class="readonly-badge-qc" style="display:none;background:var(--surface-variant);border-radius:8px;padding:6px 10px;margin-bottom:8px;font-size:9.5px;color:var(--on-surface-variant);text-align:center">Mode baca-saja &mdash; cuma QC yang mengajukan koreksi</div>
+<button class="btn btn-primary edit-only" style="width:100%" onclick="showScreen('daftar_item_mobile')">Ajukan Koreksi</button>
+</div>
+</div>
+<div class="screen" id="screen-daftar_row">
+<div class="statusbar"><span>09:41</span><span><svg class="icn" viewbox="0 0 24 24"><path d="M2 8.5a15 15 0 0120 0M5 12a10 10 0 0114 0M8.5 15.5a5 5 0 017 0"></path><circle cx="12" cy="19" fill="currentColor" r="1" stroke="none"></circle></svg> <svg class="icn" viewbox="0 0 24 24"><rect height="10" rx="2" width="17" x="2" y="7"></rect><line x1="21" x2="21" y1="10" y2="14"></line><rect fill="currentColor" height="5" stroke="none" width="9" x="4.5" y="9.5"></rect></svg></span></div>
+<div class="appbar" onclick="showScreen('pelaksanaan')" style="cursor:pointer"><svg class="icn" viewbox="0 0 24 24"><line x1="19" x2="5" y1="12" y2="12"></line><polyline points="12,19 5,12 12,5"></polyline></svg><span class="title">Request of work</span></div>
+<div class="content">
+<div class="list-row"><div class="leading" style="background:var(--success-container)"><svg class="icn" fill="none" style="color:var(--on-success)" viewbox="0 0 24 24"><polyline points="4,12 9,17 20,6"></polyline></svg></div><div class="list-main"><p class="list-title">RoW-002</p><p class="list-sub">24 Jul - Segmen 3</p></div><span class="badge badge-success">Disetujui</span></div>
+<div class="list-row" onclick="showScreen('detail_row_mobile')" style="cursor:pointer"><div class="leading" style="background:var(--warning-container)"><svg class="icn" style="color:var(--on-warning)" viewbox="0 0 24 24"><circle cx="12" cy="12" r="9"></circle><polyline points="12,7 12,12 15.5,14"></polyline></svg></div><div class="list-main"><p class="list-title">RoW-001</p><p class="list-sub" style="color:var(--on-warning)">20 Jul - Segmen 2 · Diajukan terlambat</p></div><span class="badge badge-warning">Menunggu</span></div>
+<div class="spacer"></div>
+</div>
+<div class="fab kontraktor-only" onclick="showScreen('form_ajukan_row')" style="cursor:pointer"><svg class="icn" viewbox="0 0 24 24"><line x1="12" x2="12" y1="5" y2="19"></line><line x1="5" x2="19" y1="12" y2="12"></line></svg></div>
+</div>
+<div class="screen" id="screen-form_ajukan_row">
+<div class="statusbar"><span>09:41</span><span><svg class="icn" viewbox="0 0 24 24"><path d="M2 8.5a15 15 0 0120 0M5 12a10 10 0 0114 0M8.5 15.5a5 5 0 017 0"></path><circle cx="12" cy="19" fill="currentColor" r="1" stroke="none"></circle></svg> <svg class="icn" viewbox="0 0 24 24"><rect height="10" rx="2" width="17" x="2" y="7"></rect><line x1="21" x2="21" y1="10" y2="14"></line><rect fill="currentColor" height="5" stroke="none" width="9" x="4.5" y="9.5"></rect></svg></span></div>
+<div class="appbar" onclick="showScreen('daftar_row')" style="cursor:pointer"><svg class="icn" viewbox="0 0 24 24"><line x1="19" x2="5" y1="12" y2="12"></line><polyline points="12,19 5,12 12,5"></polyline></svg><span class="title">Ajukan RoW baru</span></div>
+<div class="content">
+<div><p class="label">Segmen</p><input class="field" placeholder="mis. Km 12+000 - Km 12+500"/></div>
+<p class="label" style="margin-top:10px">Kelengkapan dokumen pendukung</p>
+<div class="card" style="background:var(--surface-variant)">
+<div class="list-row" style="padding:6px 0"><span class="checkbox on" id="cbRow0" onclick="toggleCekDokumen(0)" style="cursor:pointer"></span><span style="font-size:11px;margin-left:9px">Shop Drawing (Gambar Kerja)</span></div>
+<div class="list-row" style="padding:6px 0"><span class="checkbox on" id="cbRow1" onclick="toggleCekDokumen(1)" style="cursor:pointer"></span><span style="font-size:11px;margin-left:9px">Job Safety Analysis (JSA) / K3</span></div>
+<div class="list-row" style="padding:6px 0"><span class="checkbox on" id="cbRow2" onclick="toggleCekDokumen(2)" style="cursor:pointer"></span><span style="font-size:11px;margin-left:9px">Method Statement (Metode Kerja)</span></div>
+<div class="list-row" style="padding:6px 0"><span class="checkbox on" id="cbRow3" onclick="toggleCekDokumen(3)" style="cursor:pointer"></span><span style="font-size:11px;margin-left:9px">Daftar Material &amp; Peralatan</span></div>
+<div class="list-row" style="padding:6px 0"><span class="checkbox" id="cbRow4" onclick="toggleCekDokumen(4)" style="cursor:pointer"></span><span style="font-size:11px;margin-left:9px;color:var(--on-surface-variant)">Jadwal Pelaksanaan (Schedule)</span></div>
+</div>
+<p style="font-size:9px;color:var(--outline);margin:4px 0 10px">Kelima dokumen wajib dicentang (tersedia) sebelum RoW bisa diajukan.</p>
+<div><p class="label">Jadwal pekerjaan</p><input class="field" value="31/07/2026 08:00"/></div>
+<div class="card" style="background:var(--success-container);display:flex;gap:8px;align-items:flex-start">
+<svg class="icn" style="color:var(--on-success);flex-shrink:0;margin-top:1px" viewbox="0 0 24 24"><circle cx="12" cy="12" r="9"></circle><polyline points="12,7 12,12 15.5,14"></polyline></svg>
+<div><p style="font-size:11px;font-weight:600;color:var(--on-success);margin:0">Memenuhi batas waktu pengajuan</p><p style="font-size:9px;color:var(--on-success);margin:2px 0 0">Diajukan 46 jam sebelum jadwal — melebihi batas minimal 1×24 jam</p></div>
+</div>
+<p style="font-size:10px;color:var(--primary);font-weight:600;margin:6px 0 0">Ajukan dengan alasan keterlambatan →</p>
+<div class="spacer"></div>
+</div>
+<div class="footer-btn"><div class="readonly-badge-kontraktor" style="display:none;background:var(--surface-variant);border-radius:8px;padding:6px 10px;margin-bottom:8px;font-size:9.5px;color:var(--on-surface-variant);text-align:center">Mode baca-saja &mdash; cuma Kontraktor yang mengajukan RoW</div>
+<button class="btn btn-primary disabled kontraktor-only" id="tombolAjukanRow" onclick="ajukanRowBaru()" style="width:100%">Ajukan RoW</button></div>
+</div>
+<div class="screen" id="screen-inspeksi_row">
+<div class="statusbar"><span>09:41</span><span><svg class="icn" viewbox="0 0 24 24"><path d="M2 8.5a15 15 0 0120 0M5 12a10 10 0 0114 0M8.5 15.5a5 5 0 017 0"></path><circle cx="12" cy="19" fill="currentColor" r="1" stroke="none"></circle></svg> <svg class="icn" viewbox="0 0 24 24"><rect height="10" rx="2" width="17" x="2" y="7"></rect><line x1="21" x2="21" y1="10" y2="14"></line><rect fill="currentColor" height="5" stroke="none" width="9" x="4.5" y="9.5"></rect></svg></span></div>
+<div class="appbar" onclick="showScreen('daftar_row')" style="cursor:pointer"><svg class="icn" viewbox="0 0 24 24"><line x1="19" x2="5" y1="12" y2="12"></line><polyline points="12,19 5,12 12,5"></polyline></svg><span class="title">Inspeksi lapangan RoW</span></div>
+<p class="appbar sub" style="margin-left:24px">RoW-002 — Segmen 3</p>
+<div class="content">
+<div class="card-lg"><p class="qtitle">Hasil inspeksi lapangan (Joint Inspection)</p><p class="qsub">Dilakukan bersama Konsultan Pengawas dan Kontraktor sebelum pekerjaan dimulai</p></div>
+<div class="readonly-badge-joint" style="display:none;background:var(--surface-variant);border-radius:8px;padding:6px 10px;margin:8px 0;font-size:9.5px;color:var(--on-surface-variant);text-align:center">Mode baca-saja &mdash; cuma Konsultan Pengawas &amp; Kontraktor yang mengisi inspeksi ini</div>
+<div><p class="label">Kesiapan lokasi pekerjaan</p>
+<div class="radio-row card-sel joint-only"><span class="radio on"></span><span class="radio-label">Ya</span></div>
+<div class="radio-row joint-only"><span class="radio"></span><span class="radio-label">Tidak</span></div>
+</div>
+<div><p class="label">Kesiapan material &amp; peralatan</p>
+<div class="radio-row card-sel joint-only"><span class="radio on"></span><span class="radio-label">Ya</span></div>
+<div class="radio-row joint-only"><span class="radio"></span><span class="radio-label">Tidak</span></div>
+</div>
+<div><p class="label">Keselamatan &amp; K3 (HSE)</p>
+<div class="radio-row card-sel joint-only"><span class="radio on"></span><span class="radio-label">Ya</span></div>
+<div class="radio-row joint-only"><span class="radio"></span><span class="radio-label">Tidak</span></div>
+</div>
+<div><p class="label">Foto lapangan</p>
+<div class="thumb-row"><div class="thumb" style="background:#85B7EB"></div><div class="thumb-add joint-only" style="width:70px;flex-direction:column;font-size:9px;text-align:center"><svg class="icn" style="font-size:14px;margin-bottom:2px" viewbox="0 0 24 24"><path d="M4 8h4l1.5-2.2h5L16 8h4v11H4V8z"></path><circle cx="12" cy="13.3" r="3.2"></circle></svg>Tambah foto</div></div>
+</div>
+<hr style="border:none;border-top:1px solid var(--outline-variant);margin:16px 0"/>
+<div class="card" style="background:var(--warning-container);display:flex;gap:8px;align-items:flex-start">
+<svg class="icn" style="color:var(--on-warning);flex-shrink:0;margin-top:1px" viewbox="0 0 24 24"><circle cx="12" cy="12" r="9"></circle><polyline points="12,7 12,12 15.5,14"></polyline></svg>
+<div><p style="font-size:11px;font-weight:600;color:var(--on-warning);margin:0">Pengawasan &amp; Inspeksi Akhir</p><p style="font-size:9px;color:var(--on-warning);margin:2px 0 0">Terkunci sampai pekerjaan penghamparan selesai — isi setelah itu, bukan sekarang</p></div>
+</div>
+<div class="spacer"></div>
+</div>
+<div class="footer-btn"><button class="btn btn-primary joint-only" style="width:100%" onclick="showScreen('daftar_row')">Simpan hasil inspeksi</button></div>
+</div>
+<div class="screen" id="screen-detail_row_mobile">
+<div class="statusbar"><span>09:41</span><span><svg class="icn" viewbox="0 0 24 24"><path d="M2 8.5a15 15 0 0120 0M5 12a10 10 0 0114 0M8.5 15.5a5 5 0 017 0"></path><circle cx="12" cy="19" fill="currentColor" r="1" stroke="none"></circle></svg> <svg class="icn" viewbox="0 0 24 24"><rect height="10" rx="2" width="17" x="2" y="7"></rect><line x1="21" x2="21" y1="10" y2="14"></line><rect fill="currentColor" height="5" stroke="none" width="9" x="4.5" y="9.5"></rect></svg></span></div>
+<div class="appbar" onclick="showScreen('daftar_row')" style="cursor:pointer"><svg class="icn" viewbox="0 0 24 24"><line x1="19" x2="5" y1="12" y2="12"></line><polyline points="12,19 5,12 12,5"></polyline></svg><span class="title">RoW-003</span></div>
+<div class="content">
+<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px">
+<p style="font-size:11px;color:var(--on-surface-variant);margin:0">Segmen 3</p>
+<span class="badge" style="background:var(--warning-container);color:var(--on-warning)">Menunggu</span>
+</div>
+<div style="background:var(--surface-variant);border-radius:12px;padding:10px 12px;margin-bottom:12px">
+<p style="font-size:10.5px;font-weight:600;margin:0 0 2px">Kelengkapan dokumen</p>
+<p style="font-size:10.5px;color:var(--on-surface-variant);margin:0 0 8px">5/5 — Shop Drawing, JSA/K3, Method Statement, Daftar Material, Jadwal Pelaksanaan</p>
+<p style="font-size:10.5px;font-weight:600;margin:0 0 2px">Jadwal pekerjaan</p>
+<p style="font-size:10.5px;color:var(--on-surface-variant);margin:0 0 8px">21 Jul 2026, 07:00</p>
+<p style="font-size:10.5px;font-weight:600;margin:0 0 2px">Diajukan</p>
+<p style="font-size:10.5px;color:var(--on-surface-variant);margin:0">20 Jul 2026, 09:00 — 22 jam sebelum jadwal</p>
+</div>
+<p class="label" onclick="showScreen('inspeksi_row')" style="cursor:pointer;text-decoration:underline">Inspeksi lapangan (Joint Inspection) →</p>
+<p style="font-size:11px;margin:0 0 12px">Belum dilakukan — dijadwalkan setelah dokumen lengkap terverifikasi, sebelum pekerjaan dimulai.</p>
+<button class="btn kontraktor-only" style="background:transparent;border:1px solid var(--outline-variant);color:var(--primary);width:100%;margin-bottom:6px" onclick="showScreen('daftar_row')">Ubah jadwal</button>
+<p style="font-size:9px;color:var(--outline);margin:0 0 12px;text-align:center">Tersedia karena inspeksi lapangan belum dilakukan</p>
+<p class="label">Status persetujuan</p>
+<p style="font-size:11px;margin:0">Menunggu tinjauan Konsultan Pengawas — belum ada keputusan.</p>
+<div class="spacer"></div>
+</div>
+</div>
+<div class="screen" id="screen-camera_view">
+<div style="flex:1;position:relative;overflow:hidden;background:#2b2622">
+  <svg viewBox="0 0 320 500" style="position:absolute;inset:0;width:100%;height:100%" preserveAspectRatio="xMidYMid slice">
+    <defs>
+      <linearGradient id="sky" x1="0" y1="0" x2="0" y2="1">
+        <stop offset="0%" stop-color="#8b8378"/>
+        <stop offset="55%" stop-color="#a89c86"/>
+        <stop offset="100%" stop-color="#6b6156"/>
+      </linearGradient>
+      <linearGradient id="tank" x1="0" y1="0" x2="1" y2="0">
+        <stop offset="0%" stop-color="#8a6d4f"/>
+        <stop offset="45%" stop-color="#b8926a"/>
+        <stop offset="100%" stop-color="#6e5540"/>
+      </linearGradient>
+      <linearGradient id="ground" x1="0" y1="0" x2="0" y2="1">
+        <stop offset="0%" stop-color="#4a453e"/>
+        <stop offset="100%" stop-color="#2e2b26"/>
+      </linearGradient>
+    </defs>
+    <rect x="0" y="0" width="320" height="500" fill="url(#sky)"/>
+    <rect x="0" y="330" width="320" height="170" fill="url(#ground)"/>
+    <ellipse cx="160" cy="300" rx="95" ry="14" fill="#3d372e" opacity="0.5"/>
+    <rect x="105" y="190" width="110" height="110" rx="6" fill="url(#tank)" stroke="#4a3826" stroke-width="2"/>
+    <line x1="105" y1="235" x2="215" y2="235" stroke="#4a3826" stroke-width="1.5" opacity="0.5"/>
+    <line x1="150" y1="190" x2="150" y2="300" stroke="#4a3826" stroke-width="1.5" opacity="0.5"/>
+    <rect x="128" y="230" width="64" height="24" rx="4" fill="#2e2417" opacity="0.65"/>
+    <text x="160" y="247" font-size="12" fill="#ffcf7a" text-anchor="middle" font-family="sans-serif" font-weight="700" letter-spacing="0.5">GAMBAR SAMPEL</text>
+  </svg>
+  <div style="position:absolute;inset:0;display:grid;grid-template-columns:1fr 1fr 1fr;grid-template-rows:1fr 1fr 1fr">
+    <div style="border-right:1px solid rgba(255,255,255,0.3);border-bottom:1px solid rgba(255,255,255,0.3)"></div>
+    <div style="border-right:1px solid rgba(255,255,255,0.3);border-bottom:1px solid rgba(255,255,255,0.3)"></div>
+    <div style="border-bottom:1px solid rgba(255,255,255,0.3)"></div>
+    <div style="border-right:1px solid rgba(255,255,255,0.3);border-bottom:1px solid rgba(255,255,255,0.3)"></div>
+    <div style="border-right:1px solid rgba(255,255,255,0.3);border-bottom:1px solid rgba(255,255,255,0.3)"></div>
+    <div style="border-bottom:1px solid rgba(255,255,255,0.3)"></div>
+    <div style="border-right:1px solid rgba(255,255,255,0.3)"></div>
+    <div style="border-right:1px solid rgba(255,255,255,0.3)"></div>
+    <div></div>
+  </div>
+  <div style="position:absolute;top:14px;left:14px;right:14px;display:flex;justify-content:space-between;align-items:center">
+    <svg onclick="showScreen('form_item')" style="cursor:pointer;width:22px;height:22px;color:#fff;filter:drop-shadow(0 1px 2px rgba(0,0,0,0.5))" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+    <span style="color:#fff;font-size:9.5px;background:rgba(0,0,0,0.45);padding:4px 10px;border-radius:100px;white-space:nowrap">Kamera in-app -- bukan galeri</span>
+    <span style="width:22px"></span>
+  </div>
+  <div id="cameraFlash" style="position:absolute;inset:0;background:#fff;opacity:0;transition:opacity .12s ease;pointer-events:none"></div>
+</div>
+<div style="background:#0a0a0a;padding:20px 0 26px;display:flex;align-items:center;justify-content:center;flex-shrink:0">
+  <div onclick="jepretFoto()" style="cursor:pointer;width:62px;height:62px;border-radius:50%;border:3px solid #fff;padding:3px">
+    <div style="width:100%;height:100%;border-radius:50%;background:#fff"></div>
+  </div>
+</div>
+</div>
+  </div>
+</div>
+
+<div class="role-note" id="roleNote">Peran aktif: QC -- Ahmad Setiawan</div>
+
+<script>
+
+var statusPengajuan = 'draft';
+var pilihanKeputusan = null;
+var itemPerSection = {
+  'Uji kualifikasi material (laboratorium)': [
+    ['1. Analisa Saringan (Gradation Test)', 'Ya', '', 0],
+    ['2. Kebersihan Agregat (Sand Equivalent & Clay Lumps)', 'Ya', '', 0],
+    ['3.1 Uji Abrasi Los Angeles', 'Ya', '', 0],
+    ['3.2 Uji Kepipihan & Kelonjongan', 'Ya', '', 0],
+    ['4. Penyerapan Air & Berat Jenis', 'Ya', '', 0],
+    ['A.1 Uji Halus & Kering', 'Ya', '', 0],
+    ['B.1 Uji Penetrasi (Pen 60/70)', 'Ya', '', 0],
+    ['B.2 Uji Titik Lembek (Softening Point)', 'Ya', '', 0],
+    ['B.3 Uji Daktilitas (Ductility Test)', 'Ya', '', 0]
+  ],
+  'Perancangan formula campuran (Mix Design)': [
+    ['1. Prasyarat Material', 'Ya', '', 0],
+    ['2. Penyusunan Design Mix Formula (DMF)', 'Ya', '', 0],
+    ['3.a Pembuatan Briket Contoh', 'Ya', '', 0],
+    ['Nilai Stabilitas (Stability)', 'Ya', '', 0],
+    ['Nilai Lelehan (Flow)', 'Ya', '', 0],
+    ['Rongga dalam Campuran (VIM)', 'Tidak', '', 0],
+    ['Rongga dalam Agregat (VMA)', 'Ya', '', 0],
+    ['Rongga Terisi Aspal (VFA)', 'Ya', '', 0],
+    ['4. Penetapan Kadar Aspal Optimum (KAO)', 'Ya', '', 0],
+    ['5. Penerbitan Dokumen DMF', 'Belum diperiksa', '', 0]
+  ],
+  'Kalibrasi alat & uji coba pencampuran (JMF)': [
+    ['1.a Kalibrasi Cold Bin', 'Ya', '', 0],
+    ['1.b Kalibrasi Timbangan (Scales Calibration)', 'Ya', '', 0],
+    ['2. Pengujian Agregat Panas (Hot Bin Screen)', 'Ya', '', 0],
+    ['3.a Produksi Batch Uji Coba', 'Belum diperiksa', '', 0],
+    ['3.b Pengujian Marshall Ulang', 'Belum diperiksa', '', 0],
+    ['3.c Pengesahan Dokumen JMF', 'Belum diperiksa', '', 0]
+  ],
+  'Pekerjaan penghamparan aspal hotmix': [
+    ['1.a Pemeriksaan Bahan Baku', 'Ya', '', 0],
+    ['1.b Pengeringan Agregat', 'Ya', '', 0],
+    ['1.c Pencampuran (Mixing)', 'Ya', '', 0],
+    ['1.d Pemeriksaan Suhu Hotmix', 'Ya', '', 0],
+    ['2.a Persiapan Bak Truk', 'Ya', '', 0],
+    ['2.b Penutupan Terpal', 'Ya', '', 0],
+    ['3.a Pembersihan Permukaan', 'Ya', '', 0],
+    ['3.b Penyemprotan Perekat', 'Ya', '', 0],
+    ['3.c Waktu Pengeringan (Curing Time)', 'Ya', '', 0],
+    ['4.a Setting Elevasi & Ketebalan', 'Ya', '', 0],
+    ['4.b Penuangan ke Hopper', 'Ya', '', 0],
+    ['4.c Kecepatan & Suhu Hampar', 'Tidak', '', 0],
+    ['5.a Breakdown Rolling (Awal)', 'Ya', '', 0],
+    ['5.b Secondary Rolling (Antara)', 'Ya', '', 0],
+    ['5.c Final Rolling (Akhir)', 'Belum diperiksa', '', 0],
+    ['6.a Masa Pendinginan', 'Belum diperiksa', '', 0]
+  ]
+};
+var itemAktifNama = null;
+var itemAktifSection = null;
+function pilihRadioSampel(el, idSelf, idPasangan) {
+  var pasangan = document.getElementById(idPasangan);
+  el.classList.add('card-sel');
+  el.querySelector('.radio').classList.add('on');
+  pasangan.classList.remove('card-sel');
+  pasangan.querySelector('.radio').classList.remove('on');
+}
+function simpanSampelEkstraksi() {
+  var tombol = document.querySelector('#screen-sampel_ekstraksi .footer-btn button');
+  var teksAsli = tombol.textContent;
+  tombol.textContent = '✓ Tersimpan';
+  tombol.style.background = 'var(--success)';
+  setTimeout(function() {
+    tombol.textContent = teksAsli;
+    tombol.style.background = '';
+    showScreen('pelaksanaan');
+  }, 700);
+}
+function ulangSinkron() {
+  var tombol = document.getElementById('tombolUlang51b');
+  tombol.textContent = '...';
+  tombol.disabled = true;
+  setTimeout(function() {
+    var ikon = document.getElementById('ikon51b');
+    var statusTeks = document.getElementById('statusTeks51b');
+    ikon.style.background = 'var(--success-container)';
+    ikon.innerHTML = '<svg class="icn" style="color:var(--on-success);font-size:13px" viewBox="0 0 24 24"><polyline points="20,6 9,17 4,12"></polyline></svg>';
+    statusTeks.textContent = 'Tersinkron';
+    statusTeks.style.color = '';
+    tombol.remove();
+    var ringkasan = document.getElementById('sinkronRingkasan');
+    ringkasan.textContent = '2 item belum tersinkron';
+  }, 600);
+}
+function toggleCekDokumen(i) {
+  var cb = document.getElementById('cbRow' + i);
+  cb.classList.toggle('on');
+  cekValidasiAjukanRow();
+}
+function cekValidasiAjukanRow() {
+  var semuaTercentang = true;
+  for (var i = 0; i < 5; i++) {
+    var cb = document.getElementById('cbRow' + i);
+    if (cb && !cb.classList.contains('on')) { semuaTercentang = false; }
+  }
+  var tombol = document.getElementById('tombolAjukanRow');
+  if (tombol) {
+    if (semuaTercentang) { tombol.classList.remove('disabled'); }
+    else { tombol.classList.add('disabled'); }
+  }
+}
+function tambahFotoBda(tahap) {
+  var idWadah = tahap === 'during' ? 'thumbRowDuring' : 'thumbRowAfter';
+  var wadah = document.getElementById(idWadah);
+  var tombolTambah = wadah.querySelector('.thumb-add');
+  var thumb = document.createElement('div');
+  thumb.className = 'thumb';
+  thumb.style.cssText = 'background:linear-gradient(160deg,#a89c86,#8a6d4f 40%,#4a3826 75%,#2e2b26);position:relative;overflow:hidden;animation:popIn .25s ease';
+  thumb.innerHTML = '<span class="x" onclick="hapusFoto(event,this)" style="cursor:pointer">&times;</span>';
+  wadah.insertBefore(thumb, tombolTambah);
+  tombolTambah.remove();
+
+  if (tahap === 'during') {
+    var tombolAfter = document.getElementById('tombolTambahAfter');
+    tombolAfter.style.opacity = '1';
+    tombolAfter.style.cursor = 'pointer';
+    tombolAfter.setAttribute('onclick', "tambahFotoBda('after')");
+    document.getElementById('pesanAfterBda').textContent = 'Siap diisi';
+  } else {
+    var tombolSelesai = document.getElementById('tombolSelesaikanRow');
+    tombolSelesai.classList.remove('disabled');
+  }
+}
+function selesaikanRowBda() {
+  if (document.getElementById('tombolSelesaikanRow').classList.contains('disabled')) { return; }
+  showScreen('detail_row_mobile');
+}
+function ajukanRowBaru() {
+  if (document.getElementById('tombolAjukanRow').classList.contains('disabled')) { return; }
+  showScreen('daftar_row');
+}
+function mintaKonfirmasiKeluarMobile() {
+  var wrapper = document.getElementById('tombolKeluarMobileWrapper');
+  wrapper.innerHTML = '<div style="background:var(--error-container);border-radius:10px;padding:10px 12px;display:flex;align-items:center;justify-content:space-between;gap:10px;margin-top:10px">' +
+    '<span style="font-size:11px;font-weight:600;color:var(--on-error)">Yakin mau keluar?</span>' +
+    '<span style="display:flex;gap:6px;flex-shrink:0">' +
+    '<button class="btn btn-outline-err btn-sm" onclick="konfirmasiKeluarMobile()">Ya</button>' +
+    '<button class="btn btn-outline btn-sm" onclick="batalKeluarMobile()">Batal</button>' +
+    '</span></div>';
+}
+function batalKeluarMobile() {
+  var wrapper = document.getElementById('tombolKeluarMobileWrapper');
+  wrapper.innerHTML = '<button class="btn btn-outline-err" onclick="mintaKonfirmasiKeluarMobile()" style="width:100%;margin-top:10px">Keluar</button>';
+}
+function konfirmasiKeluarMobile() {
+  showScreen('login');
+}
+function bukaDetailProyekMobile(nama, kontraktor, jenis, status) {
+  var el = function(id) { return document.getElementById(id); };
+  if (el('dpMobileNama')) { el('dpMobileNama').textContent = nama; }
+  if (el('dpMobileKontraktor')) { el('dpMobileKontraktor').textContent = kontraktor; }
+  if (el('dpMobileJenis')) { el('dpMobileJenis').textContent = jenis; }
+  if (el('dpMobileStatus')) {
+    var badge = el('dpMobileStatus');
+    badge.textContent = status;
+    var kelas = { 'Persiapan': 'badge-warning', 'Berjalan': 'badge-primary', 'Selesai': 'badge-success' };
+    badge.className = 'badge ' + (kelas[status] || 'badge-primary');
+  }
+  showScreen('detail_proyek');
+}
+var sumberRiwayatProduksi = 'pra_pelaksanaan';
+function bukaRiwayatProduksi(sumber) {
+  sumberRiwayatProduksi = sumber;
+  showScreen('riwayat_produksi');
+}
+function kembaliDariRiwayatProduksi() {
+  showScreen(sumberRiwayatProduksi);
+}
+var sumberFormItem = 'daftar_item_mobile';
+function bukaFormItemDariRiwayat(sumberRiwayat) {
+  sumberFormItem = sumberRiwayat;
+  itemAktifNama = null;
+  itemAktifSection = null;
+  var judulEl = document.getElementById('fiJudulItem');
+  var nomorEl = document.getElementById('fiNomorItem');
+  var sectionEl = document.getElementById('fiNamaSection');
+  var standarEl = document.getElementById('fiStandarItem');
+  var catatanInput = document.getElementById('fiCatatanInput');
+  if (nomorEl) { nomorEl.textContent = 'Entri baru'; }
+  if (sectionEl) { sectionEl.textContent = sumberRiwayat === 'riwayat_item' ? 'Kontrol Material Masuk Stockpile AMP' : 'Kontrol Mutu Saat Produksi Berjalan'; }
+  if (judulEl) { judulEl.textContent = 'Pemeriksaan hari ini'; }
+  if (standarEl) { standarEl.textContent = 'Isi sesuai kondisi lapangan yang genuinely diperiksa'; }
+  if (catatanInput) { catatanInput.value = ''; }
+
+  var rowYa = document.getElementById('radioYa');
+  var circleYa = document.getElementById('radioYaCircle');
+  var rowTidak = document.getElementById('radioTidak');
+  var circleTidak = document.getElementById('radioTidakCircle');
+  rowYa.classList.remove('card-sel');
+  circleYa.classList.remove('on');
+  rowTidak.classList.remove('card-sel');
+  rowTidak.style.background = '';
+  circleTidak.classList.remove('on');
+
+  var thumbRow = document.getElementById('thumbRow');
+  var addBtn = document.getElementById('addFotoBtn');
+  if (thumbRow && addBtn) {
+    Array.from(thumbRow.querySelectorAll('.thumb')).forEach(function(el) { el.remove(); });
+  }
+
+  showScreen('form_item');
+}
+function kembaliDariFormItem() {
+  showScreen(sumberFormItem);
+}
+function bukaFormItem(namaItem, statusItem, namaSection, catatanTersimpan, jumlahFotoTersimpan) {
+  sumberFormItem = 'daftar_item_mobile';
+  itemAktifNama = namaItem;
+  itemAktifSection = namaSection;
+
+  var nomorEl = document.getElementById('fiNomorItem');
+  var sectionEl = document.getElementById('fiNamaSection');
+  var judulEl = document.getElementById('fiJudulItem');
+  var standarEl = document.getElementById('fiStandarItem');
+  var catatanInput = document.getElementById('fiCatatanInput');
+
+  var bagianNomor = namaItem.split(' ')[0];
+  var judulTanpaNomor = namaItem.substring(bagianNomor.length).trim();
+  var terlihatNomor = /^[0-9A-Za-z.]{1,6}$/.test(bagianNomor) && /\d/.test(bagianNomor);
+
+  if (nomorEl) { nomorEl.textContent = terlihatNomor ? 'Item ' + bagianNomor : 'Item'; }
+  if (sectionEl) { sectionEl.textContent = namaSection; }
+  if (judulEl) { judulEl.textContent = terlihatNomor ? judulTanpaNomor : namaItem; }
+  if (standarEl) { standarEl.textContent = 'Isi sesuai kondisi lapangan yang genuinely diperiksa'; }
+  if (catatanInput) { catatanInput.value = catatanTersimpan || ''; }
+
+  var rowYa = document.getElementById('radioYa');
+  var circleYa = document.getElementById('radioYaCircle');
+  var rowTidak = document.getElementById('radioTidak');
+  var circleTidak = document.getElementById('radioTidakCircle');
+  rowYa.classList.remove('card-sel');
+  circleYa.classList.remove('on');
+  rowTidak.classList.remove('card-sel');
+  rowTidak.style.background = '';
+  circleTidak.classList.remove('on');
+  if (statusItem === 'Ya') { pilihStatus('ya'); }
+  else if (statusItem === 'Tidak') { pilihStatus('tidak'); }
+
+  var thumbRow = document.getElementById('thumbRow');
+  var addBtn = document.getElementById('addFotoBtn');
+  if (thumbRow && addBtn) {
+    Array.from(thumbRow.querySelectorAll('.thumb')).forEach(function(el) { el.remove(); });
+    var jumlah = jumlahFotoTersimpan || 0;
+    for (var i = 0; i < jumlah; i++) {
+      var thumb = document.createElement('div');
+      thumb.className = 'thumb';
+      thumb.style.cssText = 'background:linear-gradient(160deg,#a89c86,#8a6d4f 40%,#4a3826 75%,#2e2b26);position:relative;overflow:hidden';
+      thumb.innerHTML = '<span class="x" onclick="hapusFoto(event,this)" style="cursor:pointer">&times;</span>';
+      thumbRow.insertBefore(thumb, addBtn);
+    }
+  }
+
+  showScreen('form_item');
+}
+function simpanItemMobile() {
+  var statusBaru = document.getElementById('radioYaCircle').classList.contains('on') ? 'Ya'
+    : (document.getElementById('radioTidakCircle').classList.contains('on') ? 'Tidak' : 'Belum diperiksa');
+
+  if (itemAktifSection && itemPerSection[itemAktifSection]) {
+    var catatanBaru = document.getElementById('fiCatatanInput').value;
+    var jumlahFotoBaru = document.getElementById('thumbRow').querySelectorAll('.thumb').length;
+    var daftarItem = itemPerSection[itemAktifSection];
+    for (var i = 0; i < daftarItem.length; i++) {
+      if (daftarItem[i][0] === itemAktifNama) {
+        daftarItem[i][1] = statusBaru;
+        daftarItem[i][2] = catatanBaru;
+        daftarItem[i][3] = jumlahFotoBaru;
+        break;
+      }
+    }
+    bukaDaftarItemMobile(itemAktifSection);
+  } else if (sumberFormItem === 'riwayat_item' || sumberFormItem === 'riwayat_produksi') {
+    simpanEntriRiwayat(sumberFormItem, statusBaru);
+  } else {
+    showScreen(sumberFormItem);
+  }
+}
+function simpanEntriRiwayat(sumberRiwayat, status) {
+  var catatan = document.getElementById('fiCatatanInput').value.trim();
+  var sekarang = new Date();
+  var namaBulan = ['Jan', 'Feb', 'Mar', 'Apr', 'Mei', 'Jun', 'Jul', 'Agu', 'Sep', 'Okt', 'Nov', 'Des'];
+  var jam = String(sekarang.getHours()).padStart(2, '0') + ':' + String(sekarang.getMinutes()).padStart(2, '0');
+  var tanggalTeks = sekarang.getDate() + ' ' + namaBulan[sekarang.getMonth()] + ' ' + sekarang.getFullYear() + ', ' + jam;
+
+  var warnaBg = status === 'Tidak' ? 'var(--error-container)' : 'var(--success-container)';
+  var warnaIkon = status === 'Tidak' ? 'var(--on-error)' : 'var(--on-success)';
+  var ikonSvg = status === 'Tidak'
+    ? '<line x1="18" x2="6" y1="6" y2="18"></line><line x1="6" x2="18" y1="6" y2="18"></line>'
+    : '<polyline points="4,12 9,17 20,6"></polyline>';
+  var ringkasan = catatan || (status === 'Tidak' ? 'Ditemukan di luar toleransi' : 'Semua kriteria sesuai standar');
+
+  var html = '<div class="list-row"><div class="leading" style="background:' + warnaBg + '"><svg class="icn" style="color:' + warnaIkon + '" viewBox="0 0 24 24">' + ikonSvg + '</svg></div><div class="list-main"><p class="list-title">' + tanggalTeks + '</p><p class="list-sub">' + ringkasan.replace(/</g, '&lt;') + ' · Ahmad Setiawan</p></div></div>';
+
+  var idWadah = sumberRiwayat === 'riwayat_item' ? 'daftarRiwayatItem' : 'daftarRiwayatProduksi';
+  var wadah = document.getElementById(idWadah);
+  wadah.insertAdjacentHTML('afterbegin', html);
+
+  showScreen(sumberRiwayat);
+}
+var sumberDaftarItemMobile = 'pra_pelaksanaan';
+function kembaliDariDaftarItem() {
+  showScreen(sumberDaftarItemMobile);
+}
+function bukaDaftarItemMobile(namaSection, sumber) {
+  if (sumber) { sumberDaftarItemMobile = sumber; }
+  var judul = document.getElementById('dimTitleMobile');
+  if (judul) { judul.textContent = namaSection; }
+
+  var items = itemPerSection[namaSection] || [];
+  var wadah = document.getElementById('dimItemListMobile');
+  var html = '';
+  items.forEach(function(it) {
+    var nama = it[0], status = it[1], catatan = it[2] || '', jumlahFoto = it[3] || 0;
+    var warnaBg = status === 'Ya' ? 'var(--success-container)' : (status === 'Tidak' ? 'var(--error-container)' : 'var(--surface-variant)');
+    var warnaIkon = status === 'Ya' ? 'var(--on-success)' : (status === 'Tidak' ? 'var(--on-error)' : 'var(--on-surface-variant)');
+    var ikonSvg = status === 'Ya'
+      ? '<polyline points="20,6 9,17 4,12"></polyline>'
+      : (status === 'Tidak' ? '<line x1="18" x2="6" y1="6" y2="18"></line><line x1="6" x2="18" y1="6" y2="18"></line>' : '<circle cx="12" cy="12" r="9"></circle>');
+    var subTeks = status === 'Belum diperiksa' ? 'Belum diperiksa' : (status + ' · Diperiksa Ahmad Setiawan');
+    var Q = String.fromCharCode(39);
+    var catatanAman = catatan.replace(/'/g, '').replace(/"/g, '');
+    html += '<div class="list-row" onclick="bukaFormItem(' + Q + nama.replace(/'/g, '') + Q + ', ' + Q + status + Q + ', ' + Q + namaSection.replace(/'/g, '') + Q + ', ' + Q + catatanAman + Q + ', ' + jumlahFoto + ')" style="cursor:pointer"><div class="leading" style="background:' + warnaBg + '"><svg class="icn" style="color:' + warnaIkon + '" viewBox="0 0 24 24">' + ikonSvg + '</svg></div><div><p class="list-title">' + nama.replace(/&/g, '&amp;') + '</p><p class="list-sub">' + subTeks + '</p></div></div>';
+  });
+  if (wadah) { wadah.innerHTML = html; }
+
+  var jumlahTerisi = items.filter(function(it) { return it[1] !== 'Belum diperiksa'; }).length;
+  var jumlahBelum = items.filter(function(it) { return it[1] === 'Belum diperiksa'; }).length;
+  var statusEl = document.getElementById('dimStatusMobile');
+  var statusTeks = document.getElementById('dimStatusTeksMobile');
+  if (statusTeks) {
+    if (jumlahBelum > 0) {
+      statusTeks.textContent = jumlahTerisi + ' dari ' + items.length + ' item terisi -- ' + jumlahBelum + ' item belum diperiksa.';
+      statusEl.style.background = 'var(--warning-container)';
+      statusTeks.style.color = 'var(--on-warning)';
+    } else {
+      statusTeks.textContent = 'Semua ' + items.length + ' item sudah terisi -- siap diajukan untuk diperiksa Konsultan Pengawas.';
+      statusEl.style.background = 'var(--success-container)';
+      statusTeks.style.color = 'var(--on-success)';
+    }
+  }
+  showScreen('daftar_item_mobile');
+}
+function showScreen(name) {
+  if (name === 'daftar_item_mobile' && statusPengajuan !== 'draft') {
+    name = 'daftar_pengajuan';
+  }
+  document.querySelectorAll('.screen').forEach(function(el) { el.classList.remove('active'); });
+  var target = document.getElementById('screen-' + name);
+  target.classList.add('active');
+  target.scrollTop = 0;
+  closeMenu();
+  if (name === 'daftar_pengajuan') { updateTampilanPengajuan(); }
+}
+function ajukanUntukDiperiksa() {
+  statusPengajuan = 'diajukan';
+  showScreen('daftar_pengajuan');
+}
+function simpanKeputusan() {
+  if (!pilihanKeputusan) { return; }
+  statusPengajuan = pilihanKeputusan;
+  showScreen('daftar_pengajuan');
+}
+function updateTampilanPengajuan() {
+  var badge = document.getElementById('pengajuanBadge');
+  var icon = document.getElementById('pengajuanIcon');
+  var sub = document.getElementById('pengajuanSub');
+  if (!badge) { return; }
+  var config = {
+    diajukan: { label: 'Menunggu', badgeBg: 'var(--warning-container)', badgeColor: 'var(--on-warning)', iconBg: 'var(--warning-container)', subExtra: '' },
+    disetujui: { label: 'Disetujui', badgeBg: 'var(--success-container)', badgeColor: 'var(--on-success)', iconBg: 'var(--success-container)', subExtra: ' &middot; Disetujui Rudi Hartono (Konsultan Pengawas)' },
+    catatan: { label: 'Disetujui dengan catatan', badgeBg: 'var(--warning-container)', badgeColor: 'var(--on-warning)', iconBg: 'var(--warning-container)', subExtra: ' &middot; Disetujui dengan catatan -- Rudi Hartono' },
+    ditolak: { label: 'Ditolak', badgeBg: 'var(--error-container)', badgeColor: 'var(--on-error)', iconBg: 'var(--error-container)', subExtra: ' &middot; Ditolak Rudi Hartono (Konsultan Pengawas)' }
+  };
+  var c = config[statusPengajuan] || config.diajukan;
+  badge.textContent = c.label;
+  badge.style.background = c.badgeBg;
+  badge.style.color = c.badgeColor;
+  icon.style.background = c.iconBg;
+  sub.innerHTML = 'Diajukan Ahmad Setiawan (QC) &middot; hari ini, 09:45' + c.subExtra;
+}
+var currentRole = 'qc';
+function switchRole(role) {
+  currentRole = role;
+  document.querySelectorAll('.role-btn').forEach(function(b) { b.classList.remove('active'); });
+  document.querySelector('[data-role="' + role + '"]').classList.add('active');
+  var labels = {
+    qc: 'Peran aktif: QC -- Ahmad Setiawan (bisa isi checklist)',
+    pengawas: 'Peran aktif: Konsultan Pengawas -- Rudi Hartono (baca-saja checklist, cuma menyetujui)',
+    kontraktor: 'Peran aktif: Kontraktor -- Budi Santoso (baca-saja checklist, isi RoW)'
+  };
+  document.getElementById('roleNote').textContent = labels[role];
+  applyReadonlyMode();
+  showScreen('daftar_proyek');
+}
+function setInteractive(selector, enabled) {
+  document.querySelectorAll(selector).forEach(function(el) {
+    if (!enabled) {
+      el.dataset.prevPointerEvents = el.style.pointerEvents;
+      el.style.pointerEvents = 'none';
+      el.style.opacity = '0.4';
+    } else {
+      el.style.pointerEvents = el.dataset.prevPointerEvents || '';
+      el.style.opacity = '';
+    }
+  });
+}
+function applyReadonlyMode() {
+  // .edit-only -- CUMA QC yang bisa isi checklist (form_item, daftar_item_mobile)
+  var qcOnly = (currentRole === 'qc');
+  setInteractive('.edit-only', qcOnly);
+  document.querySelectorAll('.readonly-badge-qc').forEach(function(el) {
+    el.style.display = qcOnly ? 'none' : 'block';
+  });
+  // .pengawas-only -- CUMA Konsultan Pengawas yang bisa putuskan approval
+  // (QC yang baru saja mengajukan TIDAK BOLEH langsung menyetujui pekerjaannya sendiri)
+  var pengawasOnly = (currentRole === 'pengawas');
+  setInteractive('.pengawas-only', pengawasOnly);
+  document.querySelectorAll('.readonly-badge-pengawas').forEach(function(el) {
+    el.style.display = pengawasOnly ? 'none' : 'block';
+  });
+  // .kontraktor-only -- CUMA Kontraktor yang bisa ajukan RoW / ubah jadwal
+  var kontraktorOnly = (currentRole === 'kontraktor');
+  setInteractive('.kontraktor-only', kontraktorOnly);
+  document.querySelectorAll('.readonly-badge-kontraktor').forEach(function(el) {
+    el.style.display = kontraktorOnly ? 'none' : 'block';
+  });
+  // .joint-only -- Konsultan Pengawas DAN Kontraktor bersama (Inspeksi Lapangan RoW),
+  // QC TIDAK terlibat sama sekali di RoW
+  var jointOk = (currentRole === 'pengawas' || currentRole === 'kontraktor');
+  setInteractive('.joint-only', jointOk);
+  document.querySelectorAll('.readonly-badge-joint').forEach(function(el) {
+    el.style.display = jointOk ? 'none' : 'block';
+  });
+}
+function pilihKeputusan(status) {
+  pilihanKeputusan = status;
+  var ids = { disetujui: 'kepDisetujui', catatan: 'kepCatatan', ditolak: 'kepDitolak' };
+  Object.keys(ids).forEach(function(key) {
+    var row = document.getElementById(ids[key]);
+    var circle = document.getElementById(ids[key] + 'Circle');
+    if (key === status) {
+      row.classList.add('card-sel');
+      circle.classList.add('on');
+      if (key === 'ditolak') { row.style.background = 'var(--error-container)'; }
+      else if (key === 'catatan') { row.style.background = 'var(--warning-container)'; }
+    } else {
+      row.classList.remove('card-sel');
+      circle.classList.remove('on');
+      row.style.background = '';
+    }
+  });
+}
+function jepretFoto() {
+  var flash = document.getElementById('cameraFlash');
+  flash.style.opacity = '1';
+  setTimeout(function() {
+    flash.style.opacity = '0';
+    var thumb = document.createElement('div');
+    thumb.className = 'thumb';
+    thumb.style.cssText = 'background:linear-gradient(160deg,#a89c86,#8a6d4f 40%,#4a3826 75%,#2e2b26);position:relative;overflow:hidden;animation:popIn .25s ease';
+    thumb.innerHTML = '<span class="x" onclick="hapusFoto(event,this)" style="cursor:pointer">&times;</span>';
+    var row = document.getElementById('thumbRow');
+    var addBtn = document.getElementById('addFotoBtn');
+    row.insertBefore(thumb, addBtn);
+    showScreen('form_item');
+  }, 180);
+}
+function hapusFoto(event, el) {
+  event.stopPropagation();
+  el.closest('.thumb').remove();
+}
+function pilihStatus(status) {
+  var rowYa = document.getElementById('radioYa');
+  var circleYa = document.getElementById('radioYaCircle');
+  var rowTidak = document.getElementById('radioTidak');
+  var circleTidak = document.getElementById('radioTidakCircle');
+  if (status === 'ya') {
+    rowYa.classList.add('card-sel');
+    circleYa.classList.add('on');
+    rowTidak.classList.remove('card-sel');
+    rowTidak.style.background = '';
+    circleTidak.classList.remove('on');
+  } else {
+    rowTidak.classList.add('card-sel');
+    rowTidak.style.background = 'var(--error-container)';
+    circleTidak.classList.add('on');
+    rowYa.classList.remove('card-sel');
+    circleYa.classList.remove('on');
+  }
+}
+function openMenu() {
+  document.getElementById('jumpMenu').classList.add('open');
+  document.getElementById('jumpOverlay').classList.add('open');
+}
+function closeMenu() {
+  document.getElementById('jumpMenu').classList.remove('open');
+  document.getElementById('jumpOverlay').classList.remove('open');
+}
+applyReadonlyMode();
+
+</script>
+
+</body>
+</html>
