@@ -1363,9 +1363,6 @@ function bukaDaftarItemMobile(namaSection, sumber) {
   showScreen('daftar_item_mobile');
 }
 function showScreen(name) {
-  if (name === 'daftar_item_mobile' && statusPengajuan !== 'draft') {
-    name = 'daftar_pengajuan';
-  }
   document.querySelectorAll('.screen').forEach(function(el) { el.classList.remove('active'); });
   var target = document.getElementById('screen-' + name);
   target.classList.add('active');
