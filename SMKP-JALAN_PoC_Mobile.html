@@ -202,6 +202,8 @@ textarea.field{resize:none;min-height:38px;font-family:inherit}
   --bg-page:#0A0A0D;
   background:var(--surface); color:var(--on-surface);
 }
+.spin{animation:spinAnim 1s linear infinite}
+@keyframes spinAnim{from{transform:rotate(0deg)}to{transform:rotate(360deg)}}
 
 
 * { box-sizing: border-box; }
@@ -324,6 +326,14 @@ body {
 <div class="jump-item" onclick="showScreen('riwayat_produksi')">Riwayat Kontrol Mutu Produksi</div>
 <div class="jump-group-title">Sampel Laboratorium</div>
 <div class="jump-item" onclick="showScreen('sampel_core_drill')">Sampel Core Drill</div>
+<div class="jump-item" onclick="showScreen('cd_titik')">Core Drill - Langkah 1 Titik</div>
+<div class="jump-item" onclick="showScreen('cd_bor')">Core Drill - Langkah 2 Bor</div>
+<div class="jump-item" onclick="showScreen('cd_briket')">Core Drill - Langkah 3 Briket</div>
+<div class="jump-item" onclick="showScreen('cd_tebal')">Core Drill - Langkah 4 Tebal</div>
+<div class="jump-item" onclick="showScreen('cd_kepadatan')">Core Drill - Langkah 5 Kepadatan</div>
+<div class="jump-item" onclick="showScreen('cd_tutup')">Core Drill - Langkah 6 Tutup Lubang</div>
+<div class="jump-item" onclick="showScreen('cd_ringkasan')">Core Drill - Ringkasan Sampel Selesai</div>
+<div class="jump-item" onclick="showScreen('cd_daftar_langkah')">Core Drill - Daftar 6 Tahap per Sampel</div>
 <div class="jump-item" onclick="showScreen('foto_bda')">Foto Before/During/After</div>
 <div class="jump-item" onclick="showScreen('sampel_ekstraksi')">Sampel Uji Ekstraksi</div>
 <div class="jump-group-title">Persetujuan</div>
@@ -424,22 +434,17 @@ Masuk dengan Google
 <div class="screen" id="screen-pra_pelaksanaan">
 <div class="statusbar"><span>09:41</span><span><svg class="icn" viewbox="0 0 24 24"><path d="M2 8.5a15 15 0 0120 0M5 12a10 10 0 0114 0M8.5 15.5a5 5 0 017 0"></path><circle cx="12" cy="19" fill="currentColor" r="1" stroke="none"></circle></svg> <svg class="icn" viewbox="0 0 24 24"><rect height="10" rx="2" width="17" x="2" y="7"></rect><line x1="21" x2="21" y1="10" y2="14"></line><rect fill="currentColor" height="5" stroke="none" width="9" x="4.5" y="9.5"></rect></svg></span></div>
 <div class="appbar" onclick="showScreen('detail_proyek')" style="cursor:pointer"><svg class="icn" viewbox="0 0 24 24"><line x1="19" x2="5" y1="12" y2="12"></line><polyline points="12,19 5,12 12,5"></polyline></svg><span class="title">Pra pelaksanaan</span></div>
-<p class="appbar sub" style="margin-left:24px">Jl. Lintas Timur Km 12</p>
 <div class="content">
 <div class="list-row" onclick="bukaDaftarItemMobile('Uji kualifikasi material (laboratorium)')" style="cursor:pointer"><div class="leading" style="background:var(--success-container)"><svg class="icn" fill="none" style="color:var(--on-success)" viewbox="0 0 24 24"><polyline points="4,12 9,17 20,6"></polyline></svg></div><div class="list-main"><p class="list-title">Uji kualifikasi material (laboratorium)</p><p class="list-sub">Selesai - 9/9 item</p></div><span class="badge badge-success">Disetujui</span></div>
 <div class="list-row" onclick="bukaDaftarItemMobile('Perancangan formula campuran (Mix Design)')" style="cursor:pointer"><div class="leading" style="background:var(--success-container)"><svg class="icn" fill="none" style="color:var(--on-success)" viewbox="0 0 24 24"><polyline points="4,12 9,17 20,6"></polyline></svg></div><div class="list-main"><p class="list-title">Perancangan formula campuran (Mix Design)</p><p class="list-sub">Selesai - 10/10 item</p></div><span class="badge badge-warning">Menunggu persetujuan</span></div>
 <div class="list-row" onclick="showScreen('riwayat_item')" style="cursor:pointer"><div class="leading" style="background:var(--primary-container)"><svg class="icn" style="color:var(--on-primary-container)" viewbox="0 0 24 24"><path d="M4 12a8 8 0 0114-5.3"></path><polyline points="18,3.5 18,7 14.5,7"></polyline><path d="M20 12a8 8 0 01-14 5.3"></path><polyline points="6,20.5 6,17 9.5,17"></polyline></svg></div><div class="list-main"><p class="list-title">Kontrol material masuk stockpile AMP</p><p class="list-sub" style="color:var(--primary)">Berjalan rutin - dicek hari ini</p></div></div>
 <div class="list-row" onclick="bukaDaftarItemMobile('Kalibrasi alat &amp; uji coba pencampuran (JMF)')" style="cursor:pointer"><div class="leading" style="background:var(--primary-container);font-size:9px;font-weight:700;color:var(--on-primary-container)">3/6</div><div class="list-main"><p class="list-title">Kalibrasi alat &amp; uji coba pencampuran (JMF)</p><p class="list-sub" style="color:var(--primary)">Sedang berjalan</p></div></div>
-<div class="list-row" onclick="bukaRiwayatProduksi('pra_pelaksanaan')" style="cursor:pointer"><div class="leading" style="background:var(--primary-container)"><svg class="icn" style="color:var(--on-primary-container)" viewbox="0 0 24 24"><path d="M4 12a8 8 0 0114-5.3"></path><polyline points="18,3.5 18,7 14.5,7"></polyline><path d="M20 12a8 8 0 01-14 5.3"></path><polyline points="6,20.5 6,17 9.5,17"></polyline></svg></div><div class="list-main"><p class="list-title">Kontrol mutu saat produksi berjalan</p><p class="list-sub" style="color:var(--primary)">Berjalan rutin - 2 pemeriksaan hari ini</p></div></div>
-<div class="list-row" onclick="showScreen('daftar_row')" style="cursor:pointer"><div class="leading" style="background:var(--warning-container)"><svg class="icn" style="color:var(--on-warning)" viewbox="0 0 24 24"><path d="M9 11l3 3L22 4"></path><path d="M21 12v7a2 2 0 01-2 2H5a2 2 0 01-2-2V5a2 2 0 012-2h11"></path></svg></div><div class="list-main"><p class="list-title">Request of Work</p><p class="list-sub" style="color:var(--on-warning)">1 RoW perlu ditinjau</p></div></div>
-<div class="list-row" onclick="bukaDaftarItemMobile('Pekerjaan penghamparan aspal hotmix')" style="cursor:pointer"><div class="leading" style="background:var(--surface-variant)"><svg class="icn" style="color:var(--on-surface-variant)" viewbox="0 0 24 24"><circle cx="12" cy="12" r="9"></circle></svg></div><div class="list-main"><p class="list-title">Pekerjaan penghamparan aspal hotmix</p><p class="list-sub">Belum dimulai</p></div></div>
 <div class="spacer"></div>
 </div>
 </div>
 <div class="screen" id="screen-pelaksanaan">
 <div class="statusbar"><span>09:41</span><span><svg class="icn" viewbox="0 0 24 24"><path d="M2 8.5a15 15 0 0120 0M5 12a10 10 0 0114 0M8.5 15.5a5 5 0 017 0"></path><circle cx="12" cy="19" fill="currentColor" r="1" stroke="none"></circle></svg> <svg class="icn" viewbox="0 0 24 24"><rect height="10" rx="2" width="17" x="2" y="7"></rect><line x1="21" x2="21" y1="10" y2="14"></line><rect fill="currentColor" height="5" stroke="none" width="9" x="4.5" y="9.5"></rect></svg></span></div>
 <div class="appbar" onclick="showScreen('detail_proyek')" style="cursor:pointer"><svg class="icn" viewbox="0 0 24 24"><line x1="19" x2="5" y1="12" y2="12"></line><polyline points="12,19 5,12 12,5"></polyline></svg><span class="title">Pelaksanaan</span></div>
-<p class="appbar sub" style="margin-left:24px">Jl. Lintas Timur Km 12</p>
 <div class="content">
 <div class="list-row" onclick="bukaRiwayatProduksi('pelaksanaan')" style="cursor:pointer"><div class="leading" style="background:var(--primary-container)"><svg class="icn" style="color:var(--on-primary-container)" viewbox="0 0 24 24"><path d="M4 12a8 8 0 0114-5.3"></path><polyline points="18,3.5 18,7 14.5,7"></polyline><path d="M20 12a8 8 0 01-14 5.3"></path><polyline points="6,20.5 6,17 9.5,17"></polyline></svg></div><div class="list-main"><p class="list-title">Kontrol mutu saat produksi berjalan</p><p class="list-sub" style="color:var(--primary)">Berjalan rutin</p></div></div>
 <div class="list-row" onclick="showScreen('daftar_row')" style="cursor:pointer"><div class="leading" style="background:var(--primary-container)"><svg class="icn" style="color:var(--on-primary-container)" viewbox="0 0 24 24"><path d="M7 3h7l5 5v13H7V3z"></path><polyline points="14,3 14,8 19,8"></polyline><polyline points="9.5,14 11,15.5 15,11.5"></polyline></svg></div><div class="list-main"><p class="list-title">Request of work</p><p class="list-sub">2 diajukan bulan ini</p></div></div>
@@ -516,7 +521,7 @@ Masuk dengan Google
 <div class="statusbar"><span>09:41</span><span><svg class="icn" viewbox="0 0 24 24"><path d="M2 8.5a15 15 0 0120 0M5 12a10 10 0 0114 0M8.5 15.5a5 5 0 017 0"></path><circle cx="12" cy="19" fill="currentColor" r="1" stroke="none"></circle></svg> <svg class="icn" viewbox="0 0 24 24"><rect height="10" rx="2" width="17" x="2" y="7"></rect><line x1="21" x2="21" y1="10" y2="14"></line><rect fill="currentColor" height="5" stroke="none" width="9" x="4.5" y="9.5"></rect></svg></span></div>
 <div style="display:flex;justify-content:space-between;align-items:center">
 <div style="display:flex;align-items:center;gap:8px"><svg class="icn" onclick="kembaliDariFormItem()" style="cursor:pointer" viewbox="0 0 24 24"><line x1="19" x2="5" y1="12" y2="12"></line><polyline points="12,19 5,12 12,5"></polyline></svg><div><div style="font-size:13px;font-weight:600" id="fiNomorItem">Item 5.1.a</div><div style="font-size:10px;color:var(--on-surface-variant)" id="fiNamaSection">Kontrol mutu saat produksi berjalan</div></div></div>
-<span class="badge badge-success" style="font-size:8.5px;white-space:nowrap;padding:3px 8px;flex-shrink:0"><svg class="icn" style="font-size:9px;flex-shrink:0" viewbox="0 0 24 24"><path d="M12 21s7-6.5 7-12a7 7 0 10-14 0c0 5.5 7 12 7 12z"></path><circle cx="12" cy="9" r="2.3"></circle></svg>GPS terkunci</span>
+<span class="badge badge-success" id="badgeGpsStatus" style="font-size:8.5px;white-space:nowrap;padding:3px 8px;flex-shrink:0"><svg class="icn" style="font-size:9px;flex-shrink:0" viewbox="0 0 24 24"><path d="M12 21s7-6.5 7-12a7 7 0 10-14 0c0 5.5 7 12 7 12z"></path><circle cx="12" cy="9" r="2.3"></circle></svg>GPS terkunci</span>
 </div>
 <div class="content">
 <div class="readonly-badge-qc" style="display:none;background:var(--surface-variant);border-radius:8px;padding:6px 10px;margin-bottom:8px;font-size:9.5px;color:var(--on-surface-variant);text-align:center">Mode baca-saja — peran ini tidak mengisi checklist</div>
@@ -527,7 +532,7 @@ Masuk dengan Google
 </div>
 <div id="fiCatatanWrapper"><p class="label">Catatan tambahan (opsional)</p><input class="field" id="fiCatatanInput" placeholder="mis. hasil pengukuran, kondisi lapangan"/></div>
 <div><p class="label">Foto lapangan</p>
-<div class="thumb-row" id="thumbRow"><div class="thumb-add edit-only" id="addFotoBtn" onclick="showScreen('camera_view')" style="cursor:pointer;width:70px;flex-direction:column;font-size:9px;text-align:center"><svg class="icn" style="font-size:14px;margin-bottom:2px" viewbox="0 0 24 24"><path d="M4 8h4l1.5-2.2h5L16 8h4v11H4V8z"></path><circle cx="12" cy="13.3" r="3.2"></circle></svg>Tambah foto</div></div>
+<div style="display:flex;flex-wrap:wrap;gap:10px" id="thumbRow"><div class="thumb-add edit-only" id="addFotoBtn" onclick="bukaKameraUntuk('thumbRow', 'form_item')" style="cursor:pointer;width:70px;height:70px;flex-direction:column;font-size:9px;text-align:center;flex-shrink:0"><svg class="icn" style="font-size:14px;margin-bottom:2px" viewbox="0 0 24 24"><path d="M4 8h4l1.5-2.2h5L16 8h4v11H4V8z"></path><circle cx="12" cy="13.3" r="3.2"></circle></svg>Tambah foto</div></div>
 </div>
 <div class="spacer"></div>
 </div>
@@ -718,8 +723,7 @@ Masuk dengan Google
 </div>
 <div class="screen" id="screen-riwayat_item">
 <div class="statusbar"><span>09:41</span><span><svg class="icn" viewbox="0 0 24 24"><path d="M2 8.5a15 15 0 0120 0M5 12a10 10 0 0114 0M8.5 15.5a5 5 0 017 0"></path><circle cx="12" cy="19" fill="currentColor" r="1" stroke="none"></circle></svg> <svg class="icn" viewbox="0 0 24 24"><rect height="10" rx="2" width="17" x="2" y="7"></rect><line x1="21" x2="21" y1="10" y2="14"></line><rect fill="currentColor" height="5" stroke="none" width="9" x="4.5" y="9.5"></rect></svg></span></div>
-<div class="appbar" onclick="showScreen('pra_pelaksanaan')" style="cursor:pointer"><svg class="icn" viewbox="0 0 24 24"><line x1="19" x2="5" y1="12" y2="12"></line><polyline points="12,19 5,12 12,5"></polyline></svg><span class="title">Kontrol Material Masuk Stockpile AMP</span></div>
-<p class="appbar sub" style="margin-left:24px">Item rutin (3 kriteria) — riwayat tidak pernah tertimpa</p>
+<div class="appbar" onclick="showScreen('pra_pelaksanaan')" style="cursor:pointer"><svg class="icn" viewbox="0 0 24 24"><line x1="19" x2="5" y1="12" y2="12"></line><polyline points="12,19 5,12 12,5"></polyline></svg><span class="title">Material Masuk AMP</span></div>
 <div class="content">
 <div id="daftarRiwayatItem">
 <div class="list-row"><div class="leading" style="background:var(--success-container)"><svg class="icn" style="color:var(--on-success)" viewbox="0 0 24 24"><polyline points="4,12 9,17 20,6"></polyline></svg></div><div class="list-main"><p class="list-title">28 Jul 2026, 07:15</p><p class="list-sub">Visual OK, stockpile bersekat OK, kadar air 3,1% · Ahmad Setiawan</p></div></div>
@@ -734,7 +738,6 @@ Masuk dengan Google
 <div class="screen" id="screen-riwayat_produksi">
 <div class="statusbar"><span>09:41</span><span><svg class="icn" viewbox="0 0 24 24"><path d="M2 8.5a15 15 0 0120 0M5 12a10 10 0 0114 0M8.5 15.5a5 5 0 017 0"></path><circle cx="12" cy="19" fill="currentColor" r="1" stroke="none"></circle></svg> <svg class="icn" viewbox="0 0 24 24"><rect height="10" rx="2" width="17" x="2" y="7"></rect><line x1="21" x2="21" y1="10" y2="14"></line><rect fill="currentColor" height="5" stroke="none" width="9" x="4.5" y="9.5"></rect></svg></span></div>
 <div class="appbar" onclick="kembaliDariRiwayatProduksi()" style="cursor:pointer"><svg class="icn" viewbox="0 0 24 24"><line x1="19" x2="5" y1="12" y2="12"></line><polyline points="12,19 5,12 12,5"></polyline></svg><span class="title">Pengecekan Termal Harian</span></div>
-<p class="appbar sub" style="margin-left:24px">Kontrol Mutu Saat Produksi Berjalan &middot; item rutin (3 suhu per entri) &mdash; riwayat tidak pernah tertimpa</p>
 <div class="content">
 <div id="daftarRiwayatProduksi">
 <div class="list-row"><div class="leading" style="background:var(--success-container)"><svg class="icn" style="color:var(--on-success)" viewbox="0 0 24 24"><polyline points="4,12 9,17 20,6"></polyline></svg></div><div class="list-main"><p class="list-title">29 Jul 2026, 08:10</p><p class="list-sub">Cair 152&deg;C, Dryer 162&deg;C, Hotmix 158&deg;C &middot; Ahmad Setiawan</p></div></div>
@@ -748,15 +751,146 @@ Masuk dengan Google
 </div>
 <div class="screen" id="screen-sampel_core_drill">
 <div class="statusbar"><span>09:41</span><span><svg class="icn" viewbox="0 0 24 24"><path d="M2 8.5a15 15 0 0120 0M5 12a10 10 0 0114 0M8.5 15.5a5 5 0 017 0"></path><circle cx="12" cy="19" fill="currentColor" r="1" stroke="none"></circle></svg> <svg class="icn" viewbox="0 0 24 24"><rect height="10" rx="2" width="17" x="2" y="7"></rect><line x1="21" x2="21" y1="10" y2="14"></line><rect fill="currentColor" height="5" stroke="none" width="9" x="4.5" y="9.5"></rect></svg></span></div>
-<div class="appbar" onclick="showScreen('daftar_row')" style="cursor:pointer"><svg class="icn" viewbox="0 0 24 24"><line x1="19" x2="5" y1="12" y2="12"></line><polyline points="12,19 5,12 12,5"></polyline></svg><span class="title">Core drill</span></div>
-<p class="appbar sub" style="margin-left:24px">RoW-002 - Segmen 3</p>
+<div class="appbar" onclick="kembaliDariSampelCoreDrill()" style="cursor:pointer"><svg class="icn" viewbox="0 0 24 24"><line x1="19" x2="5" y1="12" y2="12"></line><polyline points="12,19 5,12 12,5"></polyline></svg><span class="title">Core drill</span></div>
 <div class="content">
-<div class="list-row"><div class="leading" style="background:var(--success-container)"><svg class="icn" fill="none" style="color:var(--on-success)" viewbox="0 0 24 24"><polyline points="4,12 9,17 20,6"></polyline></svg></div><div class="list-main"><p class="list-title">Sampel 1</p><p class="list-sub">Km 12+050</p></div></div>
-<div class="list-row"><div class="leading" style="background:var(--success-container)"><svg class="icn" fill="none" style="color:var(--on-success)" viewbox="0 0 24 24"><polyline points="4,12 9,17 20,6"></polyline></svg></div><div class="list-main"><p class="list-title">Sampel 2</p><p class="list-sub">Km 12+100</p></div></div>
-<div class="list-row"><div class="leading" style="background:var(--primary-container)"><svg class="icn" style="color:var(--on-primary-container);font-size:12px" viewbox="0 0 24 24"><path d="M6 3h12M6 21h12M7 3c0 6 5 5.5 5 9s-5 3-5 9M17 3c0 6-5 5.5-5 9s5 3 5 9"></path></svg></div><div class="list-main"><p class="list-title">Sampel 3</p><p class="list-sub" style="color:var(--primary)">Sedang diisi - langkah 3/6</p></div></div>
+<div class="list-row" id="barisSampelCd1" onclick="bukaDaftarLangkahCd(1)" style="cursor:pointer"><div class="leading" style="background:var(--success-container)"><svg class="icn" fill="none" style="color:var(--on-success)" viewBox="0 0 24 24"><polyline points="4,12 9,17 20,6"></polyline></svg></div><div class="list-main"><p class="list-title">Sampel 1</p><p class="list-sub">Km 12+050</p></div></div>
+<div class="list-row" id="barisSampelCd2" onclick="bukaDaftarLangkahCd(2)" style="cursor:pointer"><div class="leading" style="background:var(--success-container)"><svg class="icn" fill="none" style="color:var(--on-success)" viewBox="0 0 24 24"><polyline points="4,12 9,17 20,6"></polyline></svg></div><div class="list-main"><p class="list-title">Sampel 2</p><p class="list-sub">Km 12+100</p></div></div>
+<div class="list-row" id="barisSampelCd3" onclick="bukaDaftarLangkahCd(3)" style="cursor:pointer"><div class="leading" style="background:var(--primary-container)"><svg class="icn" style="color:var(--on-primary-container);font-size:12px" viewBox="0 0 24 24"><path d="M6 3h12M6 21h12M7 3c0 6 5 5.5 5 9s-5 3-5 9M17 3c0 6-5 5.5-5 9s5 3 5 9"></path></svg></div><div class="list-main"><p class="list-title">Sampel 3</p><p class="list-sub" style="color:var(--primary)">3/6 tahap terisi</p></div></div>
 <div class="spacer"></div>
 </div>
-<div class="fab edit-only" onclick="showScreen('foto_bda')" style="cursor:pointer"><svg class="icn" viewbox="0 0 24 24"><line x1="12" x2="12" y1="5" y2="19"></line><line x1="5" x2="19" y1="12" y2="12"></line></svg></div>
+<div class="fab edit-only" onclick="tambahSampelCoreDrillBaru()" style="cursor:pointer"><svg class="icn" viewbox="0 0 24 24"><line x1="12" x2="12" y1="5" y2="19"></line><line x1="5" x2="19" y1="12" y2="12"></line></svg></div>
+</div>
+<div class="screen" id="screen-cd_titik">
+<div class="statusbar"><span>09:41</span><span><svg class="icn" viewbox="0 0 24 24"><path d="M2 8.5a15 15 0 0120 0M5 12a10 10 0 0114 0M8.5 15.5a5 5 0 017 0"></path><circle cx="12" cy="19" fill="currentColor" r="1" stroke="none"></circle></svg> <svg class="icn" viewbox="0 0 24 24"><rect height="10" rx="2" width="17" x="2" y="7"></rect><line x1="21" x2="21" y1="10" y2="14"></line><rect fill="currentColor" height="5" stroke="none" width="9" x="4.5" y="9.5"></rect></svg></span></div>
+<div class="appbar" onclick="showScreen('cd_daftar_langkah')" style="cursor:pointer;display:flex;align-items:center"><svg class="icn" viewbox="0 0 24 24"><line x1="19" x2="5" y1="12" y2="12"></line><polyline points="12,19 5,12 12,5"></polyline></svg><span class="title">Penentuan Titik Sampling</span><span class="badge badge-success" style="font-size:8.5px;white-space:nowrap;padding:3px 8px;flex-shrink:0;margin-left:auto"><svg class="icn" style="font-size:9px;flex-shrink:0" viewBox="0 0 24 24"><path d="M12 21s7-6.5 7-12a7 7 0 10-14 0c0 5.5 7 12 7 12z"></path><circle cx="12" cy="9" r="2.3"></circle></svg>GPS terkunci</span></div>
+<div class="content">
+<div class="card-lg"><p class="qtitle">Tentukan titik pengambilan sampel</p><p class="qsub">Jarak wajar antar titik: 50-100m sepanjang segmen</p></div>
+<div><p class="label">Lokasi / titik Km</p><input class="field" id="cdTitikKm" placeholder="mis. Km 12+150"/></div>
+<div><p class="label">Foto titik</p>
+<div style="display:flex;flex-wrap:wrap;gap:10px" id="thumbRowCd1"><div class="thumb-add" onclick="bukaKameraUntuk('thumbRowCd1', 'cd_titik')" style="cursor:pointer;width:70px;height:70px;flex-direction:column;font-size:9px;text-align:center;flex-shrink:0"><svg class="icn" style="font-size:14px;margin-bottom:2px" viewBox="0 0 24 24"><path d="M4 8h4l1.5-2.2h5L16 8h4v11H4V8z"></path><circle cx="12" cy="13.3" r="3.2"></circle></svg>Tambah foto</div></div>
+</div>
+<div class="spacer"></div>
+</div>
+<div class="footer-btn">
+<button class="btn btn-primary" id="tombolLanjutCd1" onclick="simpanLangkahCd('cd_titik')" style="width:100%">Simpan</button>
+<p class="hint"><svg class="icn" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"></circle><polyline points="12,7 12,12 15.5,14"></polyline></svg> Tersimpan lokal</p>
+</div>
+</div>
+<div class="screen" id="screen-cd_bor">
+<div class="statusbar"><span>09:41</span><span><svg class="icn" viewbox="0 0 24 24"><path d="M2 8.5a15 15 0 0120 0M5 12a10 10 0 0114 0M8.5 15.5a5 5 0 017 0"></path><circle cx="12" cy="19" fill="currentColor" r="1" stroke="none"></circle></svg> <svg class="icn" viewbox="0 0 24 24"><rect height="10" rx="2" width="17" x="2" y="7"></rect><line x1="21" x2="21" y1="10" y2="14"></line><rect fill="currentColor" height="5" stroke="none" width="9" x="4.5" y="9.5"></rect></svg></span></div>
+<div class="appbar" onclick="showScreen('cd_daftar_langkah')" style="cursor:pointer;display:flex;align-items:center"><svg class="icn" viewbox="0 0 24 24"><line x1="19" x2="5" y1="12" y2="12"></line><polyline points="12,19 5,12 12,5"></polyline></svg><span class="title">Pengeboran Core Drill</span><span class="badge badge-success" style="font-size:8.5px;white-space:nowrap;padding:3px 8px;flex-shrink:0;margin-left:auto"><svg class="icn" style="font-size:9px;flex-shrink:0" viewBox="0 0 24 24"><path d="M12 21s7-6.5 7-12a7 7 0 10-14 0c0 5.5 7 12 7 12z"></path><circle cx="12" cy="9" r="2.3"></circle></svg>GPS terkunci</span></div>
+<div class="content">
+<div class="card-lg"><p class="qtitle">Proses pengeboran</p><p class="qsub">Catat diameter bor yang dipakai</p></div>
+<div><p class="label">Diameter bor</p>
+<div class="radio-row card-sel" id="cdBor4" onclick="pilihDiameterBor(4)" style="cursor:pointer"><span class="radio on"></span><span class="radio-label">4 inci</span></div>
+<div class="radio-row" id="cdBor6" onclick="pilihDiameterBor(6)" style="cursor:pointer"><span class="radio"></span><span class="radio-label">6 inci</span></div>
+</div>
+<div><p class="label">Foto proses</p>
+<div style="display:flex;flex-wrap:wrap;gap:10px" id="thumbRowCd2"><div class="thumb-add" onclick="bukaKameraUntuk('thumbRowCd2', 'cd_bor')" style="cursor:pointer;width:70px;height:70px;flex-direction:column;font-size:9px;text-align:center;flex-shrink:0"><svg class="icn" style="font-size:14px;margin-bottom:2px" viewBox="0 0 24 24"><path d="M4 8h4l1.5-2.2h5L16 8h4v11H4V8z"></path><circle cx="12" cy="13.3" r="3.2"></circle></svg>Tambah foto</div></div>
+</div>
+<div class="spacer"></div>
+</div>
+<div class="footer-btn">
+<button class="btn btn-primary" id="tombolLanjutCd2" onclick="simpanLangkahCd('cd_bor')" style="width:100%">Simpan</button>
+<p class="hint"><svg class="icn" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"></circle><polyline points="12,7 12,12 15.5,14"></polyline></svg> Tersimpan lokal</p>
+</div>
+</div>
+<div class="screen" id="screen-cd_briket">
+<div class="statusbar"><span>09:41</span><span><svg class="icn" viewbox="0 0 24 24"><path d="M2 8.5a15 15 0 0120 0M5 12a10 10 0 0114 0M8.5 15.5a5 5 0 017 0"></path><circle cx="12" cy="19" fill="currentColor" r="1" stroke="none"></circle></svg> <svg class="icn" viewbox="0 0 24 24"><rect height="10" rx="2" width="17" x="2" y="7"></rect><line x1="21" x2="21" y1="10" y2="14"></line><rect fill="currentColor" height="5" stroke="none" width="9" x="4.5" y="9.5"></rect></svg></span></div>
+<div class="appbar" onclick="showScreen('cd_daftar_langkah')" style="cursor:pointer;display:flex;align-items:center"><svg class="icn" viewbox="0 0 24 24"><line x1="19" x2="5" y1="12" y2="12"></line><polyline points="12,19 5,12 12,5"></polyline></svg><span class="title">Pengangkatan Briket</span><span class="badge badge-success" style="font-size:8.5px;white-space:nowrap;padding:3px 8px;flex-shrink:0;margin-left:auto"><svg class="icn" style="font-size:9px;flex-shrink:0" viewBox="0 0 24 24"><path d="M12 21s7-6.5 7-12a7 7 0 10-14 0c0 5.5 7 12 7 12z"></path><circle cx="12" cy="9" r="2.3"></circle></svg>GPS terkunci</span></div>
+<div class="content">
+<div class="card-lg"><p class="qtitle">Briket hasil pengeboran</p><p class="qsub">Foto briket utuh sebelum dibawa ke laboratorium</p></div>
+<div><p class="label">Foto hasil</p>
+<div style="display:flex;flex-wrap:wrap;gap:10px" id="thumbRowCd3"><div class="thumb-add" onclick="bukaKameraUntuk('thumbRowCd3', 'cd_briket')" style="cursor:pointer;width:70px;height:70px;flex-direction:column;font-size:9px;text-align:center;flex-shrink:0"><svg class="icn" style="font-size:14px;margin-bottom:2px" viewBox="0 0 24 24"><path d="M4 8h4l1.5-2.2h5L16 8h4v11H4V8z"></path><circle cx="12" cy="13.3" r="3.2"></circle></svg>Tambah foto</div></div>
+</div>
+<div class="spacer"></div>
+</div>
+<div class="footer-btn">
+<button class="btn btn-primary" id="tombolLanjutCd3" onclick="simpanLangkahCd('cd_briket')" style="width:100%">Simpan</button>
+<p class="hint"><svg class="icn" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"></circle><polyline points="12,7 12,12 15.5,14"></polyline></svg> Tersimpan lokal</p>
+</div>
+</div>
+<div class="screen" id="screen-cd_tebal">
+<div class="statusbar"><span>09:41</span><span><svg class="icn" viewbox="0 0 24 24"><path d="M2 8.5a15 15 0 0120 0M5 12a10 10 0 0114 0M8.5 15.5a5 5 0 017 0"></path><circle cx="12" cy="19" fill="currentColor" r="1" stroke="none"></circle></svg> <svg class="icn" viewbox="0 0 24 24"><rect height="10" rx="2" width="17" x="2" y="7"></rect><line x1="21" x2="21" y1="10" y2="14"></line><rect fill="currentColor" height="5" stroke="none" width="9" x="4.5" y="9.5"></rect></svg></span></div>
+<div class="appbar" onclick="showScreen('cd_daftar_langkah')" style="cursor:pointer;display:flex;align-items:center"><svg class="icn" viewbox="0 0 24 24"><line x1="19" x2="5" y1="12" y2="12"></line><polyline points="12,19 5,12 12,5"></polyline></svg><span class="title">Pengukuran Ketebalan</span><span class="badge badge-success" style="font-size:8.5px;white-space:nowrap;padding:3px 8px;flex-shrink:0;margin-left:auto"><svg class="icn" style="font-size:9px;flex-shrink:0" viewBox="0 0 24 24"><path d="M12 21s7-6.5 7-12a7 7 0 10-14 0c0 5.5 7 12 7 12z"></path><circle cx="12" cy="9" r="2.3"></circle></svg>GPS terkunci</span></div>
+<div class="content">
+<div class="card-lg"><p class="qtitle">Ukur ketebalan briket</p><p class="qsub">Pakai jangka sorong / alat ukur kalibrasi</p></div>
+<div><p class="label">Ketebalan (cm)</p><input class="field" id="cdTebalCm" type="number" placeholder="mis. 7.5"/></div>
+<div><p class="label">Foto alat ukur</p>
+<div style="display:flex;flex-wrap:wrap;gap:10px" id="thumbRowCd4"><div class="thumb-add" onclick="bukaKameraUntuk('thumbRowCd4', 'cd_tebal')" style="cursor:pointer;width:70px;height:70px;flex-direction:column;font-size:9px;text-align:center;flex-shrink:0"><svg class="icn" style="font-size:14px;margin-bottom:2px" viewBox="0 0 24 24"><path d="M4 8h4l1.5-2.2h5L16 8h4v11H4V8z"></path><circle cx="12" cy="13.3" r="3.2"></circle></svg>Tambah foto</div></div>
+</div>
+<div class="spacer"></div>
+</div>
+<div class="footer-btn">
+<button class="btn btn-primary" id="tombolLanjutCd4" onclick="simpanLangkahCd('cd_tebal')" style="width:100%">Simpan</button>
+<p class="hint"><svg class="icn" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"></circle><polyline points="12,7 12,12 15.5,14"></polyline></svg> Tersimpan lokal</p>
+</div>
+</div>
+<div class="screen" id="screen-cd_kepadatan">
+<div class="statusbar"><span>09:41</span><span><svg class="icn" viewbox="0 0 24 24"><path d="M2 8.5a15 15 0 0120 0M5 12a10 10 0 0114 0M8.5 15.5a5 5 0 017 0"></path><circle cx="12" cy="19" fill="currentColor" r="1" stroke="none"></circle></svg> <svg class="icn" viewbox="0 0 24 24"><rect height="10" rx="2" width="17" x="2" y="7"></rect><line x1="21" x2="21" y1="10" y2="14"></line><rect fill="currentColor" height="5" stroke="none" width="9" x="4.5" y="9.5"></rect></svg></span></div>
+<div class="appbar" onclick="showScreen('cd_daftar_langkah')" style="cursor:pointer"><svg class="icn" viewbox="0 0 24 24"><line x1="19" x2="5" y1="12" y2="12"></line><polyline points="12,19 5,12 12,5"></polyline></svg><span class="title">Uji Kepadatan Laboratorium</span></div>
+<div class="content">
+<div class="card-lg"><p class="qtitle">Hasil uji kepadatan</p><p class="qsub">Nilai kepadatan briket dari lab (% terhadap kepadatan maksimum)</p></div>
+<div><p class="label">Kepadatan (%)</p><input class="field" id="cdKepadatanPersen" type="number" placeholder="mis. 97.5"/></div>
+<div><p class="label">Foto hasil</p>
+<div style="display:flex;flex-wrap:wrap;gap:10px" id="thumbRowCd5"><div class="thumb-add" onclick="bukaKameraUntuk('thumbRowCd5', 'cd_kepadatan')" style="cursor:pointer;width:70px;height:70px;flex-direction:column;font-size:9px;text-align:center;flex-shrink:0"><svg class="icn" style="font-size:14px;margin-bottom:2px" viewBox="0 0 24 24"><path d="M4 8h4l1.5-2.2h5L16 8h4v11H4V8z"></path><circle cx="12" cy="13.3" r="3.2"></circle></svg>Tambah foto</div></div>
+</div>
+<div class="spacer"></div>
+</div>
+<div class="footer-btn">
+<button class="btn btn-primary" id="tombolLanjutCd5" onclick="simpanLangkahCd('cd_kepadatan')" style="width:100%">Simpan</button>
+<p class="hint"><svg class="icn" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"></circle><polyline points="12,7 12,12 15.5,14"></polyline></svg> Tersimpan lokal</p>
+</div>
+</div>
+<div class="screen" id="screen-cd_tutup">
+<div class="statusbar"><span>09:41</span><span><svg class="icn" viewbox="0 0 24 24"><path d="M2 8.5a15 15 0 0120 0M5 12a10 10 0 0114 0M8.5 15.5a5 5 0 017 0"></path><circle cx="12" cy="19" fill="currentColor" r="1" stroke="none"></circle></svg> <svg class="icn" viewbox="0 0 24 24"><rect height="10" rx="2" width="17" x="2" y="7"></rect><line x1="21" x2="21" y1="10" y2="14"></line><rect fill="currentColor" height="5" stroke="none" width="9" x="4.5" y="9.5"></rect></svg></span></div>
+<div class="appbar" onclick="showScreen('cd_daftar_langkah')" style="cursor:pointer;display:flex;align-items:center"><svg class="icn" viewbox="0 0 24 24"><line x1="19" x2="5" y1="12" y2="12"></line><polyline points="12,19 5,12 12,5"></polyline></svg><span class="title">Penutupan Bekas Lubang</span><span class="badge badge-success" style="font-size:8.5px;white-space:nowrap;padding:3px 8px;flex-shrink:0;margin-left:auto"><svg class="icn" style="font-size:9px;flex-shrink:0" viewBox="0 0 24 24"><path d="M12 21s7-6.5 7-12a7 7 0 10-14 0c0 5.5 7 12 7 12z"></path><circle cx="12" cy="9" r="2.3"></circle></svg>GPS terkunci</span></div>
+<div class="content">
+<div class="card-lg"><p class="qtitle">Dokumentasi penutupan lubang</p><p class="qsub">Wajib 3 foto berkategori — sebelum, saat, dan sesudah penutupan</p></div>
+<p class="label">Before</p>
+<div class="thumb-row" id="thumbRowCd6Before"><div class="thumb-add" onclick="bukaKameraUntuk('thumbRowCd6Before', 'cd_tutup')" style="cursor:pointer;width:70px;flex-direction:column;font-size:9px;text-align:center"><svg class="icn" style="font-size:14px;margin-bottom:2px" viewbox="0 0 24 24"><path d="M4 8h4l1.5-2.2h5L16 8h4v11H4V8z"></path><circle cx="12" cy="13.3" r="3.2"></circle></svg>Tambah foto</div></div>
+<p class="label">During</p>
+<div class="thumb-row" id="thumbRowCd6During"><div class="thumb-add" id="tombolTambahCd6During" style="width:70px;flex-direction:column;font-size:9px;text-align:center;opacity:.4"><svg class="icn" style="font-size:14px;margin-bottom:2px" viewbox="0 0 24 24"><path d="M4 8h4l1.5-2.2h5L16 8h4v11H4V8z"></path><circle cx="12" cy="13.3" r="3.2"></circle></svg>Tambah foto</div></div>
+<p style="font-size:9px;color:var(--outline);margin:4px 0 0" id="pesanCd6During">Isi setelah "Before" tersimpan</p>
+<p class="label">After</p>
+<div class="thumb-row" id="thumbRowCd6After"><div class="thumb-add" id="tombolTambahCd6After" style="width:70px;flex-direction:column;font-size:9px;text-align:center;opacity:.4"><svg class="icn" style="font-size:14px;margin-bottom:2px" viewbox="0 0 24 24"><path d="M4 8h4l1.5-2.2h5L16 8h4v11H4V8z"></path><circle cx="12" cy="13.3" r="3.2"></circle></svg>Tambah foto</div></div>
+<p style="font-size:9px;color:var(--outline);margin:4px 0 0" id="pesanCd6After">Isi setelah "During" tersimpan</p>
+<div class="spacer"></div>
+</div>
+<div class="footer-btn">
+<button class="btn btn-primary disabled" id="tombolSimpanCoreDrill" onclick="simpanLangkahCd('cd_tutup')" style="width:100%">Simpan sampel</button>
+</div>
+</div>
+<div class="screen" id="screen-cd_ringkasan">
+<div class="statusbar"><span>09:41</span><span><svg class="icn" viewbox="0 0 24 24"><path d="M2 8.5a15 15 0 0120 0M5 12a10 10 0 0114 0M8.5 15.5a5 5 0 017 0"></path><circle cx="12" cy="19" fill="currentColor" r="1" stroke="none"></circle></svg> <svg class="icn" viewbox="0 0 24 24"><rect height="10" rx="2" width="17" x="2" y="7"></rect><line x1="21" x2="21" y1="10" y2="14"></line><rect fill="currentColor" height="5" stroke="none" width="9" x="4.5" y="9.5"></rect></svg></span></div>
+<div class="appbar" onclick="showScreen('sampel_core_drill')" style="cursor:pointer"><svg class="icn" viewbox="0 0 24 24"><line x1="19" x2="5" y1="12" y2="12"></line><polyline points="12,19 5,12 12,5"></polyline></svg><span class="title" id="crNomorSampel">Sampel 1</span></div>
+<p class="appbar sub" style="margin-left:24px" id="crKmSampel">Km 12+050</p>
+<div class="content">
+<div class="card-lg" style="background:var(--success-container)">
+<p style="font-size:11px;font-weight:600;color:var(--on-success);margin:0">Sampel lengkap — 6/6 langkah</p>
+</div>
+<div style="margin-top:12px">
+<p class="label">Diameter bor</p>
+<p style="font-size:12px;margin:0 0 10px" id="crDiameter">4 inci</p>
+<p class="label">Ketebalan</p>
+<p style="font-size:12px;margin:0 0 10px" id="crTebal">7.5 cm</p>
+<p class="label">Kepadatan laboratorium</p>
+<p style="font-size:12px;margin:0 0 10px" id="crKepadatan">97.5%</p>
+<p class="label">Penutupan lubang</p>
+<p style="font-size:12px;margin:0" id="crTutup">3/3 foto (Before/During/After) tersimpan</p>
+</div>
+<div class="spacer"></div>
+</div>
+</div>
+<div class="screen" id="screen-cd_daftar_langkah">
+<div class="statusbar"><span>09:41</span><span><svg class="icn" viewbox="0 0 24 24"><path d="M2 8.5a15 15 0 0120 0M5 12a10 10 0 0114 0M8.5 15.5a5 5 0 017 0"></path><circle cx="12" cy="19" fill="currentColor" r="1" stroke="none"></circle></svg> <svg class="icn" viewbox="0 0 24 24"><rect height="10" rx="2" width="17" x="2" y="7"></rect><line x1="21" x2="21" y1="10" y2="14"></line><rect fill="currentColor" height="5" stroke="none" width="9" x="4.5" y="9.5"></rect></svg></span></div>
+<div class="appbar" onclick="showScreen('sampel_core_drill')" style="cursor:pointer"><svg class="icn" viewbox="0 0 24 24"><line x1="19" x2="5" y1="12" y2="12"></line><polyline points="12,19 5,12 12,5"></polyline></svg><span class="title" id="cdlNomorSampel">Sampel 1</span></div>
+<p class="appbar sub" style="margin-left:24px" id="cdlKmSampel">&nbsp;</p>
+<div class="content">
+<div class="card-lg"><p class="qtitle">6 tahap independen</p><p class="qsub">Isi kapan saja sesuai kondisi lapangan &mdash; tidak harus berurutan. Uji kepadatan laboratorium wajar diisi belakangan setelah hasil lab keluar.</p></div>
+<div id="cdlDaftarTahap"></div>
+<div class="spacer"></div>
+</div>
 </div>
 <div class="screen" id="screen-foto_bda">
 <div class="statusbar"><span>09:41</span><span><svg class="icn" viewbox="0 0 24 24"><path d="M2 8.5a15 15 0 0120 0M5 12a10 10 0 0114 0M8.5 15.5a5 5 0 017 0"></path><circle cx="12" cy="19" fill="currentColor" r="1" stroke="none"></circle></svg> <svg class="icn" viewbox="0 0 24 24"><rect height="10" rx="2" width="17" x="2" y="7"></rect><line x1="21" x2="21" y1="10" y2="14"></line><rect fill="currentColor" height="5" stroke="none" width="9" x="4.5" y="9.5"></rect></svg></span></div>
@@ -766,11 +900,11 @@ Masuk dengan Google
 <div class="card-lg"><p class="qtitle">Foto penutupan pekerjaan</p><p class="qsub">Wajib 3 foto sebagai lampiran backup tagihan — sebelum, saat, dan sesudah pekerjaan</p></div>
 <div>
 <p class="label">Before</p>
-<div class="thumb-row"><div class="thumb" style="background:#5DCAA5"><span class="x">×</span></div></div>
+<div class="thumb-row" id="thumbRowBefore"><div class="thumb" style="background:#5DCAA5"><span class="x" onclick="hapusFotoBda(event, 'before')" style="cursor:pointer">×</span></div></div>
 </div>
 <div>
 <p class="label">During</p>
-<div class="thumb-row" id="thumbRowDuring"><div class="thumb-add" onclick="tambahFotoBda('during')" style="cursor:pointer;width:70px;flex-direction:column;font-size:9px;text-align:center"><svg class="icn" style="font-size:14px;margin-bottom:2px" viewbox="0 0 24 24"><path d="M4 8h4l1.5-2.2h5L16 8h4v11H4V8z"></path><circle cx="12" cy="13.3" r="3.2"></circle></svg>Tambah foto</div></div>
+<div class="thumb-row" id="thumbRowDuring"><div class="thumb-add" onclick="bukaKameraUntuk('thumbRowDuring', 'foto_bda')" style="cursor:pointer;width:70px;flex-direction:column;font-size:9px;text-align:center"><svg class="icn" style="font-size:14px;margin-bottom:2px" viewbox="0 0 24 24"><path d="M4 8h4l1.5-2.2h5L16 8h4v11H4V8z"></path><circle cx="12" cy="13.3" r="3.2"></circle></svg>Tambah foto</div></div>
 </div>
 <div>
 <p class="label">After</p>
@@ -846,14 +980,14 @@ Masuk dengan Google
 <p style="font-size:11px;margin:0"><b style="color:var(--on-success)">Disetujui</b> · 15 Jul 2026, 14:20</p>
 </div>
 <p class="label">Status yang diusulkan</p>
-<div class="radio-row"><span class="radio"></span><p style="font-size:11px;margin:0">Disetujui</p></div>
-<div class="radio-row"><span class="radio"></span><p style="font-size:11px;margin:0">Disetujui dengan catatan</p></div>
-<div class="radio-row card-sel"><span class="radio on"></span><div><p style="font-size:11px;font-weight:600;margin:0;color:var(--on-error)">Ditolak</p></div></div>
+<div class="radio-row" id="koreksiStatusDisetujui" onclick="pilihStatusKoreksi(this, 'disetujui')" style="cursor:pointer"><span class="radio"></span><p style="font-size:11px;margin:0">Disetujui</p></div>
+<div class="radio-row" id="koreksiStatusCatatan" onclick="pilihStatusKoreksi(this, 'catatan')" style="cursor:pointer"><span class="radio"></span><p style="font-size:11px;margin:0">Disetujui dengan catatan</p></div>
+<div class="radio-row card-sel" id="koreksiStatusDitolak" onclick="pilihStatusKoreksi(this, 'ditolak')" style="cursor:pointer"><span class="radio on"></span><div><p style="font-size:11px;font-weight:600;margin:0;color:var(--on-error)">Ditolak</p></div></div>
 <div><p class="label">Catatan yang diusulkan</p>
-<div class="field" style="min-height:32px;text-align:left;padding-top:6px;color:var(--on-surface-variant);font-size:10.5px;line-height:1.3">Setelah ditinjau ulang, agregat masih terlalu kotor</div>
+<textarea class="field" id="inputCatatanKoreksi" style="min-height:32px;font-size:10.5px;line-height:1.3">Setelah ditinjau ulang, agregat masih terlalu kotor</textarea>
 </div>
 <div><p class="label">Alasan koreksi (wajib)</p>
-<div class="field" style="min-height:40px;text-align:left;padding-top:6px;color:var(--on-surface-variant);font-size:10.5px;line-height:1.3">Salah pencet saat menyetujui, seharusnya ditolak menunggu pencucian ulang</div>
+<textarea class="field" id="inputAlasanKoreksi" oninput="cekValidasiAjukanKoreksi()" style="min-height:40px;font-size:10.5px;line-height:1.3">Salah pencet saat menyetujui, seharusnya ditolak menunggu pencucian ulang</textarea>
 </div>
 <div style="background:var(--warning-container);border-radius:10px;padding:8px 10px;margin-top:2px">
 <p style="font-size:10px;color:var(--on-warning);margin:0;line-height:1.4">Permintaan ini akan ditinjau admin P2JN sebelum keputusan benar-benar berubah — tidak langsung menimpa status saat ini.</p>
@@ -862,15 +996,15 @@ Masuk dengan Google
 </div>
 <div class="footer-btn">
 <div class="readonly-badge-qc" style="display:none;background:var(--surface-variant);border-radius:8px;padding:6px 10px;margin-bottom:8px;font-size:9.5px;color:var(--on-surface-variant);text-align:center">Mode baca-saja &mdash; cuma QC yang mengajukan koreksi</div>
-<button class="btn btn-primary edit-only" style="width:100%" onclick="showScreen('daftar_item_mobile')">Ajukan Koreksi</button>
+<button class="btn btn-primary edit-only" id="tombolAjukanKoreksi" onclick="ajukanKoreksiBaru()" style="width:100%">Ajukan Koreksi</button>
 </div>
 </div>
 <div class="screen" id="screen-daftar_row">
 <div class="statusbar"><span>09:41</span><span><svg class="icn" viewbox="0 0 24 24"><path d="M2 8.5a15 15 0 0120 0M5 12a10 10 0 0114 0M8.5 15.5a5 5 0 017 0"></path><circle cx="12" cy="19" fill="currentColor" r="1" stroke="none"></circle></svg> <svg class="icn" viewbox="0 0 24 24"><rect height="10" rx="2" width="17" x="2" y="7"></rect><line x1="21" x2="21" y1="10" y2="14"></line><rect fill="currentColor" height="5" stroke="none" width="9" x="4.5" y="9.5"></rect></svg></span></div>
 <div class="appbar" onclick="showScreen('pelaksanaan')" style="cursor:pointer"><svg class="icn" viewbox="0 0 24 24"><line x1="19" x2="5" y1="12" y2="12"></line><polyline points="12,19 5,12 12,5"></polyline></svg><span class="title">Request of work</span></div>
 <div class="content">
-<div class="list-row"><div class="leading" style="background:var(--success-container)"><svg class="icn" fill="none" style="color:var(--on-success)" viewbox="0 0 24 24"><polyline points="4,12 9,17 20,6"></polyline></svg></div><div class="list-main"><p class="list-title">RoW-002</p><p class="list-sub">24 Jul - Segmen 3</p></div><span class="badge badge-success">Disetujui</span></div>
-<div class="list-row" onclick="showScreen('detail_row_mobile')" style="cursor:pointer"><div class="leading" style="background:var(--warning-container)"><svg class="icn" style="color:var(--on-warning)" viewbox="0 0 24 24"><circle cx="12" cy="12" r="9"></circle><polyline points="12,7 12,12 15.5,14"></polyline></svg></div><div class="list-main"><p class="list-title">RoW-001</p><p class="list-sub" style="color:var(--on-warning)">20 Jul - Segmen 2 · Diajukan terlambat</p></div><span class="badge badge-warning">Menunggu</span></div>
+<div class="list-row" onclick="bukaDetailRowMobile('RoW-002', 'Segmen 3', 'Disetujui')" style="cursor:pointer"><div class="leading" style="background:var(--success-container)"><svg class="icn" fill="none" style="color:var(--on-success)" viewbox="0 0 24 24"><polyline points="4,12 9,17 20,6"></polyline></svg></div><div class="list-main"><p class="list-title">RoW-002</p><p class="list-sub">24 Jul - Segmen 3</p></div><span class="badge badge-success">Disetujui</span></div>
+<div class="list-row" onclick="bukaDetailRowMobile('RoW-001', 'Segmen 2', 'Menunggu')" style="cursor:pointer"><div class="leading" style="background:var(--warning-container)"><svg class="icn" style="color:var(--on-warning)" viewbox="0 0 24 24"><circle cx="12" cy="12" r="9"></circle><polyline points="12,7 12,12 15.5,14"></polyline></svg></div><div class="list-main"><p class="list-title">RoW-001</p><p class="list-sub" style="color:var(--on-warning)">20 Jul - Segmen 2 · Diajukan terlambat</p></div><span class="badge badge-warning">Menunggu</span></div>
 <div class="spacer"></div>
 </div>
 <div class="fab kontraktor-only" onclick="showScreen('form_ajukan_row')" style="cursor:pointer"><svg class="icn" viewbox="0 0 24 24"><line x1="12" x2="12" y1="5" y2="19"></line><line x1="5" x2="19" y1="12" y2="12"></line></svg></div>
@@ -889,12 +1023,16 @@ Masuk dengan Google
 <div class="list-row" style="padding:6px 0"><span class="checkbox" id="cbRow4" onclick="toggleCekDokumen(4)" style="cursor:pointer"></span><span style="font-size:11px;margin-left:9px;color:var(--on-surface-variant)">Jadwal Pelaksanaan (Schedule)</span></div>
 </div>
 <p style="font-size:9px;color:var(--outline);margin:4px 0 10px">Kelima dokumen wajib dicentang (tersedia) sebelum RoW bisa diajukan.</p>
-<div><p class="label">Jadwal pekerjaan</p><input class="field" value="31/07/2026 08:00"/></div>
-<div class="card" style="background:var(--success-container);display:flex;gap:8px;align-items:flex-start">
-<svg class="icn" style="color:var(--on-success);flex-shrink:0;margin-top:1px" viewbox="0 0 24 24"><circle cx="12" cy="12" r="9"></circle><polyline points="12,7 12,12 15.5,14"></polyline></svg>
-<div><p style="font-size:11px;font-weight:600;color:var(--on-success);margin:0">Memenuhi batas waktu pengajuan</p><p style="font-size:9px;color:var(--on-success);margin:2px 0 0">Diajukan 46 jam sebelum jadwal — melebihi batas minimal 1×24 jam</p></div>
+<div><p class="label">Jadwal pekerjaan</p><input class="field" id="inputJadwalRow" oninput="cekValidasiJadwalRow()" placeholder="DD/MM/YYYY HH:MM, mis. 31/07/2026 08:00"/></div>
+<div class="card" id="kartuValidasiJadwal" style="background:var(--surface-variant);display:flex;gap:8px;align-items:flex-start">
+<svg class="icn" id="ikonValidasiJadwal" style="color:var(--outline);flex-shrink:0;margin-top:1px" viewbox="0 0 24 24"><circle cx="12" cy="12" r="9"></circle><line x1="12" x2="12" y1="8" y2="12"></line><circle cx="12" cy="16" fill="currentColor" r="0.7" stroke="none"></circle></svg>
+<div><p style="font-size:11px;font-weight:600;color:var(--outline);margin:0" id="judulValidasiJadwal">Isi jadwal untuk mengecek batas waktu</p><p style="font-size:9px;color:var(--outline);margin:2px 0 0" id="subValidasiJadwal">&nbsp;</p></div>
 </div>
-<p style="font-size:10px;color:var(--primary);font-weight:600;margin:6px 0 0">Ajukan dengan alasan keterlambatan →</p>
+<p style="font-size:10px;color:var(--primary);font-weight:600;margin:6px 0 0;cursor:pointer;display:none" id="linkKeterlambatan" onclick="bukaAlasanKeterlambatan()">Ajukan dengan alasan keterlambatan &rarr;</p>
+<div id="wadahAlasanKeterlambatan" style="display:none;margin-top:6px">
+<p class="label">Alasan keterlambatan</p>
+<textarea class="field" id="inputAlasanKeterlambatan" oninput="cekValidasiAjukanRow()" placeholder="mis. force majeure, kondisi darurat lapangan" style="min-height:50px"></textarea>
+</div>
 <div class="spacer"></div>
 </div>
 <div class="footer-btn"><div class="readonly-badge-kontraktor" style="display:none;background:var(--surface-variant);border-radius:8px;padding:6px 10px;margin-bottom:8px;font-size:9.5px;color:var(--on-surface-variant);text-align:center">Mode baca-saja &mdash; cuma Kontraktor yang mengajukan RoW</div>
@@ -902,22 +1040,22 @@ Masuk dengan Google
 </div>
 <div class="screen" id="screen-inspeksi_row">
 <div class="statusbar"><span>09:41</span><span><svg class="icn" viewbox="0 0 24 24"><path d="M2 8.5a15 15 0 0120 0M5 12a10 10 0 0114 0M8.5 15.5a5 5 0 017 0"></path><circle cx="12" cy="19" fill="currentColor" r="1" stroke="none"></circle></svg> <svg class="icn" viewbox="0 0 24 24"><rect height="10" rx="2" width="17" x="2" y="7"></rect><line x1="21" x2="21" y1="10" y2="14"></line><rect fill="currentColor" height="5" stroke="none" width="9" x="4.5" y="9.5"></rect></svg></span></div>
-<div class="appbar" onclick="showScreen('daftar_row')" style="cursor:pointer"><svg class="icn" viewbox="0 0 24 24"><line x1="19" x2="5" y1="12" y2="12"></line><polyline points="12,19 5,12 12,5"></polyline></svg><span class="title">Inspeksi lapangan RoW</span></div>
+<div class="appbar" onclick="showScreen('detail_row_mobile')" style="cursor:pointer"><svg class="icn" viewbox="0 0 24 24"><line x1="19" x2="5" y1="12" y2="12"></line><polyline points="12,19 5,12 12,5"></polyline></svg><span class="title">Inspeksi lapangan RoW</span></div>
 <p class="appbar sub" style="margin-left:24px">RoW-002 — Segmen 3</p>
 <div class="content">
 <div class="card-lg"><p class="qtitle">Hasil inspeksi lapangan (Joint Inspection)</p><p class="qsub">Dilakukan bersama Konsultan Pengawas dan Kontraktor sebelum pekerjaan dimulai</p></div>
 <div class="readonly-badge-joint" style="display:none;background:var(--surface-variant);border-radius:8px;padding:6px 10px;margin:8px 0;font-size:9.5px;color:var(--on-surface-variant);text-align:center">Mode baca-saja &mdash; cuma Konsultan Pengawas &amp; Kontraktor yang mengisi inspeksi ini</div>
 <div><p class="label">Kesiapan lokasi pekerjaan</p>
-<div class="radio-row card-sel joint-only"><span class="radio on"></span><span class="radio-label">Ya</span></div>
-<div class="radio-row joint-only"><span class="radio"></span><span class="radio-label">Tidak</span></div>
+<div class="radio-row card-sel joint-only" id="insplokasiYa" onclick="pilihRadioInspeksi('lokasi', true)" style="cursor:pointer"><span class="radio on"></span><span class="radio-label">Ya</span></div>
+<div class="radio-row joint-only" id="insplokasiTidak" onclick="pilihRadioInspeksi('lokasi', false)" style="cursor:pointer"><span class="radio"></span><span class="radio-label">Tidak</span></div>
 </div>
 <div><p class="label">Kesiapan material &amp; peralatan</p>
-<div class="radio-row card-sel joint-only"><span class="radio on"></span><span class="radio-label">Ya</span></div>
-<div class="radio-row joint-only"><span class="radio"></span><span class="radio-label">Tidak</span></div>
+<div class="radio-row card-sel joint-only" id="inspmaterialYa" onclick="pilihRadioInspeksi('material', true)" style="cursor:pointer"><span class="radio on"></span><span class="radio-label">Ya</span></div>
+<div class="radio-row joint-only" id="inspmaterialTidak" onclick="pilihRadioInspeksi('material', false)" style="cursor:pointer"><span class="radio"></span><span class="radio-label">Tidak</span></div>
 </div>
 <div><p class="label">Keselamatan &amp; K3 (HSE)</p>
-<div class="radio-row card-sel joint-only"><span class="radio on"></span><span class="radio-label">Ya</span></div>
-<div class="radio-row joint-only"><span class="radio"></span><span class="radio-label">Tidak</span></div>
+<div class="radio-row card-sel joint-only" id="inspk3Ya" onclick="pilihRadioInspeksi('k3', true)" style="cursor:pointer"><span class="radio on"></span><span class="radio-label">Ya</span></div>
+<div class="radio-row joint-only" id="inspk3Tidak" onclick="pilihRadioInspeksi('k3', false)" style="cursor:pointer"><span class="radio"></span><span class="radio-label">Tidak</span></div>
 </div>
 <div><p class="label">Foto lapangan</p>
 <div class="thumb-row"><div class="thumb" style="background:#85B7EB"></div><div class="thumb-add joint-only" style="width:70px;flex-direction:column;font-size:9px;text-align:center"><svg class="icn" style="font-size:14px;margin-bottom:2px" viewbox="0 0 24 24"><path d="M4 8h4l1.5-2.2h5L16 8h4v11H4V8z"></path><circle cx="12" cy="13.3" r="3.2"></circle></svg>Tambah foto</div></div>
@@ -929,30 +1067,40 @@ Masuk dengan Google
 </div>
 <div class="spacer"></div>
 </div>
-<div class="footer-btn"><button class="btn btn-primary joint-only" style="width:100%" onclick="showScreen('daftar_row')">Simpan hasil inspeksi</button></div>
+<div class="footer-btn"><button class="btn btn-primary joint-only" style="width:100%" onclick="showScreen('detail_row_mobile')">Simpan hasil inspeksi</button></div>
 </div>
 <div class="screen" id="screen-detail_row_mobile">
 <div class="statusbar"><span>09:41</span><span><svg class="icn" viewbox="0 0 24 24"><path d="M2 8.5a15 15 0 0120 0M5 12a10 10 0 0114 0M8.5 15.5a5 5 0 017 0"></path><circle cx="12" cy="19" fill="currentColor" r="1" stroke="none"></circle></svg> <svg class="icn" viewbox="0 0 24 24"><rect height="10" rx="2" width="17" x="2" y="7"></rect><line x1="21" x2="21" y1="10" y2="14"></line><rect fill="currentColor" height="5" stroke="none" width="9" x="4.5" y="9.5"></rect></svg></span></div>
-<div class="appbar" onclick="showScreen('daftar_row')" style="cursor:pointer"><svg class="icn" viewbox="0 0 24 24"><line x1="19" x2="5" y1="12" y2="12"></line><polyline points="12,19 5,12 12,5"></polyline></svg><span class="title">RoW-003</span></div>
+<div class="appbar" onclick="showScreen('daftar_row')" style="cursor:pointer"><svg class="icn" viewbox="0 0 24 24"><line x1="19" x2="5" y1="12" y2="12"></line><polyline points="12,19 5,12 12,5"></polyline></svg><span class="title" id="drmNomor">RoW-003</span></div>
 <div class="content">
 <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px">
-<p style="font-size:11px;color:var(--on-surface-variant);margin:0">Segmen 3</p>
-<span class="badge" style="background:var(--warning-container);color:var(--on-warning)">Menunggu</span>
+<p style="font-size:11px;color:var(--on-surface-variant);margin:0" id="drmSegmen">Segmen 3</p>
+<span class="badge" id="drmBadge" style="background:var(--warning-container);color:var(--on-warning)">Menunggu</span>
 </div>
 <div style="background:var(--surface-variant);border-radius:12px;padding:10px 12px;margin-bottom:12px">
 <p style="font-size:10.5px;font-weight:600;margin:0 0 2px">Kelengkapan dokumen</p>
-<p style="font-size:10.5px;color:var(--on-surface-variant);margin:0 0 8px">5/5 — Shop Drawing, JSA/K3, Method Statement, Daftar Material, Jadwal Pelaksanaan</p>
+<p style="font-size:10.5px;color:var(--on-surface-variant);margin:0 0 8px" id="drmKelengkapan">5/5 — Shop Drawing, JSA/K3, Method Statement, Daftar Material, Jadwal Pelaksanaan</p>
 <p style="font-size:10.5px;font-weight:600;margin:0 0 2px">Jadwal pekerjaan</p>
-<p style="font-size:10.5px;color:var(--on-surface-variant);margin:0 0 8px">21 Jul 2026, 07:00</p>
+<p style="font-size:10.5px;color:var(--on-surface-variant);margin:0 0 8px" id="drmJadwal">21 Jul 2026, 07:00</p>
 <p style="font-size:10.5px;font-weight:600;margin:0 0 2px">Diajukan</p>
-<p style="font-size:10.5px;color:var(--on-surface-variant);margin:0">20 Jul 2026, 09:00 — 22 jam sebelum jadwal</p>
+<p style="font-size:10.5px;color:var(--on-surface-variant);margin:0" id="drmDiajukan">20 Jul 2026, 09:00 — 22 jam sebelum jadwal</p>
 </div>
-<p class="label" onclick="showScreen('inspeksi_row')" style="cursor:pointer;text-decoration:underline">Inspeksi lapangan (Joint Inspection) →</p>
-<p style="font-size:11px;margin:0 0 12px">Belum dilakukan — dijadwalkan setelah dokumen lengkap terverifikasi, sebelum pekerjaan dimulai.</p>
-<button class="btn kontraktor-only" style="background:transparent;border:1px solid var(--outline-variant);color:var(--primary);width:100%;margin-bottom:6px" onclick="showScreen('daftar_row')">Ubah jadwal</button>
-<p style="font-size:9px;color:var(--outline);margin:0 0 12px;text-align:center">Tersedia karena inspeksi lapangan belum dilakukan</p>
+<p class="label" onclick="showScreen('inspeksi_row')" style="cursor:pointer;text-decoration:underline" id="drmLinkInspeksi">Inspeksi lapangan (Joint Inspection) →</p>
+<p style="font-size:11px;margin:0 0 12px" id="drmStatusInspeksi">Belum dilakukan — dijadwalkan setelah dokumen lengkap terverifikasi, sebelum pekerjaan dimulai.</p>
+<div id="drmWadahUbahJadwal">
+<button class="btn kontraktor-only" style="background:transparent;border:1px solid var(--outline-variant);color:var(--primary);width:100%;margin-bottom:6px" onclick="bukaUbahJadwalRow()">Ubah jadwal</button>
+</div>
+<p style="font-size:9px;color:var(--outline);margin:0 0 12px;text-align:center" id="drmKeteranganUbahJadwal">Tersedia karena inspeksi lapangan belum dilakukan</p>
 <p class="label">Status persetujuan</p>
-<p style="font-size:11px;margin:0">Menunggu tinjauan Konsultan Pengawas — belum ada keputusan.</p>
+<p style="font-size:11px;margin:0" id="drmStatusPersetujuan">Menunggu tinjauan Konsultan Pengawas — belum ada keputusan.</p>
+<div class="card-lg" onclick="bukaSampelCoreDrillDariRow()" style="background:var(--surface-variant);margin-top:12px;cursor:pointer">
+<p style="font-size:12px;font-weight:600;margin:0 0 2px">Daftar Sampel Core Drill</p>
+<p style="font-size:10px;color:var(--on-surface-variant);margin:0">Verifikasi tebal &amp; kepadatan hasil hampar — tap untuk lihat/tambah sampel</p>
+</div>
+<div class="card-lg" onclick="showScreen('foto_bda')" style="background:var(--surface-variant);margin-top:12px;cursor:pointer">
+<p style="font-size:12px;font-weight:600;margin:0 0 2px">Dokumentasi Penutupan RoW</p>
+<p style="font-size:10px;color:var(--on-surface-variant);margin:0">Foto Before/During/After sebagai lampiran backup tagihan</p>
+</div>
 <div class="spacer"></div>
 </div>
 </div>
@@ -996,7 +1144,7 @@ Masuk dengan Google
     <div></div>
   </div>
   <div style="position:absolute;top:14px;left:14px;right:14px;display:flex;justify-content:space-between;align-items:center">
-    <svg onclick="showScreen('form_item')" style="cursor:pointer;width:22px;height:22px;color:#fff;filter:drop-shadow(0 1px 2px rgba(0,0,0,0.5))" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+    <svg onclick="showScreen(layarKembaliSetelahFoto)" style="cursor:pointer;width:22px;height:22px;color:#fff;filter:drop-shadow(0 1px 2px rgba(0,0,0,0.5))" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
     <span style="color:#fff;font-size:9.5px;background:rgba(0,0,0,0.45);padding:4px 10px;border-radius:100px;white-space:nowrap">Kamera in-app -- bukan galeri</span>
     <span style="width:22px"></span>
   </div>
@@ -1019,57 +1167,101 @@ var statusPengajuan = 'draft';
 var pilihanKeputusan = null;
 var itemPerSection = {
   'Uji kualifikasi material (laboratorium)': [
-    ['1. Analisa Saringan (Gradation Test)', 'Ya', '', 0],
-    ['2. Kebersihan Agregat (Sand Equivalent & Clay Lumps)', 'Ya', '', 0],
-    ['3.1 Uji Abrasi Los Angeles', 'Ya', '', 0],
-    ['3.2 Uji Kepipihan & Kelonjongan', 'Ya', '', 0],
-    ['4. Penyerapan Air & Berat Jenis', 'Ya', '', 0],
-    ['A.1 Uji Halus & Kering', 'Ya', '', 0],
-    ['B.1 Uji Penetrasi (Pen 60/70)', 'Ya', '', 0],
-    ['B.2 Uji Titik Lembek (Softening Point)', 'Ya', '', 0],
-    ['B.3 Uji Daktilitas (Ductility Test)', 'Ya', '', 0]
+    ['1. Analisa Saringan (Gradation Test)', 'Ya', '', []],
+    ['2. Kebersihan Agregat (Sand Equivalent & Clay Lumps)', 'Ya', '', []],
+    ['3.1 Uji Abrasi Los Angeles', 'Ya', '', []],
+    ['3.2 Uji Kepipihan & Kelonjongan', 'Ya', '', []],
+    ['4. Penyerapan Air & Berat Jenis', 'Ya', '', []],
+    ['A.1 Uji Halus & Kering', 'Ya', '', []],
+    ['B.1 Uji Penetrasi (Pen 60/70)', 'Ya', '', []],
+    ['B.2 Uji Titik Lembek (Softening Point)', 'Ya', '', []],
+    ['B.3 Uji Daktilitas (Ductility Test)', 'Ya', '', []]
   ],
   'Perancangan formula campuran (Mix Design)': [
-    ['1. Prasyarat Material', 'Ya', '', 0],
-    ['2. Penyusunan Design Mix Formula (DMF)', 'Ya', '', 0],
-    ['3.a Pembuatan Briket Contoh', 'Ya', '', 0],
-    ['Nilai Stabilitas (Stability)', 'Ya', '', 0],
-    ['Nilai Lelehan (Flow)', 'Ya', '', 0],
-    ['Rongga dalam Campuran (VIM)', 'Tidak', '', 0],
-    ['Rongga dalam Agregat (VMA)', 'Ya', '', 0],
-    ['Rongga Terisi Aspal (VFA)', 'Ya', '', 0],
-    ['4. Penetapan Kadar Aspal Optimum (KAO)', 'Ya', '', 0],
-    ['5. Penerbitan Dokumen DMF', 'Belum diperiksa', '', 0]
+    ['1. Prasyarat Material', 'Ya', '', []],
+    ['2. Penyusunan Design Mix Formula (DMF)', 'Ya', '', []],
+    ['3.a Pembuatan Briket Contoh', 'Ya', '', []],
+    ['Nilai Stabilitas (Stability)', 'Ya', '', []],
+    ['Nilai Lelehan (Flow)', 'Ya', '', []],
+    ['Rongga dalam Campuran (VIM)', 'Tidak', '', []],
+    ['Rongga dalam Agregat (VMA)', 'Ya', '', []],
+    ['Rongga Terisi Aspal (VFA)', 'Ya', '', []],
+    ['4. Penetapan Kadar Aspal Optimum (KAO)', 'Ya', '', []],
+    ['5. Penerbitan Dokumen DMF', 'Belum diperiksa', '', []]
   ],
   'Kalibrasi alat & uji coba pencampuran (JMF)': [
-    ['1.a Kalibrasi Cold Bin', 'Ya', '', 0],
-    ['1.b Kalibrasi Timbangan (Scales Calibration)', 'Ya', '', 0],
-    ['2. Pengujian Agregat Panas (Hot Bin Screen)', 'Ya', '', 0],
-    ['3.a Produksi Batch Uji Coba', 'Belum diperiksa', '', 0],
-    ['3.b Pengujian Marshall Ulang', 'Belum diperiksa', '', 0],
-    ['3.c Pengesahan Dokumen JMF', 'Belum diperiksa', '', 0]
+    ['1.a Kalibrasi Cold Bin', 'Ya', '', []],
+    ['1.b Kalibrasi Timbangan (Scales Calibration)', 'Ya', '', []],
+    ['2. Pengujian Agregat Panas (Hot Bin Screen)', 'Ya', '', []],
+    ['3.a Produksi Batch Uji Coba', 'Belum diperiksa', '', []],
+    ['3.b Pengujian Marshall Ulang', 'Belum diperiksa', '', []],
+    ['3.c Pengesahan Dokumen JMF', 'Belum diperiksa', '', []]
   ],
   'Pekerjaan penghamparan aspal hotmix': [
-    ['1.a Pemeriksaan Bahan Baku', 'Ya', '', 0],
-    ['1.b Pengeringan Agregat', 'Ya', '', 0],
-    ['1.c Pencampuran (Mixing)', 'Ya', '', 0],
-    ['1.d Pemeriksaan Suhu Hotmix', 'Ya', '', 0],
-    ['2.a Persiapan Bak Truk', 'Ya', '', 0],
-    ['2.b Penutupan Terpal', 'Ya', '', 0],
-    ['3.a Pembersihan Permukaan', 'Ya', '', 0],
-    ['3.b Penyemprotan Perekat', 'Ya', '', 0],
-    ['3.c Waktu Pengeringan (Curing Time)', 'Ya', '', 0],
-    ['4.a Setting Elevasi & Ketebalan', 'Ya', '', 0],
-    ['4.b Penuangan ke Hopper', 'Ya', '', 0],
-    ['4.c Kecepatan & Suhu Hampar', 'Tidak', '', 0],
-    ['5.a Breakdown Rolling (Awal)', 'Ya', '', 0],
-    ['5.b Secondary Rolling (Antara)', 'Ya', '', 0],
-    ['5.c Final Rolling (Akhir)', 'Belum diperiksa', '', 0],
-    ['6.a Masa Pendinginan', 'Belum diperiksa', '', 0]
+    ['1.a Pemeriksaan Bahan Baku', 'Ya', '', []],
+    ['1.b Pengeringan Agregat', 'Ya', '', []],
+    ['1.c Pencampuran (Mixing)', 'Ya', '', []],
+    ['1.d Pemeriksaan Suhu Hotmix', 'Ya', '', []],
+    ['2.a Persiapan Bak Truk', 'Ya', '', []],
+    ['2.b Penutupan Terpal', 'Ya', '', []],
+    ['3.a Pembersihan Permukaan', 'Ya', '', []],
+    ['3.b Penyemprotan Perekat', 'Ya', '', []],
+    ['3.c Waktu Pengeringan (Curing Time)', 'Ya', '', []],
+    ['4.a Setting Elevasi & Ketebalan', 'Ya', '', []],
+    ['4.b Penuangan ke Hopper', 'Ya', '', []],
+    ['4.c Kecepatan & Suhu Hampar', 'Tidak', '', []],
+    ['5.a Breakdown Rolling (Awal)', 'Ya', '', []],
+    ['5.b Secondary Rolling (Antara)', 'Ya', '', []],
+    ['5.c Final Rolling (Akhir)', 'Belum diperiksa', '', []],
+    ['6.a Masa Pendinginan', 'Belum diperiksa', '', []]
   ]
 };
+var wadahFotoTujuan = 'thumbRow';
+var layarKembaliSetelahFoto = 'form_item';
+function bukaKameraUntuk(idWadah, layarKembali) {
+  wadahFotoTujuan = idWadah;
+  layarKembaliSetelahFoto = layarKembali;
+  showScreen('camera_view');
+}
 var itemAktifNama = null;
 var itemAktifSection = null;
+function pilihStatusKoreksi(el, status) {
+  var semua = ['koreksiStatusDisetujui', 'koreksiStatusCatatan', 'koreksiStatusDitolak'];
+  semua.forEach(function(id) {
+    var row = document.getElementById(id);
+    row.classList.remove('card-sel');
+    row.querySelector('.radio').classList.remove('on');
+  });
+  el.classList.add('card-sel');
+  el.querySelector('.radio').classList.add('on');
+}
+function cekValidasiAjukanKoreksi() {
+  var alasan = document.getElementById('inputAlasanKoreksi');
+  var tombol = document.getElementById('tombolAjukanKoreksi');
+  var terisi = alasan && alasan.value.trim().length > 0;
+  tombol.disabled = !terisi;
+  tombol.style.opacity = terisi ? '1' : '.5';
+  tombol.style.cursor = terisi ? 'pointer' : 'not-allowed';
+}
+function ajukanKoreksiBaru() {
+  if (document.getElementById('tombolAjukanKoreksi').disabled) { return; }
+  showScreen('daftar_item_mobile');
+}
+function pilihRadioInspeksi(kode, jadiYa) {
+  var elYa = document.getElementById('insp' + kode + 'Ya');
+  var elTidak = document.getElementById('insp' + kode + 'Tidak');
+  if (jadiYa) {
+    elYa.classList.add('card-sel');
+    elYa.querySelector('.radio').classList.add('on');
+    elTidak.classList.remove('card-sel');
+    elTidak.querySelector('.radio').classList.remove('on');
+  } else {
+    elTidak.classList.add('card-sel');
+    elTidak.querySelector('.radio').classList.add('on');
+    elYa.classList.remove('card-sel');
+    elYa.querySelector('.radio').classList.remove('on');
+  }
+}
 function pilihRadioSampel(el, idSelf, idPasangan) {
   var pasangan = document.getElementById(idPasangan);
   el.classList.add('card-sel');
@@ -1109,38 +1301,97 @@ function toggleCekDokumen(i) {
   cb.classList.toggle('on');
   cekValidasiAjukanRow();
 }
+function cekValidasiJadwalRow() {
+  var input = document.getElementById('inputJadwalRow');
+  var kartu = document.getElementById('kartuValidasiJadwal');
+  var ikon = document.getElementById('ikonValidasiJadwal');
+  var judul = document.getElementById('judulValidasiJadwal');
+  var sub = document.getElementById('subValidasiJadwal');
+  var link = document.getElementById('linkKeterlambatan');
+  var nilai = input.value.trim();
+
+  var cocok = nilai.match(/^(\d{1,2})\/(\d{1,2})\/(\d{4})\s+(\d{1,2}):(\d{2})$/);
+  if (!cocok) {
+    kartu.style.background = 'var(--surface-variant)';
+    ikon.style.color = 'var(--outline)';
+    judul.style.color = 'var(--outline)';
+    judul.textContent = nilai ? 'Format jadwal tidak dikenali (DD/MM/YYYY HH:MM)' : 'Isi jadwal untuk mengecek batas waktu';
+    sub.textContent = ' ';
+    link.style.display = 'none';
+    cekValidasiAjukanRow();
+    return;
+  }
+
+  var jadwal = new Date(parseInt(cocok[3]), parseInt(cocok[2]) - 1, parseInt(cocok[1]), parseInt(cocok[4]), parseInt(cocok[5]));
+  var sekarang = new Date();
+  var selisihJam = Math.round((jadwal - sekarang) / 3600000);
+
+  if (selisihJam >= 24) {
+    kartu.style.background = 'var(--success-container)';
+    ikon.style.color = 'var(--on-success)';
+    judul.style.color = 'var(--on-success)';
+    judul.textContent = 'Memenuhi batas waktu pengajuan';
+    sub.style.color = 'var(--on-success)';
+    sub.textContent = 'Diajukan ' + selisihJam + ' jam sebelum jadwal -- melebihi batas minimal 1×24 jam';
+    link.style.display = 'none';
+    document.getElementById('wadahAlasanKeterlambatan').style.display = 'none';
+    document.getElementById('inputAlasanKeterlambatan').value = '';
+  } else {
+    kartu.style.background = 'var(--error-container)';
+    ikon.style.color = 'var(--on-error)';
+    judul.style.color = 'var(--on-error)';
+    judul.textContent = 'Kurang dari batas waktu pengajuan';
+    sub.style.color = 'var(--on-error)';
+    sub.textContent = 'Pengajuan ini kurang dari 1×24 jam sebelum jadwal.';
+    link.style.display = 'block';
+  }
+  cekValidasiAjukanRow();
+}
+function bukaAlasanKeterlambatan() {
+  document.getElementById('wadahAlasanKeterlambatan').style.display = 'block';
+}
 function cekValidasiAjukanRow() {
   var semuaTercentang = true;
   for (var i = 0; i < 5; i++) {
     var cb = document.getElementById('cbRow' + i);
     if (cb && !cb.classList.contains('on')) { semuaTercentang = false; }
   }
+  var kartu = document.getElementById('kartuValidasiJadwal');
+  var jadwalHijau = kartu && kartu.style.background.indexOf('success') !== -1;
+  var alasanInput = document.getElementById('inputAlasanKeterlambatan');
+  var alasanTerisi = alasanInput && alasanInput.value.trim().length > 0;
+  var gerbangWaktu = jadwalHijau || alasanTerisi;
+
   var tombol = document.getElementById('tombolAjukanRow');
   if (tombol) {
-    if (semuaTercentang) { tombol.classList.remove('disabled'); }
+    if (semuaTercentang && gerbangWaktu) { tombol.classList.remove('disabled'); }
     else { tombol.classList.add('disabled'); }
   }
 }
-function tambahFotoBda(tahap) {
-  var idWadah = tahap === 'during' ? 'thumbRowDuring' : 'thumbRowAfter';
-  var wadah = document.getElementById(idWadah);
-  var tombolTambah = wadah.querySelector('.thumb-add');
-  var thumb = document.createElement('div');
-  thumb.className = 'thumb';
-  thumb.style.cssText = 'background:linear-gradient(160deg,#a89c86,#8a6d4f 40%,#4a3826 75%,#2e2b26);position:relative;overflow:hidden;animation:popIn .25s ease';
-  thumb.innerHTML = '<span class="x" onclick="hapusFoto(event,this)" style="cursor:pointer">&times;</span>';
-  wadah.insertBefore(thumb, tombolTambah);
-  tombolTambah.remove();
 
-  if (tahap === 'during') {
-    var tombolAfter = document.getElementById('tombolTambahAfter');
-    tombolAfter.style.opacity = '1';
-    tombolAfter.style.cursor = 'pointer';
-    tombolAfter.setAttribute('onclick', "tambahFotoBda('after')");
-    document.getElementById('pesanAfterBda').textContent = 'Siap diisi';
+function tombolTambahHtml(tahap, aktif) {
+  var opsi = aktif ? '' : ';opacity:.4';
+  var idAttr = tahap === 'after' ? ' id="tombolTambahAfter"' : '';
+  var onclickAttr = aktif ? ' onclick="bukaKameraUntuk(\'thumbRow' + tahap.charAt(0).toUpperCase() + tahap.slice(1) + '\', \'foto_bda\')"' : '';
+  var cursorAttr = aktif ? 'cursor:pointer' : 'cursor:default';
+  return '<div class="thumb-add"' + idAttr + onclickAttr + ' style="' + cursorAttr + ';width:70px;flex-direction:column;font-size:9px;text-align:center' + opsi + '"><svg class="icn" style="font-size:14px;margin-bottom:2px" viewBox="0 0 24 24"><path d="M4 8h4l1.5-2.2h5L16 8h4v11H4V8z"></path><circle cx="12" cy="13.3" r="3.2"></circle></svg>Tambah foto</div>';
+}
+function hapusFotoBda(evt, tahap) {
+  evt.stopPropagation();
+  if (tahap === 'before') {
+    document.getElementById('thumbRowBefore').innerHTML = tombolTambahHtml('before', true);
+    document.getElementById('thumbRowDuring').innerHTML = tombolTambahHtml('during', false);
+    document.getElementById('thumbRowAfter').innerHTML = tombolTambahHtml('after', false);
+    document.getElementById('pesanAfterBda').textContent = 'Isi setelah "During" tersimpan';
+    document.getElementById('tombolSelesaikanRow').classList.add('disabled');
+  } else if (tahap === 'during') {
+    document.getElementById('thumbRowDuring').innerHTML = tombolTambahHtml('during', true);
+    document.getElementById('thumbRowAfter').innerHTML = tombolTambahHtml('after', false);
+    document.getElementById('pesanAfterBda').textContent = 'Isi setelah "During" tersimpan';
+    document.getElementById('tombolSelesaikanRow').classList.add('disabled');
   } else {
-    var tombolSelesai = document.getElementById('tombolSelesaikanRow');
-    tombolSelesai.classList.remove('disabled');
+    document.getElementById('thumbRowAfter').innerHTML = tombolTambahHtml('after', true);
+    document.getElementById('tombolSelesaikanRow').classList.add('disabled');
   }
 }
 function selesaikanRowBda() {
@@ -1167,6 +1418,237 @@ function batalKeluarMobile() {
 function konfirmasiKeluarMobile() {
   showScreen('login');
 }
+var namaSectionSingkat = {
+  'Uji kualifikasi material (laboratorium)': 'Uji Kualifikasi Material',
+  'Perancangan formula campuran (Mix Design)': 'Mix Design',
+  'Kalibrasi alat & uji coba pencampuran (JMF)': 'Kalibrasi Alat & JMF',
+  'Pekerjaan penghamparan aspal hotmix': 'Penghamparan Aspal Hotmix'
+};
+var rowAktifNomor = 'RoW-002';
+var rowAktifSegmen = 'Segmen 3';
+var dataDetailRow = {
+  'RoW-001': {
+    jadwal: '21 Jul 2026, 07:00',
+    diajukan: '20 Jul 2026, 09:00 -- 22 jam sebelum jadwal',
+    statusInspeksi: 'Belum dilakukan -- dijadwalkan setelah dokumen lengkap terverifikasi, sebelum pekerjaan dimulai.',
+    ubahJadwalTersedia: true,
+    statusPersetujuan: 'Menunggu tinjauan Konsultan Pengawas -- belum ada keputusan.'
+  },
+  'RoW-002': {
+    jadwal: '24 Jul 2026, 07:00',
+    diajukan: '22 Jul 2026, 08:00 -- 47 jam sebelum jadwal',
+    statusInspeksi: 'Sudah dilakukan -- lokasi, material, dan K3 dinyatakan siap oleh Konsultan Pengawas.',
+    ubahJadwalTersedia: false,
+    statusPersetujuan: 'Disetujui oleh Konsultan Pengawas -- 23 Jul 2026, 14:20.'
+  }
+};
+function bukaDetailRowMobile(nomor, segmen, status) {
+  rowAktifNomor = nomor;
+  rowAktifSegmen = segmen;
+  var el = function(id) { return document.getElementById(id); };
+  if (el('drmNomor')) { el('drmNomor').textContent = nomor; }
+  if (el('drmSegmen')) { el('drmSegmen').textContent = segmen; }
+  if (el('drmBadge')) {
+    var badge = el('drmBadge');
+    badge.textContent = status;
+    if (status === 'Disetujui') {
+      badge.style.background = 'var(--success-container)';
+      badge.style.color = 'var(--on-success)';
+    } else {
+      badge.style.background = 'var(--warning-container)';
+      badge.style.color = 'var(--on-warning)';
+    }
+  }
+  var data = dataDetailRow[nomor] || dataDetailRow['RoW-001'];
+  if (el('drmJadwal')) { el('drmJadwal').textContent = data.jadwal; }
+  if (el('drmDiajukan')) { el('drmDiajukan').textContent = data.diajukan; }
+  if (el('drmStatusInspeksi')) { el('drmStatusInspeksi').textContent = data.statusInspeksi; }
+  if (el('drmStatusPersetujuan')) { el('drmStatusPersetujuan').textContent = data.statusPersetujuan; }
+  var wadahUbahJadwal = el('drmWadahUbahJadwal');
+  var keteranganUbahJadwal = el('drmKeteranganUbahJadwal');
+  if (wadahUbahJadwal) {
+    if (data.ubahJadwalTersedia) {
+      wadahUbahJadwal.style.display = '';
+      keteranganUbahJadwal.style.display = '';
+      keteranganUbahJadwal.textContent = 'Tersedia karena inspeksi lapangan belum dilakukan';
+    } else {
+      wadahUbahJadwal.style.display = 'none';
+      keteranganUbahJadwal.style.display = 'none';
+    }
+  }
+  showScreen('detail_row_mobile');
+}
+function bukaUbahJadwalRow() {
+  var wadah = document.getElementById('drmWadahUbahJadwal');
+  var jadwalSekarang = document.getElementById('drmJadwal').textContent.split(' -- ')[0];
+  wadah.innerHTML =
+    '<p class="label" style="margin-top:8px">Jadwal baru</p>' +
+    '<input class="field" id="inputJadwalBaruRow" value="' + jadwalSekarang + '" style="margin-bottom:8px"/>' +
+    '<div class="fgr8" style="display:flex;gap:8px">' +
+    '<button class="btn" onclick="batalUbahJadwalRow()" style="background:transparent;color:var(--primary);flex:1">Batal</button>' +
+    '<button class="btn btn-primary" onclick="simpanJadwalBaruRow()" style="flex:1">Simpan</button>' +
+    '</div>';
+}
+function batalUbahJadwalRow() {
+  var wadah = document.getElementById('drmWadahUbahJadwal');
+  wadah.innerHTML = '<button class="btn kontraktor-only" style="background:transparent;border:1px solid var(--outline-variant);color:var(--primary);width:100%;margin-bottom:6px" onclick="bukaUbahJadwalRow()">Ubah jadwal</button>';
+}
+function simpanJadwalBaruRow() {
+  var nilaiBaru = document.getElementById('inputJadwalBaruRow').value.trim();
+  if (!nilaiBaru) { return; }
+  document.getElementById('drmJadwal').textContent = nilaiBaru;
+  if (dataDetailRow[rowAktifNomor]) { dataDetailRow[rowAktifNomor].jadwal = nilaiBaru; }
+  batalUbahJadwalRow();
+}
+function bukaSampelCoreDrillDariRow() {
+  showScreen('sampel_core_drill');
+}
+function kembaliDariSampelCoreDrill() {
+  showScreen('detail_row_mobile');
+}
+var daftarTahapCd = [
+  { kunci: 'titik', judul: 'Penentuan Titik Sampling', layar: 'cd_titik' },
+  { kunci: 'bor', judul: 'Pengeboran Core Drill', layar: 'cd_bor' },
+  { kunci: 'briket', judul: 'Pengangkatan Briket', layar: 'cd_briket' },
+  { kunci: 'tebal', judul: 'Pengukuran Ketebalan', layar: 'cd_tebal' },
+  { kunci: 'kepadatan', judul: 'Uji Kepadatan Laboratorium', layar: 'cd_kepadatan' },
+  { kunci: 'tutup', judul: 'Penutupan Bekas Lubang', layar: 'cd_tutup' }
+];
+var kunciLayarCd = { cd_titik: 'titik', cd_bor: 'bor', cd_briket: 'briket', cd_tebal: 'tebal', cd_kepadatan: 'kepadatan', cd_tutup: 'tutup' };
+var dataSampelCd = {
+  1: { titik: true, bor: true, briket: true, tebal: true, kepadatan: true, tutup: true },
+  2: { titik: true, bor: true, briket: true, tebal: true, kepadatan: true, tutup: true },
+  3: { titik: true, bor: true, briket: true, tebal: false, kepadatan: false, tutup: false }
+};
+var kmSampelCd = { 1: 'Km 12+050', 2: 'Km 12+100', 3: 'Km 12+150' };
+var dataSampelWaktuCd = {
+  1: { titik: '10 Jul, 08:15', bor: '10 Jul, 08:40', briket: '10 Jul, 09:05', tebal: '10 Jul, 09:30', kepadatan: '14 Jul, 11:00', tutup: '14 Jul, 15:20' },
+  2: { titik: '10 Jul, 10:05', bor: '10 Jul, 10:30', briket: '10 Jul, 10:55', tebal: '10 Jul, 11:15', kepadatan: '14 Jul, 11:20', tutup: '14 Jul, 15:45' },
+  3: { titik: '15 Jul, 08:00', bor: '15 Jul, 08:25', briket: '15 Jul, 08:50' }
+};
+var sampelAktifCd = null;
+var nomorSampelBerikutnyaCd = 4;
+function renderDaftarLangkahCd() {
+  var data = dataSampelCd[sampelAktifCd] || {};
+  var waktu = dataSampelWaktuCd[sampelAktifCd] || {};
+  var html = '';
+  daftarTahapCd.forEach(function(t) {
+    var selesai = !!data[t.kunci];
+    var bgWarna = selesai ? 'var(--success-container)' : 'var(--surface-variant)';
+    var ikonWarna = selesai ? 'var(--on-success)' : 'var(--on-surface-variant)';
+    var ikonSvg = selesai ? '<polyline points="4,12 9,17 20,6"></polyline>' : '<circle cx="12" cy="12" r="9"></circle>';
+    var subTeks = selesai ? ('Tersimpan ' + (waktu[t.kunci] || '')) : 'Belum diisi';
+    html += '<div class="list-row" onclick="showScreen(\'' + t.layar + '\')" style="cursor:pointer"><div class="leading" style="background:' + bgWarna + '"><svg class="icn" fill="none" style="color:' + ikonWarna + '" viewBox="0 0 24 24">' + ikonSvg + '</svg></div><div class="list-main"><p class="list-title">' + t.judul + '</p><p class="list-sub">' + subTeks + '</p></div></div>';
+  });
+  document.getElementById('cdlDaftarTahap').innerHTML = html;
+}
+function bukaDaftarLangkahCd(nomor) {
+  sampelAktifCd = nomor;
+  document.getElementById('cdlNomorSampel').textContent = 'Sampel ' + nomor;
+  document.getElementById('cdlKmSampel').textContent = kmSampelCd[nomor] || 'Km belum ditentukan -- isi lewat tahap Penentuan Titik Sampling';
+  renderDaftarLangkahCd();
+  showScreen('cd_daftar_langkah');
+}
+function perbaruiBadgeSampelDiDaftar(nomor) {
+  var data = dataSampelCd[nomor] || {};
+  var jumlahSelesai = daftarTahapCd.filter(function(t) { return !!data[t.kunci]; }).length;
+  var baris = document.getElementById('barisSampelCd' + nomor);
+  if (!baris) { return; }
+  var sub = baris.querySelector('.list-sub');
+  var leading = baris.querySelector('.leading');
+  if (jumlahSelesai === 6) {
+    sub.textContent = kmSampelCd[nomor] || '';
+    sub.style.color = '';
+    leading.style.background = 'var(--success-container)';
+    leading.innerHTML = '<svg class="icn" fill="none" style="color:var(--on-success)" viewBox="0 0 24 24"><polyline points="4,12 9,17 20,6"></polyline></svg>';
+  } else if (jumlahSelesai === 0) {
+    sub.textContent = 'Belum diisi';
+    sub.style.color = '';
+    leading.style.background = 'var(--surface-variant)';
+    leading.innerHTML = '<svg class="icn" style="color:var(--on-surface-variant)" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"></circle></svg>';
+  } else {
+    sub.textContent = jumlahSelesai + '/6 tahap terisi' + (kmSampelCd[nomor] ? ' -- ' + kmSampelCd[nomor] : '');
+    sub.style.color = 'var(--primary)';
+    leading.style.background = 'var(--primary-container)';
+    leading.innerHTML = '<svg class="icn" style="color:var(--on-primary-container);font-size:12px" viewBox="0 0 24 24"><path d="M6 3h12M6 21h12M7 3c0 6 5 5.5 5 9s-5 3-5 9M17 3c0 6-5 5.5-5 9s5 3 5 9"></path></svg>';
+  }
+}
+function simpanLangkahCd(namaLayar) {
+  var kunci = kunciLayarCd[namaLayar];
+  if (!dataSampelCd[sampelAktifCd]) { dataSampelCd[sampelAktifCd] = {}; }
+  dataSampelCd[sampelAktifCd][kunci] = true;
+
+  var sekarang = new Date();
+  var bulanIndo = ['Jan','Feb','Mar','Apr','Mei','Jun','Jul','Agu','Sep','Okt','Nov','Des'];
+  var waktuTeks = sekarang.getDate() + ' ' + bulanIndo[sekarang.getMonth()] + ', ' + String(sekarang.getHours()).padStart(2, '0') + ':' + String(sekarang.getMinutes()).padStart(2, '0');
+  if (!dataSampelWaktuCd[sampelAktifCd]) { dataSampelWaktuCd[sampelAktifCd] = {}; }
+  dataSampelWaktuCd[sampelAktifCd][kunci] = waktuTeks;
+
+  if (namaLayar === 'cd_titik') {
+    var kmDiisi = document.getElementById('cdTitikKm').value.trim();
+    if (kmDiisi) {
+      kmSampelCd[sampelAktifCd] = kmDiisi;
+      var elKm = document.getElementById('cdlKmSampel');
+      if (elKm) { elKm.textContent = kmDiisi; }
+    }
+  }
+
+  perbaruiBadgeSampelDiDaftar(sampelAktifCd);
+  renderDaftarLangkahCd();
+  showScreen('cd_daftar_langkah');
+}
+
+function pilihDiameterBor(diameter) {
+  var el4 = document.getElementById('cdBor4');
+  var el6 = document.getElementById('cdBor6');
+  if (diameter === 4) {
+    el4.classList.add('card-sel'); el4.querySelector('.radio').classList.add('on');
+    el6.classList.remove('card-sel'); el6.querySelector('.radio').classList.remove('on');
+  } else {
+    el6.classList.add('card-sel'); el6.querySelector('.radio').classList.add('on');
+    el4.classList.remove('card-sel'); el4.querySelector('.radio').classList.remove('on');
+  }
+}
+function tombolTambahCd6Html(tahap, aktif) {
+  var opsi = aktif ? '' : ';opacity:.4';
+  var idAttr = tahap === 'during' ? ' id="tombolTambahCd6During"' : (tahap === 'after' ? ' id="tombolTambahCd6After"' : '');
+  var onclickAttr = aktif ? ' onclick="bukaKameraUntuk(\'thumbRowCd6' + tahap.charAt(0).toUpperCase() + tahap.slice(1) + '\', \'cd_tutup\')"' : '';
+  var cursorAttr = aktif ? 'cursor:pointer' : 'cursor:default';
+  return '<div class="thumb-add"' + idAttr + onclickAttr + ' style="' + cursorAttr + ';width:70px;flex-direction:column;font-size:9px;text-align:center' + opsi + '"><svg class="icn" style="font-size:14px;margin-bottom:2px" viewBox="0 0 24 24"><path d="M4 8h4l1.5-2.2h5L16 8h4v11H4V8z"></path><circle cx="12" cy="13.3" r="3.2"></circle></svg>Tambah foto</div>';
+}
+function tambahSampelCoreDrillBaru() {
+  var nomorBaru = nomorSampelBerikutnyaCd++;
+  dataSampelCd[nomorBaru] = {};
+  kmSampelCd[nomorBaru] = '';
+
+  ['cdTitikKm', 'cdTebalCm', 'cdKepadatanPersen'].forEach(function(id) {
+    var input = document.getElementById(id);
+    if (input) { input.value = ''; }
+  });
+  for (var i = 1; i <= 5; i++) {
+    var wadah = document.getElementById('thumbRowCd' + i);
+    if (wadah) {
+      Array.from(wadah.querySelectorAll('.kartu-foto')).forEach(function(el) { el.remove(); });
+      var tombol = wadah.querySelector('.thumb-add');
+      if (tombol) { tombol.style.display = ''; }
+    }
+  }
+  document.getElementById('thumbRowCd6Before').innerHTML = tombolTambahCd6Html('before', true);
+  document.getElementById('thumbRowCd6During').innerHTML = tombolTambahCd6Html('during', false);
+  document.getElementById('thumbRowCd6After').innerHTML = tombolTambahCd6Html('after', false);
+  document.getElementById('pesanCd6During').textContent = 'Isi setelah "Before" tersimpan';
+  document.getElementById('pesanCd6After').textContent = 'Isi setelah "During" tersimpan';
+  document.getElementById('tombolSimpanCoreDrill').classList.add('disabled');
+  pilihDiameterBor(4);
+
+  var daftar = document.querySelector('#screen-sampel_core_drill .content');
+  var spacer = daftar.querySelector('.spacer');
+  var html = '<div class="list-row" id="barisSampelCd' + nomorBaru + '" onclick="bukaDaftarLangkahCd(' + nomorBaru + ')" style="cursor:pointer"><div class="leading" style="background:var(--surface-variant)"><svg class="icn" style="color:var(--on-surface-variant)" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"></circle></svg></div><div class="list-main"><p class="list-title">Sampel ' + nomorBaru + '</p><p class="list-sub">Belum diisi</p></div></div>';
+  spacer.insertAdjacentHTML('beforebegin', html);
+
+  bukaDaftarLangkahCd(nomorBaru);
+}
+
 function bukaDetailProyekMobile(nama, kontraktor, jenis, status) {
   var el = function(id) { return document.getElementById(id); };
   if (el('dpMobileNama')) { el('dpMobileNama').textContent = nama; }
@@ -1217,18 +1699,28 @@ function bukaFormItemDariRiwayat(sumberRiwayat) {
   var thumbRow = document.getElementById('thumbRow');
   var addBtn = document.getElementById('addFotoBtn');
   if (thumbRow && addBtn) {
-    Array.from(thumbRow.querySelectorAll('.thumb')).forEach(function(el) { el.remove(); });
+    Array.from(thumbRow.querySelectorAll('.kartu-foto')).forEach(function(el) { el.remove(); });
   }
 
   showScreen('form_item');
+  mulaiSimulasiGps();
 }
 function kembaliDariFormItem() {
   showScreen(sumberFormItem);
 }
-function bukaFormItem(namaItem, statusItem, namaSection, catatanTersimpan, jumlahFotoTersimpan) {
+function bukaFormItem(namaItem, statusItem, namaSection) {
   sumberFormItem = 'daftar_item_mobile';
   itemAktifNama = namaItem;
   itemAktifSection = namaSection;
+
+  var entriTersimpan = null;
+  if (itemPerSection[namaSection]) {
+    for (var e = 0; e < itemPerSection[namaSection].length; e++) {
+      if (itemPerSection[namaSection][e][0] === namaItem) { entriTersimpan = itemPerSection[namaSection][e]; break; }
+    }
+  }
+  var catatanTersimpan = entriTersimpan ? (entriTersimpan[2] || '') : '';
+  var captionsTersimpan = entriTersimpan && Array.isArray(entriTersimpan[3]) ? entriTersimpan[3] : [];
 
   var nomorEl = document.getElementById('fiNomorItem');
   var sectionEl = document.getElementById('fiNamaSection');
@@ -1241,10 +1733,10 @@ function bukaFormItem(namaItem, statusItem, namaSection, catatanTersimpan, jumla
   var terlihatNomor = /^[0-9A-Za-z.]{1,6}$/.test(bagianNomor) && /\d/.test(bagianNomor);
 
   if (nomorEl) { nomorEl.textContent = terlihatNomor ? 'Item ' + bagianNomor : 'Item'; }
-  if (sectionEl) { sectionEl.textContent = namaSection; }
+  if (sectionEl) { sectionEl.textContent = namaSectionSingkat[namaSection] || namaSection; }
   if (judulEl) { judulEl.textContent = terlihatNomor ? judulTanpaNomor : namaItem; }
   if (standarEl) { standarEl.textContent = 'Isi sesuai kondisi lapangan yang genuinely diperiksa'; }
-  if (catatanInput) { catatanInput.value = catatanTersimpan || ''; }
+  if (catatanInput) { catatanInput.value = catatanTersimpan; }
 
   var rowYa = document.getElementById('radioYa');
   var circleYa = document.getElementById('radioYaCircle');
@@ -1261,18 +1753,26 @@ function bukaFormItem(namaItem, statusItem, namaSection, catatanTersimpan, jumla
   var thumbRow = document.getElementById('thumbRow');
   var addBtn = document.getElementById('addFotoBtn');
   if (thumbRow && addBtn) {
-    Array.from(thumbRow.querySelectorAll('.thumb')).forEach(function(el) { el.remove(); });
-    var jumlah = jumlahFotoTersimpan || 0;
-    for (var i = 0; i < jumlah; i++) {
+    Array.from(thumbRow.querySelectorAll('.kartu-foto')).forEach(function(el) { el.remove(); });
+    captionsTersimpan.forEach(function(teksCaption) {
+      var kartu = document.createElement('div');
+      kartu.className = 'kartu-foto';
+      kartu.style.cssText = 'width:78px;display:flex;flex-direction:column;gap:3px;flex-shrink:0';
       var thumb = document.createElement('div');
       thumb.className = 'thumb';
-      thumb.style.cssText = 'background:linear-gradient(160deg,#a89c86,#8a6d4f 40%,#4a3826 75%,#2e2b26);position:relative;overflow:hidden';
+      thumb.style.cssText = 'background:linear-gradient(160deg,#a89c86,#8a6d4f 40%,#4a3826 75%,#2e2b26);position:relative;overflow:hidden;width:78px;height:70px';
       thumb.innerHTML = '<span class="x" onclick="hapusFoto(event,this)" style="cursor:pointer">&times;</span>';
-      thumbRow.insertBefore(thumb, addBtn);
-    }
+      var captionWrap = document.createElement('div');
+      var teksAman = teksCaption.replace(/&/g, '&amp;').replace(/"/g, '&quot;');
+      captionWrap.innerHTML = '<input class="field caption-foto" oninput="cekValidasiSimpanItem()" value="' + teksAman + '" style="font-size:9px;padding:5px 6px;margin-bottom:1px;width:100%;box-sizing:border-box"/>';
+      kartu.appendChild(thumb);
+      kartu.appendChild(captionWrap);
+      thumbRow.insertBefore(kartu, addBtn);
+    });
   }
 
   showScreen('form_item');
+  mulaiSimulasiGps();
 }
 function simpanItemMobile() {
   var statusBaru = document.getElementById('radioYaCircle').classList.contains('on') ? 'Ya'
@@ -1280,13 +1780,16 @@ function simpanItemMobile() {
 
   if (itemAktifSection && itemPerSection[itemAktifSection]) {
     var catatanBaru = document.getElementById('fiCatatanInput').value;
-    var jumlahFotoBaru = document.getElementById('thumbRow').querySelectorAll('.thumb').length;
+    var captionsBaru = [];
+    document.querySelectorAll('#thumbRow .kartu-foto .caption-foto').forEach(function(inp) {
+      captionsBaru.push(inp.value);
+    });
     var daftarItem = itemPerSection[itemAktifSection];
     for (var i = 0; i < daftarItem.length; i++) {
       if (daftarItem[i][0] === itemAktifNama) {
         daftarItem[i][1] = statusBaru;
         daftarItem[i][2] = catatanBaru;
-        daftarItem[i][3] = jumlahFotoBaru;
+        daftarItem[i][3] = captionsBaru;
         break;
       }
     }
@@ -1326,13 +1829,13 @@ function kembaliDariDaftarItem() {
 function bukaDaftarItemMobile(namaSection, sumber) {
   if (sumber) { sumberDaftarItemMobile = sumber; }
   var judul = document.getElementById('dimTitleMobile');
-  if (judul) { judul.textContent = namaSection; }
+  if (judul) { judul.textContent = namaSectionSingkat[namaSection] || namaSection; }
 
   var items = itemPerSection[namaSection] || [];
   var wadah = document.getElementById('dimItemListMobile');
   var html = '';
   items.forEach(function(it) {
-    var nama = it[0], status = it[1], catatan = it[2] || '', jumlahFoto = it[3] || 0;
+    var nama = it[0], status = it[1];
     var warnaBg = status === 'Ya' ? 'var(--success-container)' : (status === 'Tidak' ? 'var(--error-container)' : 'var(--surface-variant)');
     var warnaIkon = status === 'Ya' ? 'var(--on-success)' : (status === 'Tidak' ? 'var(--on-error)' : 'var(--on-surface-variant)');
     var ikonSvg = status === 'Ya'
@@ -1340,8 +1843,7 @@ function bukaDaftarItemMobile(namaSection, sumber) {
       : (status === 'Tidak' ? '<line x1="18" x2="6" y1="6" y2="18"></line><line x1="6" x2="18" y1="6" y2="18"></line>' : '<circle cx="12" cy="12" r="9"></circle>');
     var subTeks = status === 'Belum diperiksa' ? 'Belum diperiksa' : (status + ' · Diperiksa Ahmad Setiawan');
     var Q = String.fromCharCode(39);
-    var catatanAman = catatan.replace(/'/g, '').replace(/"/g, '');
-    html += '<div class="list-row" onclick="bukaFormItem(' + Q + nama.replace(/'/g, '') + Q + ', ' + Q + status + Q + ', ' + Q + namaSection.replace(/'/g, '') + Q + ', ' + Q + catatanAman + Q + ', ' + jumlahFoto + ')" style="cursor:pointer"><div class="leading" style="background:' + warnaBg + '"><svg class="icn" style="color:' + warnaIkon + '" viewBox="0 0 24 24">' + ikonSvg + '</svg></div><div><p class="list-title">' + nama.replace(/&/g, '&amp;') + '</p><p class="list-sub">' + subTeks + '</p></div></div>';
+    html += '<div class="list-row" onclick="bukaFormItem(' + Q + nama.replace(/'/g, '') + Q + ', ' + Q + status + Q + ', ' + Q + namaSection.replace(/'/g, '') + Q + ')" style="cursor:pointer"><div class="leading" style="background:' + warnaBg + '"><svg class="icn" style="color:' + warnaIkon + '" viewBox="0 0 24 24">' + ikonSvg + '</svg></div><div><p class="list-title">' + nama.replace(/&/g, '&amp;') + '</p><p class="list-sub">' + subTeks + '</p></div></div>';
   });
   if (wadah) { wadah.innerHTML = html; }
 
@@ -1474,19 +1976,107 @@ function jepretFoto() {
   flash.style.opacity = '1';
   setTimeout(function() {
     flash.style.opacity = '0';
+    var kartu = document.createElement('div');
+    kartu.className = 'kartu-foto';
+    kartu.style.cssText = 'width:78px;display:flex;flex-direction:column;gap:3px;flex-shrink:0';
+
     var thumb = document.createElement('div');
     thumb.className = 'thumb';
-    thumb.style.cssText = 'background:linear-gradient(160deg,#a89c86,#8a6d4f 40%,#4a3826 75%,#2e2b26);position:relative;overflow:hidden;animation:popIn .25s ease';
+    thumb.style.cssText = 'background:linear-gradient(160deg,#a89c86,#8a6d4f 40%,#4a3826 75%,#2e2b26);position:relative;overflow:hidden;animation:popIn .25s ease;width:78px;height:70px';
     thumb.innerHTML = '<span class="x" onclick="hapusFoto(event,this)" style="cursor:pointer">&times;</span>';
-    var row = document.getElementById('thumbRow');
-    var addBtn = document.getElementById('addFotoBtn');
-    row.insertBefore(thumb, addBtn);
-    showScreen('form_item');
+
+    var sekarang = new Date();
+    var jam = String(sekarang.getHours()).padStart(2, '0') + ':' + String(sekarang.getMinutes()).padStart(2, '0');
+
+    var captionWrap = document.createElement('div');
+    captionWrap.innerHTML =
+      '<input class="field caption-foto" placeholder="Keterangan foto (wajib)" oninput="cekValidasiSetelahFoto()" style="font-size:9px;padding:5px 6px;margin-bottom:1px;width:100%;box-sizing:border-box"/>' +
+      '<p style="font-size:8px;color:var(--outline);margin:0">' + jam + '</p>';
+
+    kartu.appendChild(thumb);
+    kartu.appendChild(captionWrap);
+
+    var row = document.getElementById(wadahFotoTujuan);
+    var addBtn = row.querySelector('.thumb-add');
+    row.insertBefore(kartu, addBtn);
+    showScreen(layarKembaliSetelahFoto);
+    cekValidasiSetelahFoto();
   }, 180);
+}
+function cekValidasiSetelahFoto() {
+  if (layarKembaliSetelahFoto === 'form_item') {
+    cekValidasiSimpanItem();
+    return;
+  }
+  var pemetaanTahap = {
+    thumbRowBefore: 'before', thumbRowDuring: 'during', thumbRowAfter: 'after',
+    thumbRowCd6Before: 'before', thumbRowCd6During: 'during', thumbRowCd6After: 'after'
+  };
+  var tahap = pemetaanTahap[wadahFotoTujuan];
+  if (!tahap) { return; }
+  if (layarKembaliSetelahFoto === 'foto_bda') {
+    if (tahap === 'before') {
+      document.getElementById('thumbRowDuring').innerHTML = tombolTambahHtml('during', true);
+    } else if (tahap === 'during') {
+      var tombolAfter = document.getElementById('tombolTambahAfter');
+      tombolAfter.style.opacity = '1';
+      tombolAfter.style.cursor = 'pointer';
+      tombolAfter.setAttribute('onclick', "bukaKameraUntuk('thumbRowAfter', 'foto_bda')");
+      document.getElementById('pesanAfterBda').textContent = 'Siap diisi';
+    } else if (tahap === 'after') {
+      document.getElementById('tombolSelesaikanRow').classList.remove('disabled');
+    }
+  } else if (layarKembaliSetelahFoto === 'cd_tutup') {
+    if (tahap === 'before') {
+      document.getElementById('thumbRowCd6During').innerHTML = tombolTambahCd6Html('during', true);
+      document.getElementById('pesanCd6During').textContent = 'Siap diisi';
+    } else if (tahap === 'during') {
+      document.getElementById('thumbRowCd6After').innerHTML = tombolTambahCd6Html('after', true);
+      document.getElementById('pesanCd6After').textContent = 'Siap diisi';
+    } else if (tahap === 'after') {
+      document.getElementById('tombolSimpanCoreDrill').classList.remove('disabled');
+    }
+  }
+}
+
+function setGpsStatus(status) {
+  var badge = document.getElementById('badgeGpsStatus');
+  if (!badge) { return; }
+  if (status === 'mencari') {
+    badge.className = 'badge badge-warning';
+    badge.innerHTML = '<svg class="icn spin" style="font-size:9px;flex-shrink:0" viewBox="0 0 24 24"><path d="M21 12a9 9 0 11-9-9"></path></svg>Mencari lokasi GPS...';
+  } else if (status === 'gagal') {
+    badge.className = 'badge badge-error';
+    badge.innerHTML = '<svg class="icn" style="font-size:9px;flex-shrink:0" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"></circle><line x1="12" x2="12" y1="8" y2="12"></line><circle cx="12" cy="16" fill="currentColor" r="0.7" stroke="none"></circle></svg>GPS tidak tersedia';
+  } else {
+    badge.className = 'badge badge-success';
+    badge.innerHTML = '<svg class="icn" style="font-size:9px;flex-shrink:0" viewBox="0 0 24 24"><path d="M12 21s7-6.5 7-12a7 7 0 10-14 0c0 5.5 7 12 7 12z"></path><circle cx="12" cy="9" r="2.3"></circle></svg>GPS terkunci';
+  }
+  cekValidasiSimpanItem();
+}
+function mulaiSimulasiGps() {
+  setGpsStatus('mencari');
+  setTimeout(function() { setGpsStatus('terkunci'); }, 1200);
+}
+function cekValidasiSimpanItem() {
+  var tombol = document.querySelector('#screen-form_item .footer-btn button');
+  if (!tombol) { return; }
+  var kartuFoto = document.querySelectorAll('#thumbRow .kartu-foto');
+  var semuaCaptionTerisi = kartuFoto.length > 0;
+  kartuFoto.forEach(function(k) {
+    var input = k.querySelector('.caption-foto');
+    if (!input || !input.value.trim()) { semuaCaptionTerisi = false; }
+  });
+  var gpsTerkunci = document.getElementById('badgeGpsStatus') ? document.getElementById('badgeGpsStatus').textContent.indexOf('terkunci') !== -1 : true;
+  var syaratTerpenuhi = semuaCaptionTerisi && gpsTerkunci;
+  tombol.disabled = !syaratTerpenuhi;
+  tombol.style.opacity = syaratTerpenuhi ? '1' : '.5';
+  tombol.style.cursor = syaratTerpenuhi ? 'pointer' : 'not-allowed';
 }
 function hapusFoto(event, el) {
   event.stopPropagation();
-  el.closest('.thumb').remove();
+  el.closest('.kartu-foto').remove();
+  cekValidasiSimpanItem();
 }
 function pilihStatus(status) {
   var rowYa = document.getElementById('radioYa');
