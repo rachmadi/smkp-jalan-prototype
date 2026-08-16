@@ -435,8 +435,8 @@ Masuk dengan Google
 <div class="statusbar"><span>09:41</span><span><svg class="icn" viewbox="0 0 24 24"><path d="M2 8.5a15 15 0 0120 0M5 12a10 10 0 0114 0M8.5 15.5a5 5 0 017 0"></path><circle cx="12" cy="19" fill="currentColor" r="1" stroke="none"></circle></svg> <svg class="icn" viewbox="0 0 24 24"><rect height="10" rx="2" width="17" x="2" y="7"></rect><line x1="21" x2="21" y1="10" y2="14"></line><rect fill="currentColor" height="5" stroke="none" width="9" x="4.5" y="9.5"></rect></svg></span></div>
 <div class="appbar" onclick="showScreen('detail_proyek')" style="cursor:pointer"><svg class="icn" viewbox="0 0 24 24"><line x1="19" x2="5" y1="12" y2="12"></line><polyline points="12,19 5,12 12,5"></polyline></svg><span class="title">Pra pelaksanaan</span></div>
 <div class="content">
-<div class="list-row" onclick="bukaDaftarItemMobile('Uji kualifikasi material (laboratorium)')" style="cursor:pointer"><div class="leading" style="background:var(--success-container)"><svg class="icn" fill="none" style="color:var(--on-success)" viewbox="0 0 24 24"><polyline points="4,12 9,17 20,6"></polyline></svg></div><div class="list-main"><p class="list-title">Uji kualifikasi material (laboratorium)</p><p class="list-sub">Selesai - 9/9 item</p></div><span class="badge badge-success">Disetujui</span></div>
-<div class="list-row" onclick="bukaDaftarItemMobile('Perancangan formula campuran (Mix Design)')" style="cursor:pointer"><div class="leading" style="background:var(--success-container)"><svg class="icn" fill="none" style="color:var(--on-success)" viewbox="0 0 24 24"><polyline points="4,12 9,17 20,6"></polyline></svg></div><div class="list-main"><p class="list-title">Perancangan formula campuran (Mix Design)</p><p class="list-sub">Selesai - 10/10 item</p></div><span class="badge badge-warning">Menunggu persetujuan</span></div>
+<div class="list-row" onclick="bukaDaftarItemMobile('Uji kualifikasi material (laboratorium)')" style="cursor:pointer"><div class="leading" id="iconUjiKualifikasi" style="background:var(--success-container)"><svg class="icn" fill="none" style="color:var(--on-success)" viewbox="0 0 24 24"><polyline points="4,12 9,17 20,6"></polyline></svg></div><div class="list-main"><p class="list-title">Uji kualifikasi material (laboratorium)</p><p class="list-sub">Selesai - 9/9 item</p></div><span class="badge badge-success" id="badgeUjiKualifikasi">Disetujui</span></div>
+<div class="list-row" onclick="showScreen('daftar_pengajuan')" style="cursor:pointer"><div class="leading" id="iconMixDesign" style="background:var(--success-container)"><svg class="icn" fill="none" style="color:var(--on-success)" viewbox="0 0 24 24"><polyline points="4,12 9,17 20,6"></polyline></svg></div><div class="list-main"><p class="list-title">Perancangan formula campuran (Mix Design)</p><p class="list-sub">Selesai - 10/10 item</p></div><span class="badge badge-warning" id="badgeMixDesign">Menunggu persetujuan</span></div>
 <div class="list-row" onclick="showScreen('riwayat_item')" style="cursor:pointer"><div class="leading" style="background:var(--primary-container)"><svg class="icn" style="color:var(--on-primary-container)" viewbox="0 0 24 24"><path d="M4 12a8 8 0 0114-5.3"></path><polyline points="18,3.5 18,7 14.5,7"></polyline><path d="M20 12a8 8 0 01-14 5.3"></path><polyline points="6,20.5 6,17 9.5,17"></polyline></svg></div><div class="list-main"><p class="list-title">Kontrol material masuk stockpile AMP</p><p class="list-sub" style="color:var(--primary)">Berjalan rutin - dicek hari ini</p></div></div>
 <div class="list-row" onclick="bukaDaftarItemMobile('Kalibrasi alat &amp; uji coba pencampuran (JMF)')" style="cursor:pointer"><div class="leading" style="background:var(--primary-container);font-size:9px;font-weight:700;color:var(--on-primary-container)">3/6</div><div class="list-main"><p class="list-title">Kalibrasi alat &amp; uji coba pencampuran (JMF)</p><p class="list-sub" style="color:var(--primary)">Sedang berjalan</p></div></div>
 <div class="spacer"></div>
@@ -884,11 +884,16 @@ Masuk dengan Google
 </div>
 <div class="screen" id="screen-cd_daftar_langkah">
 <div class="statusbar"><span>09:41</span><span><svg class="icn" viewbox="0 0 24 24"><path d="M2 8.5a15 15 0 0120 0M5 12a10 10 0 0114 0M8.5 15.5a5 5 0 017 0"></path><circle cx="12" cy="19" fill="currentColor" r="1" stroke="none"></circle></svg> <svg class="icn" viewbox="0 0 24 24"><rect height="10" rx="2" width="17" x="2" y="7"></rect><line x1="21" x2="21" y1="10" y2="14"></line><rect fill="currentColor" height="5" stroke="none" width="9" x="4.5" y="9.5"></rect></svg></span></div>
-<div class="appbar" onclick="showScreen('sampel_core_drill')" style="cursor:pointer"><svg class="icn" viewbox="0 0 24 24"><line x1="19" x2="5" y1="12" y2="12"></line><polyline points="12,19 5,12 12,5"></polyline></svg><span class="title" id="cdlNomorSampel">Sampel 1</span></div>
-<p class="appbar sub" style="margin-left:24px" id="cdlKmSampel">&nbsp;</p>
+<div class="appbar" onclick="showScreen('sampel_core_drill')" style="cursor:pointer"><svg class="icn" viewbox="0 0 24 24"><line x1="19" x2="5" y1="12" y2="12"></line><polyline points="12,19 5,12 12,5"></polyline></svg><span class="title">Sampel 3</span></div>
+<p class="appbar sub" style="margin-left:24px">Km 12+150</p>
 <div class="content">
 <div class="card-lg"><p class="qtitle">6 tahap independen</p><p class="qsub">Isi kapan saja sesuai kondisi lapangan &mdash; tidak harus berurutan. Uji kepadatan laboratorium wajar diisi belakangan setelah hasil lab keluar.</p></div>
-<div id="cdlDaftarTahap"></div>
+<div id="cdlDaftarTahap"><div class="list-row"><div class="leading" style="background:var(--success-container)"><svg class="icn" fill="none" style="color:var(--on-success)" viewBox="0 0 24 24"><polyline points="4,12 9,17 20,6"></polyline></svg></div><div class="list-main"><p class="list-title">Penentuan Titik Sampling</p><p class="list-sub">Tersimpan 15 Jul, 08:00</p></div></div>
+<div class="list-row"><div class="leading" style="background:var(--success-container)"><svg class="icn" fill="none" style="color:var(--on-success)" viewBox="0 0 24 24"><polyline points="4,12 9,17 20,6"></polyline></svg></div><div class="list-main"><p class="list-title">Pengeboran Core Drill</p><p class="list-sub">Tersimpan 15 Jul, 08:25</p></div></div>
+<div class="list-row"><div class="leading" style="background:var(--success-container)"><svg class="icn" fill="none" style="color:var(--on-success)" viewBox="0 0 24 24"><polyline points="4,12 9,17 20,6"></polyline></svg></div><div class="list-main"><p class="list-title">Pengangkatan Briket</p><p class="list-sub">Tersimpan 15 Jul, 08:50</p></div></div>
+<div class="list-row"><div class="leading" style="background:var(--surface-variant)"><svg class="icn" fill="none" style="color:var(--on-surface-variant)" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"></circle></svg></div><div class="list-main"><p class="list-title">Pengukuran Ketebalan</p><p class="list-sub">Belum diisi</p></div></div>
+<div class="list-row"><div class="leading" style="background:var(--surface-variant)"><svg class="icn" fill="none" style="color:var(--on-surface-variant)" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"></circle></svg></div><div class="list-main"><p class="list-title">Uji Kepadatan Laboratorium</p><p class="list-sub">Belum diisi</p></div></div>
+<div class="list-row"><div class="leading" style="background:var(--surface-variant)"><svg class="icn" fill="none" style="color:var(--on-surface-variant)" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"></circle></svg></div><div class="list-main"><p class="list-title">Penutupan Bekas Lubang</p><p class="list-sub">Belum diisi</p></div></div></div>
 <div class="spacer"></div>
 </div>
 </div>
@@ -939,23 +944,19 @@ Masuk dengan Google
 </div>
 <div class="screen" id="screen-daftar_pengajuan">
 <div class="statusbar"><span>09:41</span><span><svg class="icn" viewbox="0 0 24 24"><path d="M2 8.5a15 15 0 0120 0M5 12a10 10 0 0114 0M8.5 15.5a5 5 0 017 0"></path><circle cx="12" cy="19" fill="currentColor" r="1" stroke="none"></circle></svg> <svg class="icn" viewbox="0 0 24 24"><rect height="10" rx="2" width="17" x="2" y="7"></rect><line x1="21" x2="21" y1="10" y2="14"></line><rect fill="currentColor" height="5" stroke="none" width="9" x="4.5" y="9.5"></rect></svg></span></div>
-<div class="appbar" onclick="showScreen('pelaksanaan')" style="cursor:pointer"><svg class="icn" viewbox="0 0 24 24"><line x1="19" x2="5" y1="12" y2="12"></line><polyline points="12,19 5,12 12,5"></polyline></svg><span class="title">Daftar pengajuan</span></div>
+<div class="appbar" onclick="showScreen('pra_pelaksanaan')" style="cursor:pointer"><svg class="icn" viewbox="0 0 24 24"><line x1="19" x2="5" y1="12" y2="12"></line><polyline points="12,19 5,12 12,5"></polyline></svg><span class="title">Daftar pengajuan</span></div>
 <div class="content">
 <p id="pengajuanRoleHint" style="font-size:9.5px;color:var(--on-surface-variant);margin:0 0 10px">QC: lihat status pengajuanmu. Konsultan Pengawas: tap untuk memutuskan.</p>
-<div class="list-row" onclick="showScreen('persetujuan_akhir')" style="cursor:pointer">
-<div class="leading" id="pengajuanIcon" style="background:var(--warning-container)"><svg class="icn" style="color:var(--on-warning)" viewbox="0 0 24 24"><circle cx="12" cy="12" r="9"></circle><polyline points="12,7 12,12 15.5,14"></polyline></svg></div>
-<div class="list-main"><p class="list-title">Uji kualifikasi material (laboratorium)</p><p class="list-sub" id="pengajuanSub">Diajukan Ahmad Setiawan (QC) &middot; hari ini, 09:45</p></div>
-<span class="badge badge-warning" id="pengajuanBadge">Menunggu</span>
-</div>
+<div id="wadahDaftarPengajuan"></div>
 <div class="spacer"></div>
 </div>
 </div>
 <div class="screen" id="screen-persetujuan_akhir">
 <div class="statusbar"><span>09:41</span><span><svg class="icn" viewbox="0 0 24 24"><path d="M2 8.5a15 15 0 0120 0M5 12a10 10 0 0114 0M8.5 15.5a5 5 0 017 0"></path><circle cx="12" cy="19" fill="currentColor" r="1" stroke="none"></circle></svg> <svg class="icn" viewbox="0 0 24 24"><rect height="10" rx="2" width="17" x="2" y="7"></rect><line x1="21" x2="21" y1="10" y2="14"></line><rect fill="currentColor" height="5" stroke="none" width="9" x="4.5" y="9.5"></rect></svg></span></div>
 <div class="appbar" onclick="showScreen('daftar_pengajuan')" style="cursor:pointer"><svg class="icn" viewbox="0 0 24 24"><line x1="19" x2="5" y1="12" y2="12"></line><polyline points="12,19 5,12 12,5"></polyline></svg><span class="title">Persetujuan akhir</span></div>
-<p class="appbar sub" style="margin-left:24px">Uji kualifikasi material (laboratorium)</p>
+<p class="appbar sub" style="margin-left:24px" id="paSubjudul">Uji kualifikasi material (laboratorium)</p>
 <div class="content">
-<div class="card-lg" style="display:flex;justify-content:space-between;font-size:11px">
+<div class="card-lg" style="display:flex;justify-content:space-between;font-size:11px" id="paKartuHitung">
 <div>Item Ya<br/><b>9 dari 9</b></div><div>Item Tidak<br/><b>0 dari 9</b></div>
 </div>
 <p class="label">Status persetujuan</p>
@@ -1163,7 +1164,7 @@ Masuk dengan Google
 
 <script>
 
-var statusPengajuan = 'draft';
+var statusPengajuanPerSection = { 'Perancangan formula campuran (Mix Design)': 'diajukan' };
 var pilihanKeputusan = null;
 var itemPerSection = {
   'Uji kualifikasi material (laboratorium)': [
@@ -1223,6 +1224,8 @@ function bukaKameraUntuk(idWadah, layarKembali) {
   layarKembaliSetelahFoto = layarKembali;
   showScreen('camera_view');
 }
+var sectionAktifDaftarItem = null;
+var sectionAktifPengajuan = null;
 var itemAktifNama = null;
 var itemAktifSection = null;
 function pilihStatusKoreksi(el, status) {
@@ -1827,6 +1830,7 @@ function kembaliDariDaftarItem() {
   showScreen(sumberDaftarItemMobile);
 }
 function bukaDaftarItemMobile(namaSection, sumber) {
+  sectionAktifDaftarItem = namaSection;
   if (sumber) { sumberDaftarItemMobile = sumber; }
   var judul = document.getElementById('dimTitleMobile');
   if (judul) { judul.textContent = namaSectionSingkat[namaSection] || namaSection; }
@@ -1872,33 +1876,92 @@ function showScreen(name) {
   closeMenu();
   if (name === 'daftar_pengajuan') { updateTampilanPengajuan(); }
 }
+var petaBadgeSection = {
+  'Uji kualifikasi material (laboratorium)': { badge: 'badgeUjiKualifikasi', icon: 'iconUjiKualifikasi' },
+  'Perancangan formula campuran (Mix Design)': { badge: 'badgeMixDesign', icon: 'iconMixDesign' }
+};
+function sinkronBadgePraPelaksanaan() {
+  Object.keys(petaBadgeSection).forEach(function(nama) {
+    var status = statusPengajuanPerSection[nama];
+    if (!status) { return; }
+    var ref = petaBadgeSection[nama];
+    var badge = document.getElementById(ref.badge);
+    var icon = document.getElementById(ref.icon);
+    if (!badge) { return; }
+    var config = {
+      diajukan: { label: 'Menunggu persetujuan', kelas: 'badge-warning', iconBg: 'var(--warning-container)' },
+      disetujui: { label: 'Disetujui', kelas: 'badge-success', iconBg: 'var(--success-container)' },
+      catatan: { label: 'Disetujui dengan catatan', kelas: 'badge-warning', iconBg: 'var(--warning-container)' },
+      ditolak: { label: 'Ditolak', kelas: 'badge-error', iconBg: 'var(--error-container)' }
+    };
+    var c = config[status] || config.diajukan;
+    badge.className = 'badge ' + c.kelas;
+    badge.textContent = c.label;
+    if (icon) { icon.style.background = c.iconBg; }
+  });
+}
 function ajukanUntukDiperiksa() {
-  statusPengajuan = 'diajukan';
+  if (!sectionAktifDaftarItem) { return; }
+  statusPengajuanPerSection[sectionAktifDaftarItem] = 'diajukan';
+  sinkronBadgePraPelaksanaan();
   showScreen('daftar_pengajuan');
 }
+function bukaPersetujuanAkhir(namaSection) {
+  sectionAktifPengajuan = namaSection;
+  var items = itemPerSection[namaSection] || [];
+  var jumlahYa = items.filter(function(it) { return it[1] === 'Ya'; }).length;
+  var jumlahTidak = items.filter(function(it) { return it[1] === 'Tidak'; }).length;
+  var total = items.length;
+  var subjudul = document.getElementById('paSubjudul');
+  var kartuHitung = document.getElementById('paKartuHitung');
+  if (subjudul) { subjudul.textContent = namaSectionSingkat[namaSection] || namaSection; }
+  if (kartuHitung) {
+    kartuHitung.innerHTML = '<div>Item Ya<br/><b>' + jumlahYa + ' dari ' + total + '</b></div><div>Item Tidak<br/><b>' + jumlahTidak + ' dari ' + total + '</b></div>';
+  }
+  pilihanKeputusan = null;
+  ['kepDisetujui', 'kepCatatan', 'kepDitolak'].forEach(function(id) {
+    var el = document.getElementById(id);
+    if (el) { el.classList.remove('card-sel'); }
+  });
+  ['kepDisetujuiCircle', 'kepCatatanCircle', 'kepDitolakCircle'].forEach(function(id) {
+    var el = document.getElementById(id);
+    if (el) { el.classList.remove('on'); }
+  });
+  showScreen('persetujuan_akhir');
+}
 function simpanKeputusan() {
-  if (!pilihanKeputusan) { return; }
-  statusPengajuan = pilihanKeputusan;
+  if (!pilihanKeputusan || !sectionAktifPengajuan) { return; }
+  statusPengajuanPerSection[sectionAktifPengajuan] = pilihanKeputusan;
+  sinkronBadgePraPelaksanaan();
   showScreen('daftar_pengajuan');
 }
 function updateTampilanPengajuan() {
-  var badge = document.getElementById('pengajuanBadge');
-  var icon = document.getElementById('pengajuanIcon');
-  var sub = document.getElementById('pengajuanSub');
-  if (!badge) { return; }
+  var wadah = document.getElementById('wadahDaftarPengajuan');
+  if (!wadah) { return; }
   var config = {
     diajukan: { label: 'Menunggu', badgeBg: 'var(--warning-container)', badgeColor: 'var(--on-warning)', iconBg: 'var(--warning-container)', subExtra: '' },
     disetujui: { label: 'Disetujui', badgeBg: 'var(--success-container)', badgeColor: 'var(--on-success)', iconBg: 'var(--success-container)', subExtra: ' &middot; Disetujui Rudi Hartono (Konsultan Pengawas)' },
     catatan: { label: 'Disetujui dengan catatan', badgeBg: 'var(--warning-container)', badgeColor: 'var(--on-warning)', iconBg: 'var(--warning-container)', subExtra: ' &middot; Disetujui dengan catatan -- Rudi Hartono' },
     ditolak: { label: 'Ditolak', badgeBg: 'var(--error-container)', badgeColor: 'var(--on-error)', iconBg: 'var(--error-container)', subExtra: ' &middot; Ditolak Rudi Hartono (Konsultan Pengawas)' }
   };
-  var c = config[statusPengajuan] || config.diajukan;
-  badge.textContent = c.label;
-  badge.style.background = c.badgeBg;
-  badge.style.color = c.badgeColor;
-  icon.style.background = c.iconBg;
-  sub.innerHTML = 'Diajukan Ahmad Setiawan (QC) &middot; hari ini, 09:45' + c.subExtra;
+  var namaSection = Object.keys(statusPengajuanPerSection);
+  if (namaSection.length === 0) {
+    wadah.innerHTML = '<p style="font-size:11px;color:var(--outline);text-align:center;margin-top:20px">Belum ada pengajuan.</p>';
+    return;
+  }
+  var html = '';
+  namaSection.forEach(function(nama) {
+    var status = statusPengajuanPerSection[nama];
+    var c = config[status] || config.diajukan;
+    html += '<div class="list-row" onclick="bukaPersetujuanAkhir(\'' + nama + '\')" style="cursor:pointer">' +
+      '<div class="leading" style="background:' + c.iconBg + '"><svg class="icn" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"></circle><polyline points="12,7 12,12 15.5,14"></polyline></svg></div>' +
+      '<div class="list-main"><p class="list-title">' + (namaSectionSingkat[nama] || nama) + '</p><p class="list-sub">Diajukan Ahmad Setiawan (QC) &middot; hari ini, 09:45' + c.subExtra + '</p></div>' +
+      '<span class="badge" style="background:' + c.badgeBg + ';color:' + c.badgeColor + '">' + c.label + '</span>' +
+      '</div>';
+  });
+  wadah.innerHTML = html;
 }
+
 var currentRole = 'qc';
 function switchRole(role) {
   currentRole = role;
