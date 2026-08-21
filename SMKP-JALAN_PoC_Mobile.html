@@ -53,7 +53,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,'Helvetica N
 .appbar i{font-size:16px;color:var(--on-surface)}
 .appbar .title{font-size:14px;font-weight:600}
 .appbar .sub{font-size:10px;color:var(--on-surface-variant);margin:0 0 0 24px}
-.content{flex:1;overflow:hidden;display:flex;flex-direction:column;margin-top:8px}
+.content{flex:1;overflow-y:auto;overflow-x:hidden;display:flex;flex-direction:column;margin-top:8px}
 .content > * + *{margin-top:12px}
 .spacer{flex:1}
 .footer-btn{border-top:1px solid var(--outline-variant);padding-top:8px}
@@ -953,7 +953,7 @@ Masuk dengan Google
 </div>
 <div class="screen" id="screen-persetujuan_akhir">
 <div class="statusbar"><span>09:41</span><span><svg class="icn" viewbox="0 0 24 24"><path d="M2 8.5a15 15 0 0120 0M5 12a10 10 0 0114 0M8.5 15.5a5 5 0 017 0"></path><circle cx="12" cy="19" fill="currentColor" r="1" stroke="none"></circle></svg> <svg class="icn" viewbox="0 0 24 24"><rect height="10" rx="2" width="17" x="2" y="7"></rect><line x1="21" x2="21" y1="10" y2="14"></line><rect fill="currentColor" height="5" stroke="none" width="9" x="4.5" y="9.5"></rect></svg></span></div>
-<div class="appbar" onclick="showScreen('daftar_pengajuan')" style="cursor:pointer"><svg class="icn" viewbox="0 0 24 24"><line x1="19" x2="5" y1="12" y2="12"></line><polyline points="12,19 5,12 12,5"></polyline></svg><span class="title">Persetujuan akhir</span></div>
+<div class="appbar" onclick="kembaliDariPersetujuanAkhir()" style="cursor:pointer"><svg class="icn" viewbox="0 0 24 24"><line x1="19" x2="5" y1="12" y2="12"></line><polyline points="12,19 5,12 12,5"></polyline></svg><span class="title">Persetujuan akhir</span></div>
 <p class="appbar sub" style="margin-left:24px" id="paSubjudul">Uji kualifikasi material (laboratorium)</p>
 <div class="content">
 <div class="card-lg" style="display:flex;justify-content:space-between;font-size:11px" id="paKartuHitung">
@@ -981,14 +981,14 @@ Masuk dengan Google
 <p style="font-size:11px;margin:0"><b style="color:var(--on-success)">Disetujui</b> · 15 Jul 2026, 14:20</p>
 </div>
 <p class="label">Status yang diusulkan</p>
-<div class="radio-row" id="koreksiStatusDisetujui" onclick="pilihStatusKoreksi(this, 'disetujui')" style="cursor:pointer"><span class="radio"></span><p style="font-size:11px;margin:0">Disetujui</p></div>
-<div class="radio-row" id="koreksiStatusCatatan" onclick="pilihStatusKoreksi(this, 'catatan')" style="cursor:pointer"><span class="radio"></span><p style="font-size:11px;margin:0">Disetujui dengan catatan</p></div>
-<div class="radio-row card-sel" id="koreksiStatusDitolak" onclick="pilihStatusKoreksi(this, 'ditolak')" style="cursor:pointer"><span class="radio on"></span><div><p style="font-size:11px;font-weight:600;margin:0;color:var(--on-error)">Ditolak</p></div></div>
+<div class="radio-row pengawas-only" id="koreksiStatusDisetujui" onclick="pilihStatusKoreksi(this, 'disetujui')" style="cursor:pointer"><span class="radio"></span><p style="font-size:11px;margin:0">Disetujui</p></div>
+<div class="radio-row pengawas-only" id="koreksiStatusCatatan" onclick="pilihStatusKoreksi(this, 'catatan')" style="cursor:pointer"><span class="radio"></span><p style="font-size:11px;margin:0">Disetujui dengan catatan</p></div>
+<div class="radio-row card-sel pengawas-only" id="koreksiStatusDitolak" onclick="pilihStatusKoreksi(this, 'ditolak')" style="cursor:pointer"><span class="radio on"></span><div><p style="font-size:11px;font-weight:600;margin:0;color:var(--on-error)">Ditolak</p></div></div>
 <div><p class="label">Catatan yang diusulkan</p>
-<textarea class="field" id="inputCatatanKoreksi" style="min-height:32px;font-size:10.5px;line-height:1.3">Setelah ditinjau ulang, agregat masih terlalu kotor</textarea>
+<textarea class="field pengawas-only" id="inputCatatanKoreksi" style="min-height:32px;font-size:10.5px;line-height:1.3">Setelah ditinjau ulang, agregat masih terlalu kotor</textarea>
 </div>
 <div><p class="label">Alasan koreksi (wajib)</p>
-<textarea class="field" id="inputAlasanKoreksi" oninput="cekValidasiAjukanKoreksi()" style="min-height:40px;font-size:10.5px;line-height:1.3">Salah pencet saat menyetujui, seharusnya ditolak menunggu pencucian ulang</textarea>
+<textarea class="field pengawas-only" id="inputAlasanKoreksi" oninput="cekValidasiAjukanKoreksi()" style="min-height:40px;font-size:10.5px;line-height:1.3">Salah pencet saat menyetujui, seharusnya ditolak menunggu pencucian ulang</textarea>
 </div>
 <div style="background:var(--warning-container);border-radius:10px;padding:8px 10px;margin-top:2px">
 <p style="font-size:10px;color:var(--on-warning);margin:0;line-height:1.4">Permintaan ini akan ditinjau admin P2JN sebelum keputusan benar-benar berubah — tidak langsung menimpa status saat ini.</p>
@@ -996,16 +996,16 @@ Masuk dengan Google
 <div class="spacer"></div>
 </div>
 <div class="footer-btn">
-<div class="readonly-badge-qc" style="display:none;background:var(--surface-variant);border-radius:8px;padding:6px 10px;margin-bottom:8px;font-size:9.5px;color:var(--on-surface-variant);text-align:center">Mode baca-saja &mdash; cuma QC yang mengajukan koreksi</div>
-<button class="btn btn-primary edit-only" id="tombolAjukanKoreksi" onclick="ajukanKoreksiBaru()" style="width:100%">Ajukan Koreksi</button>
+<div class="readonly-badge-pengawas" style="display:none;background:var(--surface-variant);border-radius:8px;padding:6px 10px;margin-bottom:8px;font-size:9.5px;color:var(--on-surface-variant);text-align:center">Mode baca-saja &mdash; cuma Konsultan Pengawas yang mengajukan koreksi</div>
+<button class="btn btn-primary pengawas-only" id="tombolAjukanKoreksi" onclick="ajukanKoreksiBaru()" style="width:100%">Ajukan Koreksi</button>
 </div>
 </div>
 <div class="screen" id="screen-daftar_row">
 <div class="statusbar"><span>09:41</span><span><svg class="icn" viewbox="0 0 24 24"><path d="M2 8.5a15 15 0 0120 0M5 12a10 10 0 0114 0M8.5 15.5a5 5 0 017 0"></path><circle cx="12" cy="19" fill="currentColor" r="1" stroke="none"></circle></svg> <svg class="icn" viewbox="0 0 24 24"><rect height="10" rx="2" width="17" x="2" y="7"></rect><line x1="21" x2="21" y1="10" y2="14"></line><rect fill="currentColor" height="5" stroke="none" width="9" x="4.5" y="9.5"></rect></svg></span></div>
 <div class="appbar" onclick="showScreen('pelaksanaan')" style="cursor:pointer"><svg class="icn" viewbox="0 0 24 24"><line x1="19" x2="5" y1="12" y2="12"></line><polyline points="12,19 5,12 12,5"></polyline></svg><span class="title">Request of work</span></div>
 <div class="content">
-<div class="list-row" onclick="bukaDetailRowMobile('RoW-002', 'Segmen 3', 'Disetujui')" style="cursor:pointer"><div class="leading" style="background:var(--success-container)"><svg class="icn" fill="none" style="color:var(--on-success)" viewbox="0 0 24 24"><polyline points="4,12 9,17 20,6"></polyline></svg></div><div class="list-main"><p class="list-title">RoW-002</p><p class="list-sub">24 Jul - Segmen 3</p></div><span class="badge badge-success">Disetujui</span></div>
-<div class="list-row" onclick="bukaDetailRowMobile('RoW-001', 'Segmen 2', 'Menunggu')" style="cursor:pointer"><div class="leading" style="background:var(--warning-container)"><svg class="icn" style="color:var(--on-warning)" viewbox="0 0 24 24"><circle cx="12" cy="12" r="9"></circle><polyline points="12,7 12,12 15.5,14"></polyline></svg></div><div class="list-main"><p class="list-title">RoW-001</p><p class="list-sub" style="color:var(--on-warning)">20 Jul - Segmen 2 · Diajukan terlambat</p></div><span class="badge badge-warning">Menunggu</span></div>
+<div class="list-row" id="barisRoW002" onclick="bukaDetailRowMobile('RoW-002', 'Segmen 3', 'Disetujui')" style="cursor:pointer"><div class="leading" style="background:var(--success-container)"><svg class="icn" fill="none" style="color:var(--on-success)" viewbox="0 0 24 24"><polyline points="4,12 9,17 20,6"></polyline></svg></div><div class="list-main"><p class="list-title">RoW-002</p><p class="list-sub">24 Jul - Segmen 3</p></div><span class="badge badge-success">Disetujui</span></div>
+<div class="list-row" id="barisRoW001" onclick="bukaDetailRowMobile('RoW-001', 'Segmen 2', 'Menunggu')" style="cursor:pointer"><div class="leading" id="iconRoW001" style="background:var(--warning-container)"><svg class="icn" style="color:var(--on-warning)" viewbox="0 0 24 24"><circle cx="12" cy="12" r="9"></circle><polyline points="12,7 12,12 15.5,14"></polyline></svg></div><div class="list-main"><p class="list-title">RoW-001</p><p class="list-sub" id="subRoW001" style="color:var(--on-warning)">20 Jul - Segmen 2 · Diajukan terlambat</p></div><span class="badge badge-warning" id="badgeRoW001">Menunggu</span></div>
 <div class="spacer"></div>
 </div>
 <div class="fab kontraktor-only" onclick="showScreen('form_ajukan_row')" style="cursor:pointer"><svg class="icn" viewbox="0 0 24 24"><line x1="12" x2="12" y1="5" y2="19"></line><line x1="5" x2="19" y1="12" y2="12"></line></svg></div>
@@ -1014,7 +1014,7 @@ Masuk dengan Google
 <div class="statusbar"><span>09:41</span><span><svg class="icn" viewbox="0 0 24 24"><path d="M2 8.5a15 15 0 0120 0M5 12a10 10 0 0114 0M8.5 15.5a5 5 0 017 0"></path><circle cx="12" cy="19" fill="currentColor" r="1" stroke="none"></circle></svg> <svg class="icn" viewbox="0 0 24 24"><rect height="10" rx="2" width="17" x="2" y="7"></rect><line x1="21" x2="21" y1="10" y2="14"></line><rect fill="currentColor" height="5" stroke="none" width="9" x="4.5" y="9.5"></rect></svg></span></div>
 <div class="appbar" onclick="showScreen('daftar_row')" style="cursor:pointer"><svg class="icn" viewbox="0 0 24 24"><line x1="19" x2="5" y1="12" y2="12"></line><polyline points="12,19 5,12 12,5"></polyline></svg><span class="title">Ajukan RoW baru</span></div>
 <div class="content">
-<div><p class="label">Segmen</p><input class="field" placeholder="mis. Km 12+000 - Km 12+500"/></div>
+<div><p class="label">Segmen</p><input class="field" id="inputSegmenRow" placeholder="mis. Km 12+000 - Km 12+500"/></div>
 <p class="label" style="margin-top:10px">Kelengkapan dokumen pendukung</p>
 <div class="card" style="background:var(--surface-variant)">
 <div class="list-row" style="padding:6px 0"><span class="checkbox on" id="cbRow0" onclick="toggleCekDokumen(0)" style="cursor:pointer"></span><span style="font-size:11px;margin-left:9px">Shop Drawing (Gambar Kerja)</span></div>
@@ -1059,7 +1059,7 @@ Masuk dengan Google
 <div class="radio-row joint-only" id="inspk3Tidak" onclick="pilihRadioInspeksi('k3', false)" style="cursor:pointer"><span class="radio"></span><span class="radio-label">Tidak</span></div>
 </div>
 <div><p class="label">Foto lapangan</p>
-<div class="thumb-row"><div class="thumb" style="background:#85B7EB"></div><div class="thumb-add joint-only" style="width:70px;flex-direction:column;font-size:9px;text-align:center"><svg class="icn" style="font-size:14px;margin-bottom:2px" viewbox="0 0 24 24"><path d="M4 8h4l1.5-2.2h5L16 8h4v11H4V8z"></path><circle cx="12" cy="13.3" r="3.2"></circle></svg>Tambah foto</div></div>
+<div class="thumb-row" id="thumbRowInspeksi"><div class="thumb-add joint-only" onclick="bukaKameraUntuk('thumbRowInspeksi', 'inspeksi_row')" style="width:70px;flex-direction:column;font-size:9px;text-align:center;cursor:pointer"><svg class="icn" style="font-size:14px;margin-bottom:2px" viewbox="0 0 24 24"><path d="M4 8h4l1.5-2.2h5L16 8h4v11H4V8z"></path><circle cx="12" cy="13.3" r="3.2"></circle></svg>Tambah foto</div></div>
 </div>
 <hr style="border:none;border-top:1px solid var(--outline-variant);margin:16px 0"/>
 <div class="card" style="background:var(--warning-container);display:flex;gap:8px;align-items:flex-start">
@@ -1068,7 +1068,7 @@ Masuk dengan Google
 </div>
 <div class="spacer"></div>
 </div>
-<div class="footer-btn"><button class="btn btn-primary joint-only" style="width:100%" onclick="showScreen('detail_row_mobile')">Simpan hasil inspeksi</button></div>
+<div class="footer-btn"><button class="btn btn-primary joint-only" style="width:100%" onclick="simpanHasilInspeksi()">Simpan hasil inspeksi</button></div>
 </div>
 <div class="screen" id="screen-detail_row_mobile">
 <div class="statusbar"><span>09:41</span><span><svg class="icn" viewbox="0 0 24 24"><path d="M2 8.5a15 15 0 0120 0M5 12a10 10 0 0114 0M8.5 15.5a5 5 0 017 0"></path><circle cx="12" cy="19" fill="currentColor" r="1" stroke="none"></circle></svg> <svg class="icn" viewbox="0 0 24 24"><rect height="10" rx="2" width="17" x="2" y="7"></rect><line x1="21" x2="21" y1="10" y2="14"></line><rect fill="currentColor" height="5" stroke="none" width="9" x="4.5" y="9.5"></rect></svg></span></div>
@@ -1086,21 +1086,27 @@ Masuk dengan Google
 <p style="font-size:10.5px;font-weight:600;margin:0 0 2px">Diajukan</p>
 <p style="font-size:10.5px;color:var(--on-surface-variant);margin:0" id="drmDiajukan">20 Jul 2026, 09:00 — 22 jam sebelum jadwal</p>
 </div>
-<p class="label" onclick="showScreen('inspeksi_row')" style="cursor:pointer;text-decoration:underline" id="drmLinkInspeksi">Inspeksi lapangan (Joint Inspection) →</p>
-<p style="font-size:11px;margin:0 0 12px" id="drmStatusInspeksi">Belum dilakukan — dijadwalkan setelah dokumen lengkap terverifikasi, sebelum pekerjaan dimulai.</p>
+<div class="card-lg" onclick="showScreen('inspeksi_row')" style="background:var(--primary-container);cursor:pointer;margin-bottom:12px">
+<p style="font-size:12px;font-weight:600;margin:0 0 2px">Inspeksi Lapangan (Joint Inspection)</p>
+<p style="font-size:10px;color:var(--on-primary-container);margin:0" id="drmStatusInspeksi">Belum dilakukan — dijadwalkan setelah dokumen lengkap terverifikasi, sebelum pekerjaan dimulai.</p>
+</div>
 <div id="drmWadahUbahJadwal">
 <button class="btn kontraktor-only" style="background:transparent;border:1px solid var(--outline-variant);color:var(--primary);width:100%;margin-bottom:6px" onclick="bukaUbahJadwalRow()">Ubah jadwal</button>
 </div>
 <p style="font-size:9px;color:var(--outline);margin:0 0 12px;text-align:center" id="drmKeteranganUbahJadwal">Tersedia karena inspeksi lapangan belum dilakukan</p>
 <p class="label">Status persetujuan</p>
-<p style="font-size:11px;margin:0" id="drmStatusPersetujuan">Menunggu tinjauan Konsultan Pengawas — belum ada keputusan.</p>
-<div class="card-lg" onclick="bukaSampelCoreDrillDariRow()" style="background:var(--surface-variant);margin-top:12px;cursor:pointer">
-<p style="font-size:12px;font-weight:600;margin:0 0 2px">Daftar Sampel Core Drill</p>
-<p style="font-size:10px;color:var(--on-surface-variant);margin:0">Verifikasi tebal &amp; kepadatan hasil hampar — tap untuk lihat/tambah sampel</p>
+<p style="font-size:11px;margin:0 0 8px" id="drmStatusPersetujuan">Menunggu tinjauan Konsultan Pengawas — belum ada keputusan.</p>
+<div class="card-lg pengawas-only" id="drmKartuPersetujuan" onclick="bukaPersetujuanAkhirRoW()" style="background:var(--primary-container);cursor:pointer;display:none">
+<p style="font-size:12px;font-weight:600;margin:0 0 2px" id="drmLabelKartuPersetujuan">Ambil Keputusan Persetujuan</p>
+<p style="font-size:10px;color:var(--on-primary-container);margin:0">Berdasarkan hasil Inspeksi Lapangan (Joint Inspection)</p>
 </div>
-<div class="card-lg" onclick="showScreen('foto_bda')" style="background:var(--surface-variant);margin-top:12px;cursor:pointer">
+<div class="card-lg" onclick="bukaSampelCoreDrillDariRow()" style="background:var(--primary-container);margin-top:12px;cursor:pointer">
+<p style="font-size:12px;font-weight:600;margin:0 0 2px">Daftar Sampel Core Drill</p>
+<p style="font-size:10px;color:var(--on-primary-container);margin:0">Verifikasi tebal &amp; kepadatan hasil hampar — tap untuk lihat/tambah sampel</p>
+</div>
+<div class="card-lg" onclick="showScreen('foto_bda')" style="background:var(--primary-container);margin-top:12px;cursor:pointer">
 <p style="font-size:12px;font-weight:600;margin:0 0 2px">Dokumentasi Penutupan RoW</p>
-<p style="font-size:10px;color:var(--on-surface-variant);margin:0">Foto Before/During/After sebagai lampiran backup tagihan</p>
+<p style="font-size:10px;color:var(--on-primary-container);margin:0">Foto Before/During/After sebagai lampiran backup tagihan</p>
 </div>
 <div class="spacer"></div>
 </div>
@@ -1401,8 +1407,45 @@ function selesaikanRowBda() {
   if (document.getElementById('tombolSelesaikanRow').classList.contains('disabled')) { return; }
   showScreen('detail_row_mobile');
 }
+var nomorRowBerikutnya = 3;
 function ajukanRowBaru() {
   if (document.getElementById('tombolAjukanRow').classList.contains('disabled')) { return; }
+
+  var segmen = document.getElementById('inputSegmenRow').value.trim() || 'Segmen belum diisi';
+  var jadwal = document.getElementById('inputJadwalRow').value.trim() || 'Belum ditentukan';
+  var nomorBaru = 'RoW-' + String(nomorRowBerikutnya).padStart(3, '0');
+  nomorRowBerikutnya++;
+
+  dataDetailRow[nomorBaru] = {
+    jadwal: jadwal,
+    diajukan: 'Baru saja diajukan',
+    statusInspeksi: 'Belum dilakukan -- dijadwalkan setelah dokumen lengkap terverifikasi, sebelum pekerjaan dimulai.',
+    ubahJadwalTersedia: true,
+    statusPersetujuan: 'Menunggu tinjauan Konsultan Pengawas -- belum ada keputusan.'
+  };
+
+  var idAman = nomorBaru.replace(/[^A-Za-z0-9]/g, '');
+  var html = '<div class="list-row" id="baris' + idAman + '" onclick="bukaDetailRowMobile(\'' + nomorBaru + '\', \'' + segmen + '\', \'Menunggu\')" style="cursor:pointer"><div class="leading" style="background:var(--warning-container)"><svg class="icn" style="color:var(--on-warning)" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"></circle><polyline points="12,7 12,12 15.5,14"></polyline></svg></div><div class="list-main"><p class="list-title">' + nomorBaru + '</p><p class="list-sub">' + segmen + '</p></div><span class="badge badge-warning">Menunggu</span></div>';
+
+  var daftar = document.querySelector('#screen-daftar_row .content');
+  var spacer = daftar.querySelector('.spacer');
+  spacer.insertAdjacentHTML('beforebegin', html);
+
+  document.getElementById('inputSegmenRow').value = '';
+  document.getElementById('inputJadwalRow').value = '';
+  for (var i = 0; i < 4; i++) { document.getElementById('cbRow' + i).classList.add('on'); }
+  document.getElementById('cbRow4').classList.remove('on');
+  var kartuJadwal = document.getElementById('kartuValidasiJadwal');
+  kartuJadwal.style.background = 'var(--surface-variant)';
+  document.getElementById('ikonValidasiJadwal').style.color = 'var(--outline)';
+  document.getElementById('judulValidasiJadwal').style.color = 'var(--outline)';
+  document.getElementById('judulValidasiJadwal').textContent = 'Isi jadwal untuk mengecek batas waktu';
+  document.getElementById('subValidasiJadwal').textContent = ' ';
+  document.getElementById('linkKeterlambatan').style.display = 'none';
+  document.getElementById('wadahAlasanKeterlambatan').style.display = 'none';
+  document.getElementById('inputAlasanKeterlambatan').value = '';
+  document.getElementById('tombolAjukanRow').classList.add('disabled');
+
   showScreen('daftar_row');
 }
 function mintaKonfirmasiKeluarMobile() {
@@ -1467,6 +1510,17 @@ function bukaDetailRowMobile(nomor, segmen, status) {
   if (el('drmDiajukan')) { el('drmDiajukan').textContent = data.diajukan; }
   if (el('drmStatusInspeksi')) { el('drmStatusInspeksi').textContent = data.statusInspeksi; }
   if (el('drmStatusPersetujuan')) { el('drmStatusPersetujuan').textContent = data.statusPersetujuan; }
+  var kartuPersetujuan = el('drmKartuPersetujuan');
+  if (kartuPersetujuan) {
+    if (data.ubahJadwalTersedia) {
+      kartuPersetujuan.style.display = 'none';
+    } else {
+      kartuPersetujuan.style.display = '';
+      var labelKartu = el('drmLabelKartuPersetujuan');
+      var sudahDiputuskan = data.statusPersetujuan.indexOf('Menunggu') === -1;
+      labelKartu.textContent = sudahDiputuskan ? 'Lihat Keputusan Persetujuan' : 'Ambil Keputusan Persetujuan';
+    }
+  }
   var wadahUbahJadwal = el('drmWadahUbahJadwal');
   var keteranganUbahJadwal = el('drmKeteranganUbahJadwal');
   if (wadahUbahJadwal) {
@@ -1906,7 +1960,9 @@ function ajukanUntukDiperiksa() {
   sinkronBadgePraPelaksanaan();
   showScreen('daftar_pengajuan');
 }
+var rowAktifPersetujuan = null;
 function bukaPersetujuanAkhir(namaSection) {
+  rowAktifPersetujuan = null;
   sectionAktifPengajuan = namaSection;
   var items = itemPerSection[namaSection] || [];
   var jumlahYa = items.filter(function(it) { return it[1] === 'Ya'; }).length;
@@ -1929,8 +1985,83 @@ function bukaPersetujuanAkhir(namaSection) {
   });
   showScreen('persetujuan_akhir');
 }
+function simpanHasilInspeksi() {
+  if (!rowAktifNomor) { return; }
+  if (!dataDetailRow[rowAktifNomor]) { dataDetailRow[rowAktifNomor] = {}; }
+  dataDetailRow[rowAktifNomor].ubahJadwalTersedia = false;
+  dataDetailRow[rowAktifNomor].statusInspeksi = 'Sudah dilakukan -- lokasi, material, dan K3 dinyatakan siap oleh Konsultan Pengawas.';
+  bukaDetailRowMobile(rowAktifNomor, rowAktifSegmen, 'Menunggu');
+}
+function bukaPersetujuanAkhirRoW() {
+  sectionAktifPengajuan = null;
+  rowAktifPersetujuan = rowAktifNomor;
+  var subjudul = document.getElementById('paSubjudul');
+  var kartuHitung = document.getElementById('paKartuHitung');
+  if (subjudul) { subjudul.textContent = rowAktifNomor + ' -- ' + rowAktifSegmen; }
+  if (kartuHitung) {
+    kartuHitung.innerHTML = '<div>Kesiapan lokasi<br/><b>Ya</b></div><div>Kesiapan material<br/><b>Ya</b></div><div>K3<br/><b>Ya</b></div>';
+  }
+  pilihanKeputusan = null;
+  ['kepDisetujui', 'kepCatatan', 'kepDitolak'].forEach(function(id) {
+    var el = document.getElementById(id);
+    if (el) { el.classList.remove('card-sel'); }
+  });
+  ['kepDisetujuiCircle', 'kepCatatanCircle', 'kepDitolakCircle'].forEach(function(id) {
+    var el = document.getElementById(id);
+    if (el) { el.classList.remove('on'); }
+  });
+  showScreen('persetujuan_akhir');
+}
+function kembaliDariPersetujuanAkhir() {
+  if (rowAktifPersetujuan) {
+    showScreen('detail_row_mobile');
+  } else {
+    showScreen('daftar_pengajuan');
+  }
+}
+function sinkronBadgeDaftarRow(nomor, segmen, statusBadge) {
+  var idAman = nomor.replace(/[^A-Za-z0-9]/g, '');
+  var baris = document.getElementById('baris' + idAman);
+  if (!baris) { return; }
+  var badge = baris.querySelector('.badge');
+  var icon = baris.querySelector('.leading');
+  var subteks = baris.querySelector('.list-sub');
+  if (subteks && statusBadge !== 'Menunggu') { subteks.style.color = ''; }
+  baris.setAttribute('onclick', "bukaDetailRowMobile('" + nomor + "', '" + segmen + "', '" + statusBadge + "')");
+  if (statusBadge === 'Disetujui') {
+    badge.className = 'badge badge-success';
+    badge.textContent = 'Disetujui';
+    icon.style.background = 'var(--success-container)';
+    icon.innerHTML = '<svg class="icn" fill="none" style="color:var(--on-success)" viewBox="0 0 24 24"><polyline points="4,12 9,17 20,6"></polyline></svg>';
+  } else if (statusBadge === 'Ditolak') {
+    badge.className = 'badge';
+    badge.style.background = 'var(--error-container)';
+    badge.style.color = 'var(--on-error)';
+    badge.textContent = 'Ditolak';
+    icon.style.background = 'var(--error-container)';
+    icon.innerHTML = '<svg class="icn" fill="none" style="color:var(--on-error)" viewBox="0 0 24 24"><line x1="18" x2="6" y1="6" y2="18"></line><line x1="6" x2="18" y1="6" y2="18"></line></svg>';
+  } else {
+    badge.className = 'badge badge-warning';
+    badge.textContent = 'Menunggu';
+    icon.style.background = 'var(--warning-container)';
+    icon.innerHTML = '<svg class="icn" style="color:var(--on-warning)" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"></circle><polyline points="12,7 12,12 15.5,14"></polyline></svg>';
+  }
+}
 function simpanKeputusan() {
-  if (!pilihanKeputusan || !sectionAktifPengajuan) { return; }
+  if (!pilihanKeputusan) { return; }
+  if (rowAktifPersetujuan) {
+    var labelKeputusan = { disetujui: 'Disetujui', catatan: 'Disetujui dengan catatan', ditolak: 'Ditolak' };
+    var sekarang = new Date();
+    var bulanIndo = ['Jan','Feb','Mar','Apr','Mei','Jun','Jul','Agu','Sep','Okt','Nov','Des'];
+    var waktuTeks = sekarang.getDate() + ' ' + bulanIndo[sekarang.getMonth()] + ' 2026, ' + String(sekarang.getHours()).padStart(2, '0') + ':' + String(sekarang.getMinutes()).padStart(2, '0');
+    if (!dataDetailRow[rowAktifPersetujuan]) { dataDetailRow[rowAktifPersetujuan] = {}; }
+    dataDetailRow[rowAktifPersetujuan].statusPersetujuan = labelKeputusan[pilihanKeputusan] + ' oleh Konsultan Pengawas -- ' + waktuTeks + '.';
+    var statusBadgeBaru = pilihanKeputusan === 'ditolak' ? 'Ditolak' : 'Disetujui';
+    sinkronBadgeDaftarRow(rowAktifNomor, rowAktifSegmen, statusBadgeBaru);
+    bukaDetailRowMobile(rowAktifNomor, rowAktifSegmen, statusBadgeBaru);
+    return;
+  }
+  if (!sectionAktifPengajuan) { return; }
   statusPengajuanPerSection[sectionAktifPengajuan] = pilihanKeputusan;
   sinkronBadgePraPelaksanaan();
   showScreen('daftar_pengajuan');
@@ -1978,14 +2109,8 @@ function switchRole(role) {
 }
 function setInteractive(selector, enabled) {
   document.querySelectorAll(selector).forEach(function(el) {
-    if (!enabled) {
-      el.dataset.prevPointerEvents = el.style.pointerEvents;
-      el.style.pointerEvents = 'none';
-      el.style.opacity = '0.4';
-    } else {
-      el.style.pointerEvents = el.dataset.prevPointerEvents || '';
-      el.style.opacity = '';
-    }
+    el.style.pointerEvents = enabled ? '' : 'none';
+    el.style.opacity = enabled ? '' : '0.4';
   });
 }
 function applyReadonlyMode() {
